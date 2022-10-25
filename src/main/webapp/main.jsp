@@ -47,38 +47,43 @@
                 <div class="w-100"></div>
 
                 <div class="col mt-2">
-                    <div class="custom-control custom-radio custom-control-inline" onClick=submit>
+                    <div class="custom-control custom-radio custom-control-inline" onClick="window.location = '/controller?command=getProducts&Sort=NoneSort';">
                     <input type="radio" id="customRadioInline1" name="Sort" value="NoneSort" class="custom-control-input">
                     <label class="custom-control-label" for="customRadioInline1">None</label>
                     </div>
-                    <div class="custom-control custom-radio custom-control-inline">
+                    <div class="custom-control custom-radio custom-control-inline" onClick="window.location = '/controller?command=getProducts&Sort=name';">
                         <input type="radio" id="customRadioInline2" name="Sort" value="name" class="custom-control-input">
                         <label class="custom-control-label" for="customRadioInline2">Name</label>
                     </div>
-                    <div class="custom-control custom-radio custom-control-inline">
+                    <div class="custom-control custom-radio custom-control-inline" onClick="window.location = '/controller?command=getProducts&Sort=distance';">
                         <input type="radio" id="customRadioInline3" name="Sort" value="distance" class="custom-control-input">
                         <label class="custom-control-label" for="customRadioInline3">Distance</label>
                     </div>
+                    </form>
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end align-items-end">
-                        <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle ml-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <form action="controller" method="post">
+                            <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle ml-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Dropdown
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">Kyiv</a>
-                            <a class="dropdown-item" href="#">Zhytomyr</a>
-                            <a class="dropdown-item" href="#">Lviv</a>
-                            <a class="dropdown-item" href="#">Odessa</a>
-                            <a class="dropdown-item" href="#">Uzhhorod</a>
-                            <a class="dropdown-item" href="#">Lutsk</a>
-                            <a class="dropdown-item" href="#">Rivne</a>
-                            <a class="dropdown-item" href="#">Sumy</a>
-                            <a class="dropdown-item" href="#">Kherson</a>
-                            <a class="dropdown-item" href="#">Chernivtsi</a>
-                            <a class="dropdown-item" href="#">Kharkiv</a>
-                            <a class="dropdown-item" href="#">Ternopil</a>
-                        </div>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Kyiv">Kyiv</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Zhytomyr">Zhytomyr</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Lviv">Lviv</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Odessa">Odessa</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Uzhhorod">Uzhhorod</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Lutsk">Lutsk</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Rivne">Rivne</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Sumy">Sumy</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Kherson">Kherson</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Chernivtsi">Chernivtsi</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Kharkiv">Kharkiv</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Ternopil">Ternopil</a>
+                            </div>
+                        </form>
+
+
                 </div>
                 </div>
             </div>
@@ -123,13 +128,7 @@
     </div>
 </div>
 
-    <script type="text/javascript">
-        function SortFunc() {
-            var chkYes = document.getElementById("chkYes");
-            var dvPassport = document.getElementById("dvPassport");
-            dvPassport.style.display = chkYes.checked ? "block" : "none";
-        }
-    </script>
+
 <%@include file="includes/footer.jsp"%>
 </body>
 </html>

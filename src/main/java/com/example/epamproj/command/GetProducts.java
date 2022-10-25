@@ -17,7 +17,8 @@ public class GetProducts implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         List<Direction> directions = null;
-        log.info("Attribute \"Sort\" => " + request.getParameter("Sort"));
+        log.info("Parameter \"Sort\" => " + request.getParameter("Sort"));
+        log.info("Parameter \"Filter\" => " + request.getParameter("Filter"));
         try {
             if(request.getParameter("Sort") == null || request.getParameter("Sort").equals("NoneSort")){
                 directions = DirectionDAO.getInstance().getAll();
@@ -27,6 +28,10 @@ public class GetProducts implements Command {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+
+        if(request.getParameter("Filter")!= null){
+            directions.removeIf(d -> !d.getPlace1().equals(request.getParameter("Filter")) && !d.getPlace2().equals(request.getParameter("Filter")));
         }
 
         request.setAttribute("products", directions);
