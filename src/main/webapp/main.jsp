@@ -4,6 +4,7 @@
 <%@ page import="com.example.epamproj.dao.DirectionDAO" %>
 <%@ page import="java.sql.SQLException" %>
 
+
 <!doctype html>
 <html lang="en">
 
@@ -99,7 +100,7 @@
                     <img class="card-img-top" src="<%=d.getImage()%>" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title"><%=d.getName()%></h5>
-                        <%--                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>--%>
+                        <p class="card-text">Distance: <%=d.getDistance()%></p>
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-outline-secondary ">Calculate</button>
@@ -128,7 +129,7 @@
     </div>
 </div>
 
-
+    
 <%@include file="includes/footer.jsp"%>
 </body>
 </html>
