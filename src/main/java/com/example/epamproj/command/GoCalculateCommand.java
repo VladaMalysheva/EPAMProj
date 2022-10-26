@@ -32,6 +32,7 @@ public class GoCalculateCommand implements Command {
         }
         request.getSession().setAttribute("productCalc", direction);
         log.info("request.getAttribute() => "+ (Direction)request.getAttribute("productCalc"));
+        request.getSession().setAttribute("totalPrice", null);
 
         return "/calculate.jsp";
     }

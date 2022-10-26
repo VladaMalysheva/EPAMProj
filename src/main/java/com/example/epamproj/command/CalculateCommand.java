@@ -18,18 +18,20 @@ public class CalculateCommand implements Command {
     private static Logger log = LogManager.getLogger(CalculateCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
-        int id = Integer.parseInt(request.getParameter("productId"));
-        log.info("id =>" + id);
-        Direction direction = null;
+//        int id = Integer.parseInt(request.getParameter("productId"));
+//        log.info("id =>" + id);
+//        Direction direction = null;
+//
+//        try {
+//            direction = DirectionDAO.getInstance().getById(id);
+//            log.info("direction => " + direction);
+//
+//        } catch (SQLException e) {
+//            log.error("failed to get direction from DB");
+//            throw new DBException(e.getMessage(), e.getCause());
+//        }
 
-        try {
-            direction = DirectionDAO.getInstance().getById(id);
-            log.info("direction => " + direction);
-
-        } catch (SQLException e) {
-            log.error("failed to get direction from DB");
-            throw new DBException(e.getMessage(), e.getCause());
-        }
+        Direction direction = (Direction) request.getSession().getAttribute("productCalc");
 
         float weight = Float.parseFloat(request.getParameter("Weight"));
         log.info("Weight => " + weight);
@@ -47,8 +49,7 @@ public class CalculateCommand implements Command {
             throw new DBException(e.getMessage(), e.getCause());
         }
         float totalPrice = (float) (tariffDimension.getValue()*dimension+tariffWeight.getValue()*weight+ tariffDistance.getValue()*direction.getDistance());
-        request.setAttribute("totalPrice", totalPrice);
-        request.setAttribute("product", direction);
+        request.getSession().setAttribute("totalPrice", totalPrice);
 
 
         return "/calculate.jsp";

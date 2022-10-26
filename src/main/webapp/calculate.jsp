@@ -59,7 +59,7 @@
           <div class="col-7 pt-4 ">                      <%--User input column--%>
             <form method="post" action="controller">
               <input name="command" value="calculate" type="hidden">
-              <input name="productId" value=<%=((Direction) request.getSession().getAttribute("productCalc")).getId()%> type="hidden">
+<%--              <input name="productId" value=<%=((Direction) request.getSession().getAttribute("productCalc")).getId()%> type="hidden">--%>
               <h4>Direction: <%=((Direction) request.getSession().getAttribute("productCalc")).getName()%></h4>
               <hr class="my-3">
               <h4>Distance: <%=((Direction) request.getSession().getAttribute("productCalc")).getDistance()%>km</h4>
@@ -85,7 +85,15 @@
      <div class="container-fluid">
       <div class="row">
         <div class="col py-2">                                            <%-- Price column--%>
-          <p class="h2">Total price: </p>
+            <%
+                if(request.getSession().getAttribute("totalPrice")!=null){
+            %>
+          <p class="h2">Total price: <%=Float.parseFloat(request.getSession().getAttribute("totalPrice").toString())%></p>
+            <%
+                }else{
+            %>
+            <p class="h2">Total price: </p>
+            <%}%>
 
         </div>
         <div class="col text-right py-2">                       <%--Order button column--%>
