@@ -18,6 +18,10 @@ public class CommandContainer {
         commands.put("delete_user", new DeleteCommand());
         commands.put("logout", new LogoutCommand());
         commands.put("getProducts", new GetProducts());
+        commands.put("goCalculate", new GoCalculateCommand());
+        commands.put("calculate", new CalculateCommand());
+        commands.put("goOrder", new GoOrderCommand());
+        commands.put("order", new OrderCommand());
     }
 
     private CommandContainer() {

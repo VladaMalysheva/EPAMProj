@@ -2,12 +2,25 @@ package com.example.epamproj.dao;
 
 import com.example.epamproj.dao.entities.Tariff;
 import com.example.epamproj.dao.entities.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TariffDAO implements AbstractTariffDAO{
+
+    private static Logger log = LogManager.getLogger(TariffDAO.class.getName());
+
+    private static TariffDAO instance;
+
+    public static synchronized TariffDAO getInstance() {
+        if (instance == null) instance = new TariffDAO();
+        return instance;
+    }
+
+    private TariffDAO(){}
     private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
     final String GET_ALL_TARIFFS = "SELECT * FROM tariffs";
     final String GET_TARIFF_BY_ID = "SELECT * FROM tariffs WHERE id = ?";

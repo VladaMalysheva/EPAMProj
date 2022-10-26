@@ -12,6 +12,17 @@
     <title>Title</title>
 </head>
 <body>
-
+<%--<div class="btn-group">--%>
+<%--    <form action="controller" method="post">--%>
+<%--        <button type="submit" class="btn btn-sm btn-outline-secondary ">Calculate</button>--%>
+<%--        <input type="hidden"  name="command" value="calculate">--%>
+<%--        <input type="hidden"  name="productId" value="<%=d.getId()%>">--%>
+<%--    </form>--%>
+<%--    <form action="controller" method="post">--%>
+<%--        <button type="submit" class="btn btn-sm btn-outline-secondary">Order</button>--%>
+<%--        <input type="hidden"  name="command" value="order">--%>
+<%--        <input type="hidden"  name="productId" value="<%=d.getId()%>">--%>
+<%--    </form>--%>
+<%--</div>--%>
 </body>
 </html>

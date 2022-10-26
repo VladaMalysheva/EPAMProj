@@ -60,7 +60,6 @@
                         <input type="radio" id="customRadioInline3" name="Sort" value="distance" class="custom-control-input">
                         <label class="custom-control-label" for="customRadioInline3">Distance</label>
                     </div>
-                    </form>
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end align-items-end">
@@ -81,6 +80,7 @@
                                 <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Chernivtsi">Chernivtsi</a>
                                 <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Kharkiv">Kharkiv</a>
                                 <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Ternopil">Ternopil</a>
+                                <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=None">None</a>
                             </div>
                         </form>
 
@@ -103,9 +103,16 @@
                         <p class="card-text">Distance: <%=d.getDistance()%></p>
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary ">Calculate</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Order</button>
+                            <form action="controller" method="get" id="foorm">
+
+                                        <button type="button" id="b1" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary ">Calculate</button>
+                                        <button type="button" id="b2" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary">Order</button>
+                                        <input type="hidden" id="command"  name="command">
+                                        <input type="hidden" id="productId"  name="productId">
+
+                            </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -129,7 +136,18 @@
     </div>
 </div>
 
-    
+    <script>
+        function submitForm(x, y){
+            if(x.id === "b1") {
+                document.getElementById("command").value = "goCalculate";
+            }else if(x.id === "b2"){
+                document.getElementById("command").value = "goOrder";
+            }
+            document.getElementById("productId").value = y;
+
+            document.forms[1].submit();
+        }
+    </script>
 <%@include file="includes/footer.jsp"%>
 </body>
 </html>

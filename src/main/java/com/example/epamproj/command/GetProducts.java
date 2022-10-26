@@ -19,19 +19,27 @@ public class GetProducts implements Command {
         List<Direction> directions = null;
         log.info("Parameter \"Sort\" => " + request.getParameter("Sort"));
         log.info("Parameter \"Filter\" => " + request.getParameter("Filter"));
+        if(request.getParameter("Sort")!=null) {
+            request.getSession().setAttribute("Sort", request.getParameter("Sort"));
+        }
+        if(request.getParameter("Filter")!=null) {
+            request.getSession().setAttribute("Filter", request.getParameter("Filter"));
+        }
+        String filter = (String)request.getSession().getAttribute("Filter");
+        String sort = (String)request.getSession().getAttribute("Sort");
         try {
-            if(request.getParameter("Sort") == null || request.getParameter("Sort").equals("NoneSort")){
+            if(sort == null || sort.equals("NoneSort")){
                 directions = DirectionDAO.getInstance().getAll();
             }else {
-                directions = DirectionDAO.getInstance().getAllOrderBy((String) request.getParameter("Sort"));
+                directions = DirectionDAO.getInstance().getAllOrderBy(sort);
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        if(request.getParameter("Filter")!= null){
-            directions.removeIf(d -> !d.getPlace1().equals(request.getParameter("Filter")) && !d.getPlace2().equals(request.getParameter("Filter")));
+        if(filter!= null && !filter.equals("None")){
+            directions.removeIf(d -> !d.getPlace1().equals(filter) && !d.getPlace2().equals(filter));
         }
 
         request.setAttribute("products", directions);

@@ -1,4 +1,5 @@
 <%@ page import="com.example.epamproj.dao.entities.User" %>
+<%@ page import="com.example.epamproj.dao.entities.Direction" %>
 <!doctype html>
 <html lang="en">
 <%
@@ -6,6 +7,12 @@
   if(user != null){
     request.setAttribute("user", user);
   }
+  Direction product = (Direction) request.getAttribute("productCalc");
+  request.setAttribute("productCalc", product);
+
+//  float tariffWeight = (Float) request.getAttribute("tariffWeight");
+//  float tariffDimension = (Float) request.getAttribute("tariffDimension");
+//  float tariffDistance = (Float) request.getAttribute("tariffDistance");
 %>
 <head>
   <%@include file="includes/head.jsp"%>
@@ -40,7 +47,6 @@
 
   </h1>
 
-<%--  <p class="text-center fw-light fs-4">Here you can easily calculate the delivery price</p>--%>
 
 
 </div>
@@ -50,18 +56,24 @@
     <div class="card-body">                      <%-- Card body--%>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-7 py-5">                      <%--User input column--%>
-            <h2>Direction: Kharkiv-Uzhhorod</h2>
-            <hr class="my-4">
-            <h2>Distance: 1286</h2>
-            <hr class="my-4">
-            <h2>Weight: 1200t</h2>
-            <hr class="my-4">
-            <h2>Dimension: 100m^3</h2>
+          <div class="col-7 pt-4 ">                      <%--User input column--%>
+            <form method="post" action="controller">
+              <input name="command" value="calculate" type="hidden">
+              <input name="productId" value=<%=((Direction) request.getSession().getAttribute("productCalc")).getId()%> type="hidden">
+              <h4>Direction: <%=((Direction) request.getSession().getAttribute("productCalc")).getName()%></h4>
+              <hr class="my-3">
+              <h4>Distance: <%=((Direction) request.getSession().getAttribute("productCalc")).getDistance()%>km</h4>
+              <hr class="my-3">
+              <h4>Weight(t):</h4>
+              <input type="number" name="Weight" class="form-control my-3" pattern="([0-9]+[.])?[0-9]+" required placeholder="Enter Weight">
+              <h4>Dimension(m^3):</h4>
+              <input type="number" name="Dimension" class="form-control my-3" pattern="([0-9]+[.])?[0-9]+" required placeholder="Enter Dimension">
+              <button type="submit" class="btn btn-primary btn-lg mt-3">Calculate</button>
+            </form>
 
           </div>
           <div class="col text-end">              <%--Image column--%>
-            <img src="images/Kharkiv-Uzhhorod.jpg" class="rounded float-right img-fluid">
+            <img src="<%=((Direction) request.getSession().getAttribute("productCalc")).getImage()%>" class="rounded float-right img-fluid">
 
           </div>
 
@@ -73,10 +85,10 @@
      <div class="container-fluid">
       <div class="row">
         <div class="col py-2">                                            <%-- Price column--%>
-          <p class="h1">Total price: </p>
+          <p class="h2">Total price: </p>
 
         </div>
-        <div class="col text-right py-3 mx-5">                       <%--Order button column--%>
+        <div class="col text-right py-2">                       <%--Order button column--%>
           <button type="button" class="btn btn-success btn-lg">Order</button>
         </div>
 

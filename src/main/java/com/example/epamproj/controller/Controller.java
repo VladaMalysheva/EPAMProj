@@ -1,6 +1,7 @@
 package com.example.epamproj.controller;
 
 import com.example.epamproj.dao.UserDAO;
+import com.example.epamproj.dao.entities.Direction;
 import com.example.epamproj.unused.Main;
 import com.example.epamproj.unused.Repo;
 import com.example.epamproj.command.Command;
@@ -42,7 +43,9 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("Parameters: " + request.getParameterNames());
+        log.info("Parameter \"command\": " + request.getParameter("command"));
+        log.info("Parameter \"productId\": " + request.getParameter("productId"));
+        log.info("Parameter \"product\": " + request.getParameter("product"));
 
 
         try {
