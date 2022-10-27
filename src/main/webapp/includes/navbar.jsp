@@ -1,3 +1,4 @@
+<%@ page import="com.example.epamproj.dao.entities.User" %>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
     <a class="navbar-brand" href="index.jsp">Cargo delivery</a>
@@ -10,7 +11,7 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="index.jsp">Home</a>
         </li>
-        <%if(user!= null && "client".equals(user.getRole())){%>
+        <%if(request.getSession().getAttribute("user")!= null && "client".equals(((User)request.getSession().getAttribute("user")).getRole())){%>
         <li class="nav-item">
           <a class="nav-link" href="order.jsp">Order</a>
         </li>
@@ -18,7 +19,7 @@
         <li class="nav-item">
           <a class="nav-link" href="calculate.jsp">Calculate</a>
         </li>
-        <%if(user!= null && "admin".equals(user.getRole())){%>
+        <%if(request.getSession().getAttribute("user")!= null && "admin".equals(((User)request.getSession().getAttribute("user")).getRole())){%>
         <li class="nav-item">
           <a class="nav-link" href="orders.jsp">Orders</a>
         </li>
@@ -27,7 +28,7 @@
         </li>
         <%}%>
 
-        <%if(user!= null){%>
+        <%if(request.getSession().getAttribute("user")!= null){%>
             <li class="nav-item">
           <form method="post" action="controller">
             <input name="command" value="logout" type="hidden">

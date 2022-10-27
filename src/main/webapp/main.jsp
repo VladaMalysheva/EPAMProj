@@ -8,13 +8,6 @@
 <!doctype html>
 <html lang="en">
 
-<%
-    User user = (User) request.getSession().getAttribute("user");
-    if(user != null){
-        request.setAttribute("user", user);
-    }
-
-%>
 <head>
     <%@include file="includes/head.jsp"%>
     <title>Home page</title>
@@ -63,7 +56,6 @@
                 </div>
                 <div class="col">
                     <div class="d-flex justify-content-end align-items-end">
-                        <form action="controller" method="post">
                             <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle ml-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Dropdown
                             </button>
@@ -82,7 +74,6 @@
                                 <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=Ternopil">Ternopil</a>
                                 <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=getProducts&Filter=None">None</a>
                             </div>
-                        </form>
 
 
                 </div>
@@ -103,7 +94,7 @@
                         <p class="card-text">Distance: <%=d.getDistance()%></p>
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="btn-group">
-                            <form action="controller" method="get" id="foorm">
+                            <form action="controller" method="get" name="foorm">
 
                                         <button type="button" id="b1" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary ">Calculate</button>
                                         <button type="button" id="b2" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary">Order</button>
@@ -145,7 +136,7 @@
             }
             document.getElementById("productId").value = y;
 
-            document.forms[1].submit();
+            document.forms.namedItem("foorm").submit();
         }
     </script>
 <%@include file="includes/footer.jsp"%>

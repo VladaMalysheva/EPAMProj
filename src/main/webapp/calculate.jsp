@@ -3,10 +3,7 @@
 <!doctype html>
 <html lang="en">
 <%
-  User user = (User) request.getSession().getAttribute("user");
-  if(user != null){
-    request.setAttribute("user", user);
-  }
+
   Direction product = (Direction) request.getAttribute("productCalc");
   request.setAttribute("productCalc", product);
 
@@ -23,22 +20,22 @@
 <%@include file="includes/navbar.jsp"%>
 
 
-<%--<%if(request.getAttribute("calculatedDirection") == null){%>--%>
-<%--<div class="container py-5 ">--%>
-<%--  <div class="card mx-auto d-block text-center border-danger p-3" style="width: 60rem;">--%>
-<%--    <div class="card-body">--%>
+<%if(request.getSession().getAttribute("productCalc") == null){%>
+<div class="container py-5 ">
+  <div class="card mx-auto d-block text-center border-danger p-3" style="width: 60rem;">
+    <div class="card-body">
 
-<%--      <h2 class="display-4">Opps! Looks like you haven't chosen any option.</h2>--%>
-<%--      <p class="lead pt-2">--%>
-<%--        Go to the home page and choose <strong>one</strong> direction to calculate the cost of services.--%>
-<%--      </p>--%>
-<%--      <div class="d-flex justify-content-center align-items-center pt-3">--%>
-<%--        <a href="index.jsp" class="btn btn-primary">Go Home</a>--%>
-<%--      </div>--%>
-<%--    </div>--%>
-<%--  </div>--%>
-<%--</div>--%>
-<%--<%} else{%>--%>
+      <h2 class="display-4">Opps! Looks like you haven't chosen any option.</h2>
+      <p class="lead pt-2">
+        Go to the home page and choose <strong>one</strong> direction to calculate the cost of services.
+      </p>
+      <div class="d-flex justify-content-center align-items-center pt-3">
+        <a href="index.jsp" class="btn btn-primary">Go Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+<%} else{%>
 <div class="container py-5">
 
   <h1 class="text-center">Welcome to the calculation page!
@@ -65,9 +62,9 @@
               <h4>Distance: <%=((Direction) request.getSession().getAttribute("productCalc")).getDistance()%>km</h4>
               <hr class="my-3">
               <h4>Weight(t):</h4>
-              <input type="number" name="Weight" class="form-control my-3" pattern="([0-9]+[.])?[0-9]+" required placeholder="Enter Weight">
+              <input type="text" name="Weight" class="form-control my-3" pattern="([0-9]+[.])?[0-9]+" required placeholder="Enter Weight">
               <h4>Dimension(m^3):</h4>
-              <input type="number" name="Dimension" class="form-control my-3" pattern="([0-9]+[.])?[0-9]+" required placeholder="Enter Dimension">
+              <input type="text" name="Dimension" class="form-control my-3" pattern="([0-9]+[.])?[0-9]+" required placeholder="Enter Dimension">
               <button type="submit" class="btn btn-primary btn-lg mt-3">Calculate</button>
             </form>
 
@@ -97,7 +94,10 @@
 
         </div>
         <div class="col text-right py-2">                       <%--Order button column--%>
-          <button type="button" class="btn btn-success btn-lg">Order</button>
+            <form method="post" action="controller">
+                <input name="command" value="goOrder" type="hidden">
+            <button type="submit" class="btn btn-success btn-lg">Order</button>
+            </form>
         </div>
 
 
@@ -108,7 +108,7 @@
     </div>
   </div>
 </div>
-<%--<%}%>--%>
+<%}%>
 
 
 <%@include file="includes/footer.jsp"%>
