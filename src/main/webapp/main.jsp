@@ -97,7 +97,7 @@
                             <form action="controller" method="get" name="foorm">
 
                                         <button type="button" id="b1" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary ">Calculate</button>
-                                        <button type="button" id="b2" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary">Order</button>
+<%--                                        <button type="button" id="b2" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary">Order</button>--%>
                                         <input type="hidden" id="command"  name="command">
                                         <input type="hidden" id="productId"  name="productId">
 

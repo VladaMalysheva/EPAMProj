@@ -21,24 +21,11 @@ public class GoOrderCommand implements Command {
         }else if(((User)request.getSession().getAttribute("user")).getRole().equals("admin")){
             return "/index.jsp";
         }else {
-            if (request.getSession().getAttribute("productCalc") != null) {
-                request.getSession().setAttribute("productOrd", (Direction) request.getSession().getAttribute("productCalc"));
+            if (request.getSession().getAttribute("totalPrice")== null){
+                return "/calculate.jsp";
             }
-            int id;
-            if (request.getParameter("productId") != null) {
-                id = Integer.parseInt(request.getParameter("productId"));
-                log.info("id =>" + id);
-                Direction direction = null;
+            request.getSession().setAttribute("productOrd", (Direction) request.getSession().getAttribute("productCalc"));
 
-                try {
-                    direction = DirectionDAO.getInstance().getById(id);
-                    log.info("direction => " + direction);
-
-                } catch (SQLException e) {
-                    throw new DBException(e.getMessage(), e.getCause());
-                }
-                request.getSession().setAttribute("productOrd", direction);
-            }
 
             return "/order.jsp";
         }

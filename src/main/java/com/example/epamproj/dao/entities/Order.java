@@ -1,57 +1,138 @@
 package com.example.epamproj.dao.entities;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.sql.Date;
 
 public class Order implements Serializable {
-    private int orderId;
-    private List<Cargo> cargos;
+    private int id;
     private Date date;
-    private Direction destination;
-    private User user;
+    private int directionId;
+    private int userId;
+    private float weight;
+    private float dimensions;
+    private double totalPrice;
+    private String typeOfCargo;
+    private String address;
+    private String pointOfDeparture;
+    private String destination;
 
-    public int getOrderId() {
-        return orderId;
+
+
+    public Order() {
     }
 
-    public List<Cargo> getCargos() {
-        return cargos;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public Direction getDestination() {
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getDirectionId() {
+        return directionId;
+    }
+
+    public void setDirectionId(int directionId) {
+        this.directionId = directionId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public float getDimensions() {
+        return dimensions;
+    }
+
+    public void setDimensions(float dimensions) {
+        this.dimensions = dimensions;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getTypeOfCargo() {
+        return typeOfCargo;
+    }
+
+    public void setTypeOfCargo(String typeOfCargo) {
+        this.typeOfCargo = typeOfCargo;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPointOfDeparture() {
+        return pointOfDeparture;
+    }
+
+    public void setPointOfDeparture(String pointOfDeparture) {
+        this.pointOfDeparture = pointOfDeparture;
+    }
+
+    public String getDestination() {
         return destination;
     }
 
-    public User getUser() {
-        return user;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
-    public int getPrice(){
-        int res = 0;
-        for (Cargo cargo:cargos) {
-            res+= cargo.getPrice();
-        }
-        return res;
+    public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination) {
+        this.date = date;
+        this.directionId = directionId;
+        this.userId = userId;
+        this.weight = weight;
+        this.dimensions = dimensions;
+        this.totalPrice = totalPrice;
+        this.typeOfCargo = typeOfCargo;
+        this.address = address;
+        this.pointOfDeparture = pointOfDeparture;
+        this.destination = destination;
     }
 
-    public int getWeight(){
-        int res = 0;
-        for (Cargo cargo:cargos) {
-            res+= cargo.getWeight();
-        }
-        return res;
-    }
-
-    public int getVolume(){
-        int res = 0;
-        for (Cargo cargo:cargos) {
-            res+= cargo.getVolume();
-        }
-        return res;
+    public Order(int id, Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination) {
+        this.id = id;
+        this.date = date;
+        this.directionId = directionId;
+        this.userId = userId;
+        this.weight = weight;
+        this.dimensions = dimensions;
+        this.totalPrice = totalPrice;
+        this.typeOfCargo = typeOfCargo;
+        this.address = address;
+        this.pointOfDeparture = pointOfDeparture;
+        this.destination = destination;
     }
 }

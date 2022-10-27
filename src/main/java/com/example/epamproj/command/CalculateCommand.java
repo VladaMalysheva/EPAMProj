@@ -49,6 +49,8 @@ public class CalculateCommand implements Command {
             throw new DBException(e.getMessage(), e.getCause());
         }
         float totalPrice = (float) (tariffDimension.getValue()*dimension+tariffWeight.getValue()*weight+ tariffDistance.getValue()*direction.getDistance());
+        request.getSession().setAttribute("weight", weight);
+        request.getSession().setAttribute("dimension", dimension);
         request.getSession().setAttribute("totalPrice", totalPrice);
 
 
