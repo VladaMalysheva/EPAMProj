@@ -25,6 +25,7 @@ public class GoOrderCommand implements Command {
                 return "/calculate.jsp";
             }
             request.getSession().setAttribute("productOrd", (Direction) request.getSession().getAttribute("productCalc"));
+            request.getSession().setAttribute("productCalc",null);
 
 
             return "/order.jsp";

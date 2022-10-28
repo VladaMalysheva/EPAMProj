@@ -21,7 +21,7 @@
         </li>
         <%if(request.getSession().getAttribute("user")!= null && "admin".equals(((User)request.getSession().getAttribute("user")).getRole())){%>
         <li class="nav-item">
-          <a class="nav-link" href="orders.jsp">Orders</a>
+          <a class="nav-link" href="controller?command=showOrders">Orders</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="reports.jsp">Reports</a>

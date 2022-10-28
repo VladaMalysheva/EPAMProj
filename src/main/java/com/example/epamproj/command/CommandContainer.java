@@ -22,6 +22,7 @@ public class CommandContainer {
         commands.put("calculate", new CalculateCommand());
         commands.put("goOrder", new GoOrderCommand());
         commands.put("order", new OrderCommand());
+        commands.put("showOrders", new ShowOrdersCommand());
     }
 
     private CommandContainer() {

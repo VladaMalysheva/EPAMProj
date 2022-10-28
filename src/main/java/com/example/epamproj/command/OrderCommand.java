@@ -30,6 +30,8 @@ public class OrderCommand implements Command {
         }catch (SQLException e){
             throw new DBException(e.getMessage(), e.getCause());
         }
+        order.setDirection((Direction)request.getSession().getAttribute("productOrd"));
+        order.setUser((User)request.getSession().getAttribute("user"));
         request.getSession().setAttribute("productOrd", null);
         request.getSession().setAttribute("weight", null);
         request.getSession().setAttribute("dimension", null);

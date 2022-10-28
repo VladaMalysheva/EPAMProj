@@ -4,6 +4,26 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class Order implements Serializable {
+
+    private Direction direction;
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private User user;
     private int id;
     private Date date;
     private int directionId;
