@@ -46,7 +46,7 @@
 
   <div class="row">
     <div class="col-md-4 order-md-2 mb-4 py-3">
-      <img class="img-fluid rounded" src="images/Kharkiv-Uzhhorod.jpg">
+      <img class="img-fluid rounded" src="<%=((Direction) request.getSession().getAttribute("productOrd")).getImage()%>">
     </div>
     <div class="col-md-8 order-md-1">
       <h4 class="mb-3">Billing address</h4>

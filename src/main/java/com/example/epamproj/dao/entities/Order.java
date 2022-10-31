@@ -6,6 +6,15 @@ import java.sql.Date;
 public class Order implements Serializable {
 
     private Direction direction;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Direction getDirection() {
         return direction;
@@ -129,6 +138,20 @@ public class Order implements Serializable {
         this.destination = destination;
     }
 
+    public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status) {
+        this.date = date;
+        this.directionId = directionId;
+        this.userId = userId;
+        this.weight = weight;
+        this.dimensions = dimensions;
+        this.totalPrice = totalPrice;
+        this.typeOfCargo = typeOfCargo;
+        this.address = address;
+        this.pointOfDeparture = pointOfDeparture;
+        this.destination = destination;
+        this.status = status;
+    }
+
     public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination) {
         this.date = date;
         this.directionId = directionId;
@@ -142,7 +165,7 @@ public class Order implements Serializable {
         this.destination = destination;
     }
 
-    public Order(int id, Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination) {
+    public Order(int id, Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status) {
         this.id = id;
         this.date = date;
         this.directionId = directionId;
@@ -154,5 +177,7 @@ public class Order implements Serializable {
         this.address = address;
         this.pointOfDeparture = pointOfDeparture;
         this.destination = destination;
+        this.status = status;
     }
+
 }

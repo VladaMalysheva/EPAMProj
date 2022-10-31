@@ -60,6 +60,9 @@ public class OrderDAO implements AbstractOrderDAO{
                 order.setAddress(rs.getString(9));
                 order.setPointOfDeparture(rs.getString(10));
                 order.setDestination(rs.getString(11));
+                order.setStatus(rs.getString(12));
+                order.setUser(UserDAO.getInstance().getById(rs.getInt(2)));
+                order.setDirection(DirectionDAO.getInstance().getById(rs.getInt(3)));
                 res.add(order);
             }
         } finally {
@@ -96,6 +99,9 @@ public class OrderDAO implements AbstractOrderDAO{
                 order.setAddress(rs.getString(9));
                 order.setPointOfDeparture(rs.getString(10));
                 order.setDestination(rs.getString(11));
+                order.setStatus(rs.getString(12));
+                order.setUser(UserDAO.getInstance().getById(rs.getInt(2)));
+                order.setDirection(DirectionDAO.getInstance().getById(rs.getInt(3)));
             }
         } finally {
             rs.close();
@@ -133,10 +139,7 @@ public class OrderDAO implements AbstractOrderDAO{
 
     @Override
     public boolean update(Order entity) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(UPDATE);
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement st = connection.prepareStatement(UPDATE)) {
             st.setInt(1, entity.getUserId());
             st.setInt(2, entity.getDirectionId());
             st.setFloat(3, entity.getWeight());
@@ -148,28 +151,19 @@ public class OrderDAO implements AbstractOrderDAO{
             st.setString(9, entity.getPointOfDeparture());
             st.setString(10, entity.getDestination());
             st.executeUpdate();
-        }finally {
-//            assert st != null;
-            st.close();
-            connection.close();
         }
+//            assert st != null;
         return true;
     }
 
     @Override
     public boolean deleteById(int id) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement ps = null;
-        try {
-            ps = connection.prepareStatement(DELETE_BY_ID);
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(DELETE_BY_ID)) {
             ps.setInt(1, id);
             ps.executeUpdate();
 
-        } finally {
-//            assert ps != null;
-            ps.close();
-            connection.close();
         }
+//            assert ps != null;
 
         return true;
     }

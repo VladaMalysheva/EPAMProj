@@ -15,6 +15,9 @@
         <li class="nav-item">
           <a class="nav-link" href="order.jsp">Order</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="controller?command=showOrders&status=new">Cabinet</a>
+        </li>
         <%}%>
         <li class="nav-item">
           <a class="nav-link" href="calculate.jsp">Calculate</a>

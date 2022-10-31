@@ -54,6 +54,9 @@ public class DirectionDAO implements AbstractDirectionDAO{
                 direction.setPlace2(rs.getString(4));
                 direction.setDistance(rs.getDouble(5));
                 direction.setImage(rs.getString(6));
+                direction.setNameOfReceiver(rs.getString(7));
+                direction.setSurnameOfReceiver(rs.getString(8));
+                direction.setPatronymicOfReceiver(rs.getString(9));
             }
         } finally {
 //            assert rs != null;
@@ -88,6 +91,9 @@ public class DirectionDAO implements AbstractDirectionDAO{
                 direction.setPlace2(rs.getString(4));
                 direction.setDistance(rs.getDouble(5));
                 direction.setImage(rs.getString(6));
+                direction.setNameOfReceiver(rs.getString(7));
+                direction.setSurnameOfReceiver(rs.getString(8));
+                direction.setPatronymicOfReceiver(rs.getString(9));
                 res.add(direction);
             }
         } finally {
@@ -122,6 +128,9 @@ public class DirectionDAO implements AbstractDirectionDAO{
                 direction.setPlace2(rs.getString(4));
                 direction.setDistance(rs.getDouble(5));
                 direction.setImage(rs.getString(6));
+                direction.setNameOfReceiver(rs.getString(7));
+                direction.setSurnameOfReceiver(rs.getString(8));
+                direction.setPatronymicOfReceiver(rs.getString(9));
                 res.add(direction);
             }
         } catch (SQLException e) {
@@ -157,6 +166,9 @@ public class DirectionDAO implements AbstractDirectionDAO{
                 direction.setPlace2(rs.getString(4));
                 direction.setDistance(rs.getDouble(5));
                 direction.setImage(rs.getString(6));
+                direction.setNameOfReceiver(rs.getString(7));
+                direction.setSurnameOfReceiver(rs.getString(8));
+                direction.setPatronymicOfReceiver(rs.getString(9));
             }
         } finally {
 //            assert rs != null;

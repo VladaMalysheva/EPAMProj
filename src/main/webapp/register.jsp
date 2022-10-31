@@ -31,8 +31,8 @@
                     <input type="text" name="surname" class="form-control" required placeholder="Enter surname">
                 </div>
                 <div class="form-group">
-                    <label>Patronymic</label>
-                    <input type="text" name="patronymic" class="form-control" placeholder="Enter patronymic">
+                    <label>Patronymic <b style="color: red">*</b></label>
+                    <input type="text" name="patronymic" class="form-control" required placeholder="Enter patronymic">
                 </div>
                 <div class="form-group">
                     <label>Phone</label>

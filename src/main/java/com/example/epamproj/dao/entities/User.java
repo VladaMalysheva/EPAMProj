@@ -5,11 +5,20 @@ import java.io.Serializable;
 public class User implements Serializable {
     private int userId;
     private String role;
+    private double cash;
+
+    public double getCash() {
+        return cash;
+    }
+
+    public void setCash(double cash) {
+        this.cash = cash;
+    }
 
     public User() {
     }
 
-    public User(int userId, String role, String name, String surname, String patronymic, String phone, String password, String login) {
+    public User(int userId, String role, String name, String surname, String patronymic, String phone, String password, String login, double cash) {
         this.userId = userId;
         this.role = role;
         this.name = name;
@@ -18,6 +27,7 @@ public class User implements Serializable {
         this.phone = phone;
         this.password = password;
         this.login = login;
+        this.cash = cash;
     }
 
     private String name;
@@ -35,6 +45,7 @@ public class User implements Serializable {
         this.phone = phone;
         this.password = password;
         this.login = login;
+
     }
 
     public void setUserId(int userId) {

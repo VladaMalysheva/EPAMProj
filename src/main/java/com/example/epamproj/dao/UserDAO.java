@@ -53,6 +53,7 @@ public class UserDAO implements AbstractUserDAO{
                 user.setPhone(rs.getString(6));
                 user.setLogin(rs.getString(7));
                 user.setPassword(rs.getString(8));
+                user.setCash(rs.getDouble(9));
                 res.add(user);
             }
         } catch (SQLException e) {
@@ -88,6 +89,7 @@ public class UserDAO implements AbstractUserDAO{
                 user.setPhone(rs.getString(6));
                 user.setLogin(rs.getString(7));
                 user.setPassword(rs.getString(8));
+                user.setCash(rs.getDouble(9));
             }
         } finally {
             rs.close();
@@ -181,6 +183,7 @@ public class UserDAO implements AbstractUserDAO{
                 user.setPhone(rs.getString(6));
                 user.setLogin(rs.getString(7));
                 user.setPassword(rs.getString(8));
+                user.setCash(rs.getDouble(9));
             }
         } finally {
 //            assert rs != null;

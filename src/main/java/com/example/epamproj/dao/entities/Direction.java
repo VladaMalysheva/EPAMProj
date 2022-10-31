@@ -3,6 +3,35 @@ package com.example.epamproj.dao.entities;
 import java.io.Serializable;
 
 public class Direction implements Serializable {
+
+    private String nameOfReceiver;
+    private String surnameOfReceiver;
+    private String patronymicOfReceiver;
+
+    public String getNameOfReceiver() {
+        return nameOfReceiver;
+    }
+
+    public void setNameOfReceiver(String nameOfReceiver) {
+        this.nameOfReceiver = nameOfReceiver;
+    }
+
+    public String getSurnameOfReceiver() {
+        return surnameOfReceiver;
+    }
+
+    public void setSurnameOfReceiver(String surnameOfReceiver) {
+        this.surnameOfReceiver = surnameOfReceiver;
+    }
+
+    public String getPatronymicOfReceiver() {
+        return patronymicOfReceiver;
+    }
+
+    public void setPatronymicOfReceiver(String patronymicOfReceiver) {
+        this.patronymicOfReceiver = patronymicOfReceiver;
+    }
+
     private int id;
     private String name;
     private String place1;
@@ -70,12 +99,15 @@ public class Direction implements Serializable {
     public Direction() {
     }
 
-    public Direction(int id, String name, String place1, String place2, double distance, String image) {
+    public Direction(int id, String name, String place1, String place2, double distance, String image, String nameOfReceiver, String surnameOfReceiver, String patronymicOfReceiver) {
         this.id = id;
         this.name = name;
         this.place1 = place1;
         this.place2 = place2;
         this.distance = distance;
         this.image = image;
+        this.nameOfReceiver = nameOfReceiver;
+        this.surnameOfReceiver = surnameOfReceiver;
+        this.patronymicOfReceiver = patronymicOfReceiver;
     }
 }

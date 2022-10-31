@@ -96,7 +96,7 @@
                             <div class="btn-group">
                             <form action="controller" method="get" name="foorm">
 
-                                        <button type="button" id="b1" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary ">Calculate</button>
+                                        <button type="button" id="b1" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm myB ">Calculate</button>
 <%--                                        <button type="button" id="b2" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary">Order</button>--%>
                                         <input type="hidden" id="command"  name="command">
                                         <input type="hidden" id="productId"  name="productId">
@@ -139,6 +139,30 @@
             document.forms.namedItem("foorm").submit();
         }
     </script>
+
+    <style>
+        .myB{
+            display: inline-block;
+            outline: 0;
+            border: 0;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 500;
+            border-radius: 4px;
+            font-size: 14px;
+            height: 30px;
+            padding: 0px 30px;
+            text-shadow: rgb(0 0 0 / 25%) 0px 3px 8px;
+            background: linear-gradient(92.88deg, rgb(69, 94, 181) 9.16%, rgb(86, 67, 204) 43.89%, rgb(103, 63, 215) 64.72%);
+            transition: all 0.5s ease 0s;}
+        .myB:hover{
+            color: #fff;
+            /*box-shadow: rgb(80 63 205 / 50%) 0px 1px 40px;*/
+            transition: all 0.1s ease 0s;
+        }
+
+
+    </style>
 <%@include file="includes/footer.jsp"%>
 </body>
 </html>

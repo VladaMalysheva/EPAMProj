@@ -3,6 +3,7 @@ package com.example.epamproj.command;
 import com.example.epamproj.dao.DBException;
 import com.example.epamproj.dao.OrderDAO;
 import com.example.epamproj.dao.entities.Order;
+import com.example.epamproj.dao.entities.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -19,6 +20,10 @@ public class ShowOrdersCommand implements Command {
             throw new DBException(e.getMessage(), e.getCause());
         }
         request.setAttribute("orders", orders);
-        return "/orders.jsp";
+        if(((User)request.getSession().getAttribute("user")).getRole().equals("admin"))return "/orders.jsp";
+        else if(((User)request.getSession().getAttribute("user")).getRole().equals("client"))return "/user-cabinet.jsp";
+
+        return null;
+
     }
 }
