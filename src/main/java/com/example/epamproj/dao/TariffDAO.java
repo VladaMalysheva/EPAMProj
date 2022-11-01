@@ -53,7 +53,6 @@ public class TariffDAO implements AbstractTariffDAO{
             throw new RuntimeException(e);
         } finally {
             try {
-                assert rs != null;
                 rs.close();
                 st.close();
                 connection.close();
@@ -81,7 +80,6 @@ public class TariffDAO implements AbstractTariffDAO{
                 tariff.setValue(rs.getFloat(3));
             }
         } finally {
-            assert rs != null;
             rs.close();
             ps.close();
             connection.close();
@@ -100,7 +98,6 @@ public class TariffDAO implements AbstractTariffDAO{
             st.setFloat(2, entity.getValue());
             st.executeUpdate();
         }finally {
-            assert st != null;
             st.close();
             connection.close();
         }
@@ -118,7 +115,6 @@ public class TariffDAO implements AbstractTariffDAO{
             st.setInt(3, entity.getId());
             st.executeUpdate();
         }finally {
-            assert st != null;
             st.close();
             connection.close();
         }
@@ -135,7 +131,6 @@ public class TariffDAO implements AbstractTariffDAO{
             ps.executeUpdate();
 
         } finally {
-            assert ps != null;
             ps.close();
             connection.close();
         }
@@ -160,7 +155,6 @@ public class TariffDAO implements AbstractTariffDAO{
                 tariff.setValue(rs.getFloat(3));
             }
         } finally {
-            assert rs != null;
             rs.close();
             ps.close();
             connection.close();

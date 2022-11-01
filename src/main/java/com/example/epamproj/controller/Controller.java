@@ -44,9 +44,6 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("Parameter \"command\": " + request.getParameter("command"));
-        log.info("Parameter \"productId\": " + request.getParameter("productId"));
-        log.info("Parameter \"product\": " + request.getParameter("product"));
 
 
         try {

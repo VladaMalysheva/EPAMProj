@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.example.epamproj.dao.entities.User" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.epamproj.dao.entities.Direction" %>
@@ -84,19 +85,18 @@
 
 
         <div class="row">
-            <%
-                for (Direction d: (List<Direction>)request.getAttribute("products")) {%>
+            <c:forEach var="d" items="${products}">
             <div class="col-md-4">
                 <div class="card border-dark mb-4 box-shadow text-center">
-                    <img class="card-img-top" src="<%=d.getImage()%>" alt="Card image cap">
+                    <img class="card-img-top" src="${d.getImage()}" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title"><%=d.getName()%></h5>
-                        <p class="card-text">Distance: <%=d.getDistance()%></p>
+                        <h5 class="card-title">${d.getName()}</h5>
+                        <p class="card-text">Distance: ${d.getDistance()}</p>
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="btn-group">
                             <form action="controller" method="get" name="foorm">
 
-                                        <button type="button" id="b1" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm myB ">Calculate</button>
+                                        <button type="button" id="b1" onClick="submitForm(this, ${d.getId()})" class="btn btn-sm myB ">Calculate</button>
 <%--                                        <button type="button" id="b2" onClick="submitForm(this, <%=d.getId()%>)" class="btn btn-sm btn-outline-secondary">Order</button>--%>
                                         <input type="hidden" id="command"  name="command">
                                         <input type="hidden" id="productId"  name="productId">
@@ -108,7 +108,7 @@
                     </div>
                 </div>
             </div>
-                <%}%>
+            </c:forEach>
         </div>
 
         <nav aria-label="Page navigation example">

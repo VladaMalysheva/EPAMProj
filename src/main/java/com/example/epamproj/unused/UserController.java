@@ -1,4 +1,4 @@
-package com.example.epamproj.controller;
+package com.example.epamproj.unused;
 
 import com.example.epamproj.unused.DBManager;
 

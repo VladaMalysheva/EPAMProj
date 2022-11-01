@@ -1,16 +1,15 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.example.epamproj.dao.entities.User" %>
 <%@ page import="com.example.epamproj.dao.entities.Direction" %>
 <!doctype html>
 <html lang="en">
-<%
+<%--<%--%>
 
-  Direction product = (Direction) request.getAttribute("productCalc");
-  request.setAttribute("productCalc", product);
+<%--  Direction product = (Direction) request.getAttribute("productCalc");--%>
+<%--  request.setAttribute("productCalc", product);--%>
 
-//  float tariffWeight = (Float) request.getAttribute("tariffWeight");
-//  float tariffDimension = (Float) request.getAttribute("tariffDimension");
-//  float tariffDistance = (Float) request.getAttribute("tariffDistance");
-%>
+<%--%>--%>
+<c:set var="productCalc" value="${productCalc}" scope="request"/>
 <head>
   <%@include file="includes/head.jsp"%>
 
@@ -19,8 +18,7 @@
 <body>
 <%@include file="includes/navbar.jsp"%>
 
-
-<%if(request.getSession().getAttribute("productCalc") == null){%>
+<c:if test="${productCalc == null}">
 <div class="container py-5 ">
   <div class="card mx-auto d-block text-center border-danger p-3" style="width: 60rem;">
     <div class="card-body">
@@ -35,7 +33,8 @@
     </div>
   </div>
 </div>
-<%} else{%>
+</c:if>
+<c:if test="${productCalc != null}">
 <div class="container py-5">
 
   <h1 class="text-center">Welcome to the calculation page!
@@ -56,10 +55,9 @@
           <div class="col-7 pt-4 ">                      <%--User input column--%>
             <form method="post" action="controller">
               <input name="command" value="calculate" type="hidden">
-<%--              <input name="productId" value=<%=((Direction) request.getSession().getAttribute("productCalc")).getId()%> type="hidden">--%>
-              <h4>Direction: <%=((Direction) request.getSession().getAttribute("productCalc")).getName()%></h4>
+              <h4>Direction: ${productCalc.getName()}</h4>
               <hr class="my-3">
-              <h4>Distance: <%=((Direction) request.getSession().getAttribute("productCalc")).getDistance()%>km</h4>
+              <h4>Distance: ${productCalc.getDistance()}km</h4>
               <hr class="my-3">
               <h4>Weight(t):</h4>
               <input type="text" name="Weight" class="form-control my-3" pattern="([0-9]+[.])?[0-9]+" required placeholder="Enter Weight">
@@ -70,7 +68,7 @@
 
           </div>
           <div class="col text-end">              <%--Image column--%>
-            <img src="<%=((Direction) request.getSession().getAttribute("productCalc")).getImage()%>" class="rounded float-right img-fluid">
+            <img src="${productCalc.getImage()}" class="rounded float-right img-fluid">
 
           </div>
 
@@ -82,15 +80,12 @@
      <div class="container-fluid">
       <div class="row">
         <div class="col py-2">                                            <%-- Price column--%>
-            <%
-                if(request.getSession().getAttribute("totalPrice")!=null){
-            %>
-          <p class="h2">Total price: <%=Float.parseFloat(request.getSession().getAttribute("totalPrice").toString())%></p>
-            <%
-                }else{
-            %>
+            <c:if test="${totalPrice != null}">
+          <p class="h2">Total price: ${totalPrice}</p>
+            </c:if>
+            <c:if test="${totalPrice == null}">
             <p class="h2">Total price: </p>
-            <%}%>
+            </c:if>
 
         </div>
         <div class="col text-right py-2">                       <%--Order button column--%>
@@ -108,7 +103,7 @@
     </div>
   </div>
 </div>
-<%}%>
+</c:if>
 
 
 <%@include file="includes/footer.jsp"%>

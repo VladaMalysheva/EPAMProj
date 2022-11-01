@@ -1,4 +1,5 @@
 package com.example.epamproj.command;
+import com.example.epamproj.dao.DBException;
 import com.example.epamproj.dao.UserDAO;
 import com.example.epamproj.dao.entities.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +13,7 @@ public class RegisterCommand implements Command{
 
     private static Logger log = LogManager.getLogger(RegisterCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String patronymic = request.getParameter("patronymic");
@@ -26,16 +27,9 @@ public class RegisterCommand implements Command{
             log.info("execute(): user \"" + login + "\" added successfully");
         } catch (SQLException e) {
             log.error("execute(): failed to add user \"" + login + "\"");
-            throw new RuntimeException(e);
+            throw new DBException(e.getMessage(), e.getCause());
         }
 
         return "/index.jsp";
-//        if("admin".equals("client")){
-//            return "/admin_page.jsp";
-//        }else if("client".equals("client")){
-//            return "/client_page.jsp";
-//        }else{
-//            return "/error.jsp";
-//        }
     }
 }

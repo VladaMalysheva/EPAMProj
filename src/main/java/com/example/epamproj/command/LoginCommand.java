@@ -25,7 +25,7 @@ public class LoginCommand implements Command{
             log.info("execute(): user with login " + login + " was found successfully");
         } catch (SQLException e) {
             log.error("execute(): user with login " + login + " wasn't found");
-            throw new RuntimeException(e);             //invalid login
+            throw new DBException(e.getMessage(), e.getCause());
         }
         request.getSession().setAttribute("user", user);
         if(password.equals(user.getPassword()) && "admin".equals(user.getRole())){
@@ -36,7 +36,7 @@ public class LoginCommand implements Command{
             return "/index.jsp";
         }else{
             log.error("execute(): invalid password");
-            return "/error.jsp";             //invalid password
+            return "/error.jsp";
         }
     }
 }

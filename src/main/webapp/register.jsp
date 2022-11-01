@@ -1,14 +1,19 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.example.epamproj.dao.entities.User" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
-<%
-    User user = (User) request.getSession().getAttribute("user");
-    if(user != null){
-//        request.setAttribute("user", user);
-        response.sendRedirect("/index.jsp");
-    }
-%>
+<%--<%--%>
+<%--    User user = (User) request.getSession().getAttribute("user");--%>
+<%--    if(user != null){--%>
+<%--//        request.setAttribute("user", user);--%>
+<%--        response.sendRedirect("/index.jsp");--%>
+<%--    }--%>
+<%--%>--%>
+
+<c:if test="${user != null}">
+    <c:redirect url="/index.jsp"/>
+</c:if>
 <head>
     <title>Register page</title>
     <%@include file="includes/head.jsp"%>
@@ -58,18 +63,4 @@
 </body>
 </html>
 
-<%--<html>--%>
-<%--<body>--%>
-<%--    <form method="post" action="controller">--%>
-<%--        <input name="command" value="login" type="hidden">--%>
-<%--        Name: <input name="name"><br>--%>
-<%--        Surname: <input name="surname"><br>--%>
-<%--        Patronymic: <input name="patronymic"><br>--%>
-<%--        Phone: <input name="phone"><br>--%>
-<%--        Login: <input name="login"><br>--%>
-<%--        Password: <input name="password" type="password"><br>--%>
-<%--        <input value="Register" type="submit">--%>
 
-<%--</form>--%>
-<%--</body>--%>
-<%--</html>--%>

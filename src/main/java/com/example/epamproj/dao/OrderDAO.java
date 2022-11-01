@@ -67,7 +67,6 @@ public class OrderDAO implements AbstractOrderDAO{
                 res.add(order);
             }
         } finally {
-//                assert rs != null;
             rs.close();
             st.close();
             connection.close();
@@ -132,7 +131,6 @@ public class OrderDAO implements AbstractOrderDAO{
             st.setString(10, entity.getDestination());
             st.executeUpdate();
         }finally {
-            assert st != null;
             st.close();
             connection.close();
         }
@@ -154,7 +152,6 @@ public class OrderDAO implements AbstractOrderDAO{
             st.setString(10, entity.getDestination());
             st.executeUpdate();
         }
-//            assert st != null;
         return true;
     }
 
@@ -165,7 +162,6 @@ public class OrderDAO implements AbstractOrderDAO{
             ps.executeUpdate();
 
         }
-//            assert ps != null;
 
         return true;
     }

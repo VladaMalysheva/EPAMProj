@@ -35,7 +35,7 @@ public class GetProducts implements Command {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DBException(e.getMessage(), e.getCause());
         }
 
         if(filter!= null && !filter.equals("None")){

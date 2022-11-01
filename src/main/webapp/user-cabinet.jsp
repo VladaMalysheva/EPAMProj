@@ -25,16 +25,16 @@
         <div class="tab-pane fade show active text-center" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
 
-            <h4 class="py-4">Welcome to your profile, <%=((User)request.getSession().getAttribute("user")).getName()%>
+            <h4 class="py-4">Welcome to your profile, ${user.getName()}
                 <br>
                 <small class="text-muted">Your account information:</small></h4>
 
-            <h5>Name: <small class="font-weight-light"><%=((User)request.getSession().getAttribute("user")).getName()%></small></h5>
-            <h5>Surname: <small class="font-weight-light"><%=((User)request.getSession().getAttribute("user")).getSurname()%></small></h5>
-            <h5>Patronymic: <small class="font-weight-light"><%=((User)request.getSession().getAttribute("user")).getPatronymic()%></small></h5>
-            <h5>Phone: <small class="font-weight-light"><%=((User)request.getSession().getAttribute("user")).getPhone()%></small></h5>
-            <h5>Login: <small class="font-weight-light"><%=((User)request.getSession().getAttribute("user")).getLogin()%></small></h5>
-            <h5>Cash: <small class="font-weight-light"><%=((User)request.getSession().getAttribute("user")).getCash()%></small></h5>
+            <h5>Name: <small class="font-weight-light">${user.getName()}</small></h5>
+            <h5>Surname: <small class="font-weight-light">${user.getSurname()}</small></h5>
+            <h5>Patronymic: <small class="font-weight-light">${user.getPatronymic()}</small></h5>
+            <h5>Phone: <small class="font-weight-light">${user.getPhone()}</small></h5>
+            <h5>Login: <small class="font-weight-light">${user.getLogin()}</small></h5>
+            <h5>Cash: <small class="font-weight-light">${user.getCash()}</small></h5>
 
 
         </div>
@@ -52,24 +52,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                <%for (Order o: (List<Order>)request.getAttribute("orders")) {%>
-                <tr>
-                    <td><%=o.getUser().getName()%></td>
-                    <td><%=o.getUser().getSurname()%></td>
-                    <td><%=o.getTypeOfCargo()%></td>
-                    <td><%=o.getDate()%></td>
-                    <td><%=o.getPointOfDeparture()%></td>
-                    <td><%=o.getDestination()%></td>
-                    <td>
+<%--                <%for (Order o: (List<Order>)request.getAttribute("orders")) {%>--%>
+<%--                <tr>--%>
+<%--                    <td><%=o.getUser().getName()%></td>--%>
+<%--                    <td><%=o.getUser().getSurname()%></td>--%>
+<%--                    <td><%=o.getTypeOfCargo()%></td>--%>
+<%--                    <td><%=o.getDate()%></td>--%>
+<%--                    <td><%=o.getPointOfDeparture()%></td>--%>
+<%--                    <td><%=o.getDestination()%></td>--%>
+<%--                    <td>--%>
 
-                        <button class="myButton" data-toggle="modal" id="button" data-target="#exampleModal">Process</button>
+<%--                        <button class="myButton" data-toggle="modal" id="button" data-target="#exampleModal">Process</button>--%>
 
-                    </td>
+<%--                    </td>--%>
 
-                </tr>
-                <%
-                    }
-                %>
+<%--                </tr>--%>
+<%--                <%--%>
+<%--                    }--%>
+<%--                %>--%>
                 </tbody>
             </table>
 

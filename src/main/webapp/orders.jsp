@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.example.epamproj.dao.entities.User" %>
 <%@ page import="com.example.epamproj.dao.entities.Order" %>
 <%@ page import="java.util.List" %>
@@ -26,29 +27,25 @@
         </tr>
         </thead>
         <tbody>
-        <%for (Order o: (List<Order>)request.getAttribute("orders")) {%>
+        <c:forEach var="o" items="${orders}">
         <tr>
-            <td><%=o.getUser().getName()%></td>
-            <td><%=o.getUser().getSurname()%></td>
-            <td><%=o.getTypeOfCargo()%></td>
-            <td><%=o.getDate()%></td>
-            <td><%=o.getPointOfDeparture()%></td>
-            <td><%=o.getDestination()%></td>
+            <td>${o.getUser().getName()}</td>
+            <td>${o.getUser().getSurname()}</td>
+            <td>${o.getTypeOfCargo()}</td>
+            <td>${o.getDate()}</td>
+            <td>${o.getPointOfDeparture()}</td>
+            <td>${o.getDestination()}</td>
             <td>
                 <form method="get" action="controller">
                     <input name="command" value="goToInvoice" type="hidden">
-                    <input name="orderId" value="<%=o.getId()%>" type="hidden">
+                    <input name="orderId" value="${o.getId()}" type="hidden">
                     <button class="myButton" type="submit">Process</button>
-<%--                    <button class="myButton" data-toggle="modal" id="button" data-target="#exampleModal">Process</button>--%>
-
                 </form>
 
             </td>
 
         </tr>
-        <%
-            }
-        %>
+        </c:forEach>
         </tbody>
     </table>
 

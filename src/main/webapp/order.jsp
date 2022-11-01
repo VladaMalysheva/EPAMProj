@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.example.epamproj.dao.entities.User" %>
 <%@ page import="com.example.epamproj.dao.entities.Direction" %>
 <!doctype html>
@@ -19,8 +20,7 @@
 <body>
 <jsp:include page="includes/navbar.jsp"/>
 
-
-<%if(request.getSession().getAttribute("productOrd") == null){%>
+<c:if test="${productOrd == null}">
 <div class="container py-5 ">
   <div class="card mx-auto d-block text-center border-danger p-3" style="width: 60rem;">
     <div class="card-body">
@@ -35,7 +35,8 @@
     </div>
   </div>
 </div>
-<%}else{%>
+</c:if>
+<c:if test="${productOrd != null}">
 
 <div class="container">
   <div class="py-5 text-center">
@@ -46,19 +47,19 @@
 
   <div class="row">
     <div class="col-md-4 order-md-2 mb-4 py-3">
-      <img class="img-fluid rounded" src="<%=((Direction) request.getSession().getAttribute("productOrd")).getImage()%>">
+      <img class="img-fluid rounded" src="${productOrd.getImage()}">
     </div>
     <div class="col-md-8 order-md-1">
       <h4 class="mb-3">Billing address</h4>
-      <h6>Direction: <%=((Direction) request.getSession().getAttribute("productOrd")).getName()%></h6>
+      <h6>Direction: ${productOrd.getName()}</h6>
       <hr class="my-3">
-      <h6>Distance: <%=((Direction) request.getSession().getAttribute("productOrd")).getDistance()%>km</h6>
+      <h6>Distance: ${productOrd.getDistance()}km</h6>
       <hr class="my-3">
-      <h6>Weight(t): <%=request.getSession().getAttribute("weight")%></h6>
+      <h6>Weight(t): ${weight}</h6>
       <hr class="my-3">
-      <h6>Dimension(m^3): <%=request.getSession().getAttribute("dimension")%></h6>
+      <h6>Dimension(m^3): ${dimension}</h6>
       <hr class="my-3">
-      <h6>Total price: <%=request.getSession().getAttribute("totalPrice")%></h6>
+      <h6>Total price: ${totalPrice}</h6>
       <hr class="my-3">
 
     </div>
@@ -66,10 +67,10 @@
       <h4 class="mb-2">Delivery details</h4>
       <div class="row">
         <div class="col-md-6 mt-3">
-          <h5>Name: <%=((User) request.getSession().getAttribute("user")).getName()%></h5>
+          <h5>Name: ${user.getName()}</h5>
         </div>
         <div class="col-md-6 mt-3">
-          <h5>Surname: <%=((User) request.getSession().getAttribute("user")).getSurname()%></h5>
+          <h5>Surname: ${user.getSurname()}</h5>
         </div>
       </div>
       <hr class="mb-3 mt-3">
@@ -104,8 +105,8 @@
           </div>
           <select class="custom-select" id="inputGroupSelect01" name="pointOfDeparture">
             <option selected>Point of departure</option>
-            <option value="<%=((Direction) request.getSession().getAttribute("productOrd")).getPlace1()%>"><%=((Direction) request.getSession().getAttribute("productOrd")).getPlace1()%></option>
-            <option value="<%=((Direction) request.getSession().getAttribute("productOrd")).getPlace2()%>"><%=((Direction) request.getSession().getAttribute("productOrd")).getPlace2()%></option>
+            <option value="${productOrd.getPlace1()}">${productOrd.getPlace1()}</option>
+            <option value="${productOrd.getPlace2()}">${productOrd.getPlace2()}</option>
           </select>
         </div>
 
@@ -115,8 +116,8 @@
           </div>
           <select class="custom-select" id="inputGroupSelect02" name="destination">
             <option selected>Destination</option>
-            <option value="<%=((Direction) request.getSession().getAttribute("productOrd")).getPlace1()%>"><%=((Direction) request.getSession().getAttribute("productOrd")).getPlace1()%></option>
-            <option value="<%=((Direction) request.getSession().getAttribute("productOrd")).getPlace2()%>"><%=((Direction) request.getSession().getAttribute("productOrd")).getPlace2()%></option>
+            <option value="${productOrd.getPlace1()}">${productOrd.getPlace1()}</option>
+            <option value="${productOrd.getPlace2()}">${productOrd.getPlace2()}</option>
           </select>
         </div>
 
@@ -129,37 +130,7 @@
 </div>
 
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-<script src="../../assets/js/vendor/popper.min.js"></script>
-<script src="../../dist/js/bootstrap.min.js"></script>
-<script src="../../assets/js/vendor/holder.min.js"></script>
-<script>
-  // Example starter JavaScript for disabling form submissions if there are invalid fields
-  (function() {
-    'use strict';
-
-    window.addEventListener('load', function() {
-      // Fetch all the forms we want to apply custom Bootstrap validation styles to
-      var forms = document.getElementsByClassName('needs-validation');
-
-      // Loop over them and prevent submission
-      var validation = Array.prototype.filter.call(forms, function(form) {
-        form.addEventListener('submit', function(event) {
-          if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-          form.classList.add('was-validated');
-        }, false);
-      });
-    }, false);
-  })();
-</script>
-<%}%>
+</c:if>
 
 <%@include file="includes/footer.jsp"%>
 </body>

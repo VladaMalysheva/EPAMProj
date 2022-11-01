@@ -59,7 +59,6 @@ public class DirectionDAO implements AbstractDirectionDAO{
                 direction.setPatronymicOfReceiver(rs.getString(9));
             }
         } finally {
-//            assert rs != null;
             rs.close();
             ps.close();
             connection.close();
@@ -97,7 +96,6 @@ public class DirectionDAO implements AbstractDirectionDAO{
                 res.add(direction);
             }
         } finally {
-//            assert rs != null;
             rs.close();
             st.close();
             connection.close();
@@ -133,11 +131,8 @@ public class DirectionDAO implements AbstractDirectionDAO{
                 direction.setPatronymicOfReceiver(rs.getString(9));
                 res.add(direction);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         } finally {
             try {
-//                assert rs != null;
                 rs.close();
                 st.close();
                 connection.close();
@@ -171,7 +166,6 @@ public class DirectionDAO implements AbstractDirectionDAO{
                 direction.setPatronymicOfReceiver(rs.getString(9));
             }
         } finally {
-//            assert rs != null;
             rs.close();
             ps.close();
             connection.close();
@@ -193,7 +187,6 @@ public class DirectionDAO implements AbstractDirectionDAO{
             st.setString(5, entity.getImage());
             st.executeUpdate();
         }finally {
-//            assert st != null;
             st.close();
             connection.close();
         }
@@ -213,7 +206,6 @@ public class DirectionDAO implements AbstractDirectionDAO{
             st.setString(5, entity.getImage());
             st.executeUpdate();
         }finally {
-//            assert st != null;
             st.close();
             connection.close();
         }
@@ -230,7 +222,6 @@ public class DirectionDAO implements AbstractDirectionDAO{
             ps.executeUpdate();
 
         } finally {
-//            assert ps != null;
             ps.close();
             connection.close();
         }

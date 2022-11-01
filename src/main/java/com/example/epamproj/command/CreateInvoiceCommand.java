@@ -19,12 +19,18 @@ public class CreateInvoiceCommand implements Command {
         log.info("parameter date => " + request.getParameter("date"));
         log.info("parameter details => " + request.getParameter("details"));
         int orderInv = Integer.parseInt(request.getParameter("orderInv"));
-        Date date = Date.valueOf(request.getParameter("date"));
+        Date date = null;
+        try {
+            date = Date.valueOf(request.getParameter("date"));
+        }catch (Exception e){
+            log.error("Failed to convert date");
+        }
         String details = request.getParameter("details");
         Invoice invoice = new Invoice(orderInv, date, details);
         try {
             InvoiceDAO.getInstance().add(invoice);
         } catch (SQLException e) {
+            log.error("failed to add invoice to dao");
             throw new DBException(e.getMessage(), e.getCause());
         }
         return "/index.jsp";

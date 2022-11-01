@@ -1,14 +1,19 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.example.epamproj.dao.entities.User" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
-<%
-    User user = (User) request.getSession().getAttribute("user");
-    if(user != null){
-//        request.setAttribute("user", user);
-        response.sendRedirect("/index.jsp");
-    }
-%>
+<%--<%--%>
+<%--    User user = (User) request.getSession().getAttribute("user");--%>
+<%--    if(user != null){--%>
+<%--//        request.setAttribute("user", user);--%>
+<%--        response.sendRedirect("/index.jsp");--%>
+<%--    }--%>
+<%--%>--%>
+
+<c:if test="${user != null}">
+    <c:redirect url="/index.jsp"/>
+</c:if>
 <head>
     <title>Login page</title>
     <%@include file="includes/head.jsp"%>

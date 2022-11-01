@@ -56,10 +56,7 @@ public class UserDAO implements AbstractUserDAO{
                 user.setCash(rs.getDouble(9));
                 res.add(user);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-//                assert rs != null;
+        }finally {
                 rs.close();
                 st.close();
                 connection.close();
@@ -92,6 +89,7 @@ public class UserDAO implements AbstractUserDAO{
                 user.setCash(rs.getDouble(9));
             }
         } finally {
+
             rs.close();
             ps.close();
             connection.close();
@@ -138,7 +136,6 @@ public class UserDAO implements AbstractUserDAO{
             st.setInt(8, entity.getUserId());
             st.executeUpdate();
         }finally {
-//            assert st != null;
             st.close();
             connection.close();
         }
@@ -155,7 +152,6 @@ public class UserDAO implements AbstractUserDAO{
             ps.executeUpdate();
 
         } finally {
-//            assert ps != null;
             ps.close();
             connection.close();
         }
@@ -186,7 +182,6 @@ public class UserDAO implements AbstractUserDAO{
                 user.setCash(rs.getDouble(9));
             }
         } finally {
-//            assert rs != null;
             rs.close();
             ps.close();
             connection.close();
@@ -206,7 +201,6 @@ public class UserDAO implements AbstractUserDAO{
             ps.executeUpdate();
 
         } finally {
-//            assert ps != null;
             ps.close();
             connection.close();
         }

@@ -23,6 +23,7 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
     private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
 
     final String GET_ALL = "SELECT * FROM invoice";
+    final String GET_ALL_BY_USER = "SELECT * FROM invoice WHERE ";
     final String DELETE_BY_ID = "DELETE FROM invoice WHERE id = ?";
     final String GET_BY_ID = "SELECT * FROM invoice WHERE id = ?";
     final String ADD = "INSERT INTO invoice(orderId, date, details) VALUES (?, ?, ?)";
@@ -53,7 +54,6 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
                 res.add(invoice);
             }
         } finally {
-//                assert rs != null;
             rs.close();
             st.close();
             connection.close();
@@ -101,7 +101,6 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
             st.setString(3, entity.getDetails());
             st.executeUpdate();
         }finally {
-            assert st != null;
             st.close();
             connection.close();
         }
@@ -119,7 +118,6 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
             st.setString(3, entity.getDetails());
             st.executeUpdate();
         }finally {
-            assert st != null;
             st.close();
             connection.close();
         }
@@ -133,8 +131,12 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
             ps.executeUpdate();
 
         }
-//            assert ps != null;
 
         return true;
+    }
+
+    @Override
+    public List<Invoice> getInvoicesByUser(int userId) {
+        return null;
     }
 }
