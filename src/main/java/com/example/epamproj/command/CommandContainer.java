@@ -23,6 +23,8 @@ public class CommandContainer {
         commands.put("goOrder", new GoOrderCommand());
         commands.put("order", new OrderCommand());
         commands.put("showOrders", new ShowOrdersCommand());
+        commands.put("goToInvoice", new goToInvoiceCommand());
+        commands.put("createInvoice", new CreateInvoiceCommand());
     }
 
     private CommandContainer() {

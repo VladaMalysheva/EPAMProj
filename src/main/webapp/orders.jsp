@@ -35,9 +35,13 @@
             <td><%=o.getPointOfDeparture()%></td>
             <td><%=o.getDestination()%></td>
             <td>
+                <form method="get" action="controller">
+                    <input name="command" value="goToInvoice" type="hidden">
+                    <input name="orderId" value="<%=o.getId()%>" type="hidden">
+                    <button class="myButton" type="submit">Process</button>
+<%--                    <button class="myButton" data-toggle="modal" id="button" data-target="#exampleModal">Process</button>--%>
 
-
-                    <button class="myButton" data-toggle="modal" id="button" data-target="#exampleModal">Process</button>
+                </form>
 
             </td>
 
@@ -48,51 +52,51 @@
         </tbody>
     </table>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header"  style="background-color: antiquewhite;">
-                    <h5 class="modal-title" id="exampleModalLabel">Invoice<b class="font-weight-light"> # 1</b>
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h5>Bill from:</h5>
-                    <h5 class="font-weight-light">Name: Ivanov</h5>
-                    <h5 class="font-weight-light">Surname: Ivan</h5>
-                    <h5 class="font-weight-light">Patronymic: Ivanovich</h5>
-                    <hr>
-                    <h5>Bill to:</h5>
-                    <h5 class="font-weight-light">Name: Vlada</h5>
-                    <h5 class="font-weight-light">Surname: Malysheva</h5>
-                    <h5 class="font-weight-light">Patronymic: Viktorivna</h5>
-                    <hr>
-                    <h5>Product details</h5>
-                    <h5 class="font-weight-light">Date: 12.08.22</h5>
-                    <h5 class="font-weight-light">Point of departure: Kyiv</h5>
-                    <h5 class="font-weight-light">Destination: Zaporizhya</h5>
-                    <h5 class="font-weight-light">Type of cargo: flowers</h5>
-                    <h5 class="font-weight-light">Total price: 18000</h5>
-                    <h5 class="font-weight-light">Currency: UAH</h5>
-                    <hr>
-                    <h5>Invoice details</h5>
-                    <h5 class="font-weight-light">Date of creation: NOW</h5>
-                    <form>
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label">Details:</label>
-                            <textarea class="form-control" id="message-text"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Create invoice</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<%--    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--%>
+<%--        <div class="modal-dialog" role="document">--%>
+<%--            <div class="modal-content">--%>
+<%--                <div class="modal-header"  style="background-color: antiquewhite;">--%>
+<%--                    <h5 class="modal-title" id="exampleModalLabel">Invoice<b class="font-weight-light"> # 1</b>--%>
+<%--                    </h5>--%>
+<%--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
+<%--                        <span aria-hidden="true">&times;</span>--%>
+<%--                    </button>--%>
+<%--                </div>--%>
+<%--                <div class="modal-body">--%>
+<%--                    <h5>Bill from:</h5>--%>
+<%--                    <h5 class="font-weight-light">Name: Ivanov</h5>--%>
+<%--                    <h5 class="font-weight-light">Surname: Ivan</h5>--%>
+<%--                    <h5 class="font-weight-light">Patronymic: Ivanovich</h5>--%>
+<%--                    <hr>--%>
+<%--                    <h5>Bill to:</h5>--%>
+<%--                    <h5 class="font-weight-light">Name: Vlada</h5>--%>
+<%--                    <h5 class="font-weight-light">Surname: Malysheva</h5>--%>
+<%--                    <h5 class="font-weight-light">Patronymic: Viktorivna</h5>--%>
+<%--                    <hr>--%>
+<%--                    <h5>Product details</h5>--%>
+<%--                    <h5 class="font-weight-light">Date: 12.08.22</h5>--%>
+<%--                    <h5 class="font-weight-light">Point of departure: Kyiv</h5>--%>
+<%--                    <h5 class="font-weight-light">Destination: Zaporizhya</h5>--%>
+<%--                    <h5 class="font-weight-light">Type of cargo: flowers</h5>--%>
+<%--                    <h5 class="font-weight-light">Total price: 18000</h5>--%>
+<%--                    <h5 class="font-weight-light">Currency: UAH</h5>--%>
+<%--                    <hr>--%>
+<%--                    <h5>Invoice details</h5>--%>
+<%--                    <h5 class="font-weight-light">Date of creation: NOW</h5>--%>
+<%--                    <form>--%>
+<%--                        <div class="form-group">--%>
+<%--                            <label for="message-text" class="col-form-label">Details:</label>--%>
+<%--                            <textarea class="form-control" id="message-text"></textarea>--%>
+<%--                        </div>--%>
+<%--                    </form>--%>
+<%--                </div>--%>
+<%--                <div class="modal-footer">--%>
+<%--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--%>
+<%--                    <button type="button" class="btn btn-primary">Create invoice</button>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
 </div>
 
 <style>

@@ -60,7 +60,8 @@ public class OrderDAO implements AbstractOrderDAO{
                 order.setAddress(rs.getString(9));
                 order.setPointOfDeparture(rs.getString(10));
                 order.setDestination(rs.getString(11));
-                order.setStatus(rs.getString(12));
+                order.setCurrency(rs.getString(12));
+                order.setStatus(rs.getString(13));
                 order.setUser(UserDAO.getInstance().getById(rs.getInt(2)));
                 order.setDirection(DirectionDAO.getInstance().getById(rs.getInt(3)));
                 res.add(order);
@@ -99,7 +100,8 @@ public class OrderDAO implements AbstractOrderDAO{
                 order.setAddress(rs.getString(9));
                 order.setPointOfDeparture(rs.getString(10));
                 order.setDestination(rs.getString(11));
-                order.setStatus(rs.getString(12));
+                order.setCurrency(rs.getString(12));
+                order.setStatus(rs.getString(13));
                 order.setUser(UserDAO.getInstance().getById(rs.getInt(2)));
                 order.setDirection(DirectionDAO.getInstance().getById(rs.getInt(3)));
             }

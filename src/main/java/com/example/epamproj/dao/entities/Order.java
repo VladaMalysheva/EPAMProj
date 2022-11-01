@@ -45,7 +45,15 @@ public class Order implements Serializable {
     private String pointOfDeparture;
     private String destination;
 
+    private String currency;
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 
     public Order() {
     }
@@ -138,7 +146,7 @@ public class Order implements Serializable {
         this.destination = destination;
     }
 
-    public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status) {
+    public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status, String currency) {
         this.date = date;
         this.directionId = directionId;
         this.userId = userId;
@@ -150,6 +158,7 @@ public class Order implements Serializable {
         this.pointOfDeparture = pointOfDeparture;
         this.destination = destination;
         this.status = status;
+        this.currency = currency;
     }
 
     public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination) {
@@ -165,7 +174,7 @@ public class Order implements Serializable {
         this.destination = destination;
     }
 
-    public Order(int id, Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status) {
+    public Order(int id, Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status, String currency) {
         this.id = id;
         this.date = date;
         this.directionId = directionId;
@@ -178,6 +187,7 @@ public class Order implements Serializable {
         this.pointOfDeparture = pointOfDeparture;
         this.destination = destination;
         this.status = status;
+        this.currency = currency;
     }
 
 }
