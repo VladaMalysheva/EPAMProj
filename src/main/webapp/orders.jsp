@@ -36,11 +36,16 @@
             <td>${o.getPointOfDeparture()}</td>
             <td>${o.getDestination()}</td>
             <td>
+                <c:if test="${o.getStatus() == 'new'}">
                 <form method="get" action="controller">
                     <input name="command" value="goToInvoice" type="hidden">
                     <input name="orderId" value="${o.getId()}" type="hidden">
                     <button class="myButton" type="submit">Process</button>
                 </form>
+                </c:if>
+                <c:if test="${o.getStatus() == 'unpaid'}">
+            Waiting for payment
+                </c:if>
 
             </td>
 

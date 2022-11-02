@@ -2,6 +2,7 @@ package com.example.epamproj.command;
 
 import com.example.epamproj.dao.DBException;
 import com.example.epamproj.dao.InvoiceDAO;
+import com.example.epamproj.dao.OrderDAO;
 import com.example.epamproj.dao.entities.Invoice;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,10 +30,11 @@ public class CreateInvoiceCommand implements Command {
         Invoice invoice = new Invoice(orderInv, date, details);
         try {
             InvoiceDAO.getInstance().add(invoice);
+            OrderDAO.getInstance().updateStatus("unpaid", orderInv);
         } catch (SQLException e) {
-            log.error("failed to add invoice to dao");
+            log.error("failed to add invoice to dao or to update status");
             throw new DBException(e.getMessage(), e.getCause());
         }
-        return "/index.jsp";
+        return "/controller?command=showOrders";
     }
 }

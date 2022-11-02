@@ -32,6 +32,9 @@ public class OrderDAO implements AbstractOrderDAO{
 
     final String DELETE_BY_ID = "DELETE FROM orders WHERE id = ?";
 
+    final String UPDATE_STATUS = "UPDATE orders SET status=? WHERE id=?";
+
+
 
     @Override
     public List<Order> getAll() throws SQLException {
@@ -163,6 +166,16 @@ public class OrderDAO implements AbstractOrderDAO{
 
         }
 
+        return true;
+    }
+
+    @Override
+    public boolean updateStatus(String status, int id) throws SQLException {
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement st = connection.prepareStatement(UPDATE_STATUS)) {
+            st.setString(1, status);
+            st.setInt(2, id);
+            st.executeUpdate();
+        }
         return true;
     }
 }
