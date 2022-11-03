@@ -23,41 +23,36 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
     private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
 
     final String GET_ALL = "SELECT * FROM invoice";
-    final String GET_ALL_BY_USER = "SELECT * FROM invoice WHERE ";
-    final String DELETE_BY_ID = "DELETE FROM invoice WHERE id = ?";
-    final String GET_BY_ID = "SELECT * FROM invoice WHERE id = ?";
+    final String GET_ALL_BY_USER = "select invoiceId, orderId, date, details, status\n" +
+            "from\n" +
+            "    (\n" +
+            "        select invoiceId, orders.orderId, userId, invoice.date, details, invoice.status\n" +
+            "        from orders inner join invoice on invoice.orderId = orders.orderId\n" +
+            "    ) as tbl\n" +
+            "where tbl.userId = ?";
+    final String DELETE_BY_ID = "DELETE FROM invoice WHERE invoiceId = ?";
+    final String GET_BY_ID = "SELECT * FROM invoice WHERE invoiceId = ?";
     final String ADD = "INSERT INTO invoice(orderId, date, details) VALUES (?, ?, ?)";
-    final String UPDATE = "UPDATE invoice SET orderId=?, date=?, details=? WHERE id=?";
+    final String UPDATE = "UPDATE invoice SET orderId=?, date=?, details=? WHERE invoiceId=?";
 
 
     @Override
     public List<Invoice> getAll() throws SQLException {
         List<Invoice> res = new ArrayList<>();
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        Statement st = null;
-        ResultSet rs = null;
-        try {
-            st = connection.createStatement();
-            rs = st.executeQuery(GET_ALL);
+
+        try (Connection connection = connectionPool.getConnection();
+             Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(GET_ALL)) {
             while (rs.next()) {
                 Invoice invoice = new Invoice();
                 invoice.setId(rs.getInt(1));
                 invoice.setOrderId(rs.getInt(2));
                 invoice.setDate(rs.getDate(3));
                 invoice.setDetails(rs.getString(4));
+                invoice.setStatus(rs.getString(5));
                 invoice.setOrder(OrderDAO.getInstance().getById(rs.getInt(2)));
                 res.add(invoice);
             }
-        } finally {
-            rs.close();
-            st.close();
-            connection.close();
-
         }
 
         return res;
@@ -79,6 +74,7 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
                 invoice.setOrderId(rs.getInt(2));
                 invoice.setDate(rs.getDate(3));
                 invoice.setDetails(rs.getString(4));
+                invoice.setStatus(rs.getString(5));
                 invoice.setOrder(OrderDAO.getInstance().getById(rs.getInt(2)));
             }
         } finally {
@@ -136,7 +132,31 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
     }
 
     @Override
-    public List<Invoice> getInvoicesByUser(int userId) {
-        return null;
+    public List<Invoice> getInvoicesByUser(int userId) throws SQLException {
+        Connection connection = connectionPool.getConnection();
+        List<Invoice> res = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = connection.prepareStatement(GET_ALL_BY_USER);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Invoice invoice = new Invoice();
+                invoice.setId(rs.getInt(1));
+                invoice.setOrderId(rs.getInt(2));
+                invoice.setDate(rs.getDate(3));
+                invoice.setDetails(rs.getString(4));
+                invoice.setStatus(rs.getString(5));
+                invoice.setOrder(OrderDAO.getInstance().getById(rs.getInt(2)));
+                res.add(invoice);
+            }
+        } finally {
+            rs.close();
+            ps.close();
+            connection.close();
+        }
+
+        return res;
     }
 }

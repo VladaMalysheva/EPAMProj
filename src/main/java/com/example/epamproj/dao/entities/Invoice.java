@@ -10,18 +10,29 @@ public class Invoice implements Serializable {
     private Date date;
     private String details;
 
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Invoice(int orderId, Date date, String details) {
         this.orderId = orderId;
         this.date = date;
         this.details = details;
     }
 
-    public Invoice(int id, Order order, int orderId, Date date, String details) {
+    public Invoice(int id, Order order, int orderId, Date date, String details, String status) {
         this.id = id;
         this.order = order;
         this.orderId = orderId;
         this.date = date;
         this.details = details;
+        this.status = status;
     }
 
     public Invoice() {

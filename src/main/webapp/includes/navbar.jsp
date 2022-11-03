@@ -1,4 +1,5 @@
 <%@ page import="com.example.epamproj.dao.entities.User" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
     <a class="navbar-brand" href="index.jsp">Cargo delivery</a>
@@ -11,42 +12,43 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="index.jsp">Home</a>
         </li>
-        <%if(request.getSession().getAttribute("user")!= null && "client".equals(((User)request.getSession().getAttribute("user")).getRole())){%>
+        <c:if test="${(user != null) && user.getRole() == 'client'}">
+
         <li class="nav-item">
           <a class="nav-link" href="order.jsp">Order</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="controller?command=showOrders&status=new">Cabinet</a>
+          <a class="nav-link" href="controller?command=showOrders">Cabinet</a>
         </li>
-        <%}%>
+        </c:if>
         <li class="nav-item">
           <a class="nav-link" href="calculate.jsp">Calculate</a>
         </li>
-        <%if(request.getSession().getAttribute("user")!= null && "admin".equals(((User)request.getSession().getAttribute("user")).getRole())){%>
+        <c:if test="${(user != null) and (user.getRole() == 'admin')}">
         <li class="nav-item">
           <a class="nav-link" href="controller?command=showOrders">Orders</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="reports.jsp">Reports</a>
         </li>
-        <%}%>
-
-        <%if(request.getSession().getAttribute("user")!= null){%>
+        </c:if>
+        <c:if test="${user != null}">
             <li class="nav-item">
           <form method="post" action="controller">
             <input name="command" value="logout" type="hidden">
             <button type="submit" class="btn btn-primary">Logout</button>
           </form>
         </li>
-          <%}else{%>
-            <li class="nav-item">
+        </c:if>
+        <c:if test="${user == null}">
+
+        <li class="nav-item">
           <a class="nav-link" href="login.jsp">Log in</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="register.jsp">Register</a>
         </li>
-          <%}%>
-
+        </c:if>
 
       </ul>
     </div>

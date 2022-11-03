@@ -24,15 +24,15 @@ public class OrderDAO implements AbstractOrderDAO{
 
     final String GET_ALL_ORDERS = "SELECT * FROM orders";
 
-    final String GET_ORDER_BY_ID = "SELECT * FROM orders WHERE id = ?";
+    final String GET_ORDER_BY_ID = "SELECT * FROM orders WHERE orderId = ?";
 
     final String ADD_ORDER = "INSERT INTO orders(userId, directionId, weight, dimensions, total_price, type_of_cargo, date, address, point_of_departure, destination) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    final String UPDATE = "UPDATE orders SET userId=?, directionId=?, weight=?, dimensions=?, total_price=?, type_of_cargo=?, date=?, address=?, point_of_departure=?, destination=? WHERE id=?";
+    final String UPDATE = "UPDATE orders SET userId=?, directionId=?, weight=?, dimensions=?, total_price=?, type_of_cargo=?, date=?, address=?, point_of_departure=?, destination=? WHERE orderId=?";
 
-    final String DELETE_BY_ID = "DELETE FROM orders WHERE id = ?";
+    final String DELETE_BY_ID = "DELETE FROM orders WHERE orderId = ?";
 
-    final String UPDATE_STATUS = "UPDATE orders SET status=? WHERE id=?";
+    final String UPDATE_STATUS = "UPDATE orders SET status=? WHERE orderId=?";
 
 
 
