@@ -29,8 +29,8 @@ public class CreateInvoiceCommand implements Command {
         String details = request.getParameter("details");
         Invoice invoice = new Invoice(orderInv, date, details);
         try {
-            InvoiceDAO.getInstance().add(invoice);
-            OrderDAO.getInstance().updateStatus("unpaid", orderInv);
+            InvoiceDAO.getInstance().add(invoice, orderInv);
+
         } catch (SQLException e) {
             log.error("failed to add invoice to dao or to update status");
             throw new DBException(e.getMessage(), e.getCause());

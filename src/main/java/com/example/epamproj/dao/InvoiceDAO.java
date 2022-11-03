@@ -1,13 +1,17 @@
 package com.example.epamproj.dao;
 
+import com.example.epamproj.command.CreateInvoiceCommand;
 import com.example.epamproj.dao.entities.Invoice;
-import com.example.epamproj.dao.entities.Order;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceDAO implements AbstractInvoiceDAO{
+
+    private static Logger log = LogManager.getLogger(InvoiceDAO.class.getName());
 
     private static InvoiceDAO instance;
 
@@ -96,6 +100,35 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
             st.setDate(2, entity.getDate());
             st.setString(3, entity.getDetails());
             st.executeUpdate();
+        }finally {
+            st.close();
+            connection.close();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean add(Invoice entity, int orderInv) throws SQLException {
+        Connection connection = connectionPool.getConnection();
+        PreparedStatement st = null;
+        try {
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setAutoCommit(false);
+            st = connection.prepareStatement(ADD);
+            st.setInt(1, entity.getOrderId());
+            st.setDate(2, entity.getDate());
+            st.setString(3, entity.getDetails());
+            st.executeUpdate();
+            OrderDAO.getInstance().updateStatus("unpaid", orderInv);
+            connection.commit();
+        } catch (SQLException e) {
+            log.error("failed to add invoice or update order status");
+            try{
+                connection.rollback();
+            }catch (SQLException ex){
+                log.error("failed to rollback");
+            }
+            throw new SQLException(e);
         }finally {
             st.close();
             connection.close();
