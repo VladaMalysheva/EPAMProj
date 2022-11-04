@@ -27,6 +27,7 @@ public class UserDAO implements AbstractUserDAO{
     final String GET_BY_LOGIN = "SELECT * FROM user WHERE login = ?";
     final String DELETE_BY_LOGIN = "DELETE FROM user WHERE login = ?";
     final String WITHDRAW_MONEY = "UPDATE user SET cash = cash-? WHERE userId=?";
+    final String TOP_UP_MONEY = "UPDATE user SET cash = cash+? WHERE userId=?";
 
 
 
@@ -192,7 +193,7 @@ public class UserDAO implements AbstractUserDAO{
     }
 
     @Override
-    public boolean withdrawMoney(int id, double money) throws SQLException {
+    public void withdrawMoney(int id, double money) throws SQLException {
         Connection connection = connectionPool.getConnection();
         PreparedStatement st = null;
         try {
@@ -204,11 +205,26 @@ public class UserDAO implements AbstractUserDAO{
             st.close();
             connection.close();
         }
+    }
+
+    @Override
+    public boolean topUp(int id, double money) throws SQLException {
+        Connection connection = connectionPool.getConnection();
+        PreparedStatement st = null;
+        try {
+            st = connection.prepareStatement(TOP_UP_MONEY);
+            st.setDouble(1, money);
+            st.setInt(2, id);
+            st.executeUpdate();
+        }finally {
+            st.close();
+            connection.close();
+        }
         return true;
     }
 
     @Override
-    public boolean deleteByLogin(String login) throws SQLException {
+    public void deleteByLogin(String login) throws SQLException {
         Connection connection = connectionPool.getConnection();
         PreparedStatement ps = null;
         User user = null;
@@ -222,6 +238,5 @@ public class UserDAO implements AbstractUserDAO{
             connection.close();
         }
 
-        return true;
     }
 }
