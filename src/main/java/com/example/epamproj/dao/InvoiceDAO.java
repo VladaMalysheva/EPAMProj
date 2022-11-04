@@ -2,6 +2,7 @@ package com.example.epamproj.dao;
 
 import com.example.epamproj.command.CreateInvoiceCommand;
 import com.example.epamproj.dao.entities.Invoice;
+import com.example.epamproj.dao.entities.Report;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,11 +34,12 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
             "        select invoiceId, orders.orderId, userId, invoice.date, details, invoice.status\n" +
             "        from orders inner join invoice on invoice.orderId = orders.orderId\n" +
             "    ) as tbl\n" +
-            "where tbl.userId = ?";
+            "where tbl.userId = ? AND tbl.status LIKE 'active'";
     final String DELETE_BY_ID = "DELETE FROM invoice WHERE invoiceId = ?";
     final String GET_BY_ID = "SELECT * FROM invoice WHERE invoiceId = ?";
     final String ADD = "INSERT INTO invoice(orderId, date, details) VALUES (?, ?, ?)";
     final String UPDATE = "UPDATE invoice SET orderId=?, date=?, details=? WHERE invoiceId=?";
+    final String UPDATE_STATUS = "UPDATE invoice SET status=? WHERE invoiceId=?";
 
 
     @Override
@@ -108,19 +110,19 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
     }
 
     @Override
-    public boolean add(Invoice entity, int orderInv) throws SQLException {
+    public boolean add(Invoice entity, int orderId) throws SQLException {
         Connection connection = connectionPool.getConnection();
         PreparedStatement st = null;
         try {
-            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-            connection.setAutoCommit(false);
+//            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+//            connection.setAutoCommit(false);
             st = connection.prepareStatement(ADD);
             st.setInt(1, entity.getOrderId());
             st.setDate(2, entity.getDate());
             st.setString(3, entity.getDetails());
             st.executeUpdate();
-            OrderDAO.getInstance().updateStatus("unpaid", orderInv);
-            connection.commit();
+            OrderDAO.getInstance().updateStatus("unpaid", orderId);
+//            connection.commit();
         } catch (SQLException e) {
             log.error("failed to add invoice or update order status");
             try{
@@ -129,6 +131,50 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
                 log.error("failed to rollback");
             }
             throw new SQLException(e);
+        }finally {
+            st.close();
+            connection.close();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean pay(int invId) throws SQLException {
+        Connection connection = connectionPool.getConnection();
+        try {
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setAutoCommit(false);
+            changeStatus(invId, "inactive");           //deactivate invoice
+            Invoice invoice = getById(invId);
+            UserDAO.getInstance().withdrawMoney(invoice.getOrder().getUserId(), invoice.getOrder().getTotalPrice());  //withdraw money
+              long millis=System.currentTimeMillis();
+              Date date=new Date(millis);
+              ReportDAO.getInstance().add(new Report(invId, date));     //create report
+            OrderDAO.getInstance().updateStatus("paid", invoice.getOrderId());         //change order status
+              connection.commit();
+        } catch (SQLException e) {
+            log.error("failed to pay invoice");
+            try{
+                connection.rollback();
+            }catch (SQLException ex){
+                log.error("failed to rollback");
+            }
+            throw new SQLException(e);
+        }finally {
+            connection.close();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean changeStatus(int id, String status) throws SQLException {
+        Connection connection = connectionPool.getConnection();
+        PreparedStatement st = null;
+        try {
+            st = connection.prepareStatement(UPDATE_STATUS);
+            st.setString(1, status);
+            st.setInt(2, id);
+            st.executeUpdate();
         }finally {
             st.close();
             connection.close();

@@ -60,7 +60,7 @@
             <textarea class="form-control" id="message-text" name="details"></textarea>
           <input name="command" value="createInvoice" type="hidden">
           <input name="date" value="${date}" type="hidden">
-            <input name="orderInv" value="${order.getId()}" type="hidden">
+            <input name="orderId" value="${order.getId()}" type="hidden">
 
 
             <button type="submit" class="btn btn-primary mt-3">Create invoice</button>

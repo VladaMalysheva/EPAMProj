@@ -3,6 +3,7 @@ package com.example.epamproj.command;
 import com.example.epamproj.dao.DBException;
 import com.example.epamproj.dao.InvoiceDAO;
 import com.example.epamproj.dao.OrderDAO;
+import com.example.epamproj.dao.UserDAO;
 import com.example.epamproj.dao.entities.Invoice;
 import com.example.epamproj.dao.entities.Order;
 import com.example.epamproj.dao.entities.User;
@@ -13,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 public class ShowOrdersCommand implements Command {
     private static Logger log = LogManager.getLogger(ShowOrdersCommand.class.getName());
@@ -25,6 +27,11 @@ public class ShowOrdersCommand implements Command {
             throw new DBException(e.getMessage(), e.getCause());
         }
         if(((User)request.getSession().getAttribute("user")).getRole().equals("admin")){
+            try {
+                orders.removeIf(o -> Objects.equals(o.getStatus(), "paid"));
+            }catch (Exception e){
+                log.error("cannot filter orders");
+            }
             request.setAttribute("orders", orders);
             return "/orders.jsp";
         }
@@ -38,6 +45,7 @@ public class ShowOrdersCommand implements Command {
             List<Invoice> invoices = null;
             try {
                 invoices = InvoiceDAO.getInstance().getInvoicesByUser(userId);
+                request.getSession().setAttribute("user", UserDAO.getInstance().getById(userId));
             } catch (SQLException e) {
                 throw new DBException(e.getMessage(), e.getCause());
             }

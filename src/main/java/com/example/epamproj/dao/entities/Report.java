@@ -1,52 +1,58 @@
 package com.example.epamproj.dao.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 public class Report implements Serializable {
-//    private int reportId;
-//    private Order order;
-//    private User user = order.getUser();
-//    private int summ = order.getPrice();
-//    private String userName = user.getName();
-//    private String userSurname = user.getSurname();
-//    private String userPatronymic = user.getPatronymic();
-//    private Date date = order.getDate();
-//    private Direction destination = order.getDestination();
-//
-//    public int getReportId() {
-//        return reportId;
-//    }
-//
-//    public Order getOrder() {
-//        return order;
-//    }
-//
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public int getSumm() {
-//        return summ;
-//    }
-//
-//    public String getUserName() {
-//        return userName;
-//    }
-//
-//    public String getUserSurname() {
-//        return userSurname;
-//    }
-//
-//    public String getUserPatronymic() {
-//        return userPatronymic;
-//    }
-//
-//    public Date getDate() {
-//        return date;
-//    }
-//
-//    public Direction getDestination() {
-//        return destination;
-//    }
+    private int reportId;
+    private int invoiceId;
+    private Invoice invoice;
+    private Date dateOfPaying;
+
+    public int getReportId() {
+        return reportId;
+    }
+
+    public void setReportId(int reportId) {
+        this.reportId = reportId;
+    }
+
+    public int getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
+
+    public Date getDateOfPaying() {
+        return dateOfPaying;
+    }
+
+    public void setDateOfPaying(Date dateOfPaying) {
+        this.dateOfPaying = dateOfPaying;
+    }
+
+    public Report() {
+    }
+
+    public Report(int reportId, int invoiceId, Invoice invoice, Date dateOfPaying) {
+        this.reportId = reportId;
+        this.invoiceId = invoiceId;
+        this.invoice = invoice;
+        this.dateOfPaying = dateOfPaying;
+    }
+
+    public Report(int invoiceId, Date dateOfPaying) {
+        this.invoiceId = invoiceId;
+        this.dateOfPaying = dateOfPaying;
+    }
 }

@@ -25,6 +25,9 @@ public class CommandContainer {
         commands.put("showOrders", new ShowOrdersCommand());
         commands.put("goToInvoice", new goToInvoiceCommand());
         commands.put("createInvoice", new CreateInvoiceCommand());
+        commands.put("payInvoice", new PayInvoiceCommand());
+        commands.put("showReports", new ShowReportsCommand());
+
     }
 
     private CommandContainer() {

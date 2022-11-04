@@ -29,7 +29,7 @@
           <a class="nav-link" href="controller?command=showOrders">Orders</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="reports.jsp">Reports</a>
+          <a class="nav-link" href="controller?command=showReports">Reports</a>
         </li>
         </c:if>
         <c:if test="${user != null}">

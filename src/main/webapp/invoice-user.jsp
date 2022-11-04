@@ -43,6 +43,7 @@
       <h5 class="font-weight-light">Date of creation: ${invoice.getDate()}</h5>
         <form action="controller" method="post">
           <input name="command" value="payInvoice" type="hidden">
+          <input name="invoice" value="${invoice.getId()}" type="hidden">
           <button type="submit" class="btn btn-primary mt-3">Pay</button>
         </form>
 

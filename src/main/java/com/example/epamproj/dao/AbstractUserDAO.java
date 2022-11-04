@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public interface AbstractUserDAO extends AbstractEntityDAO<User> {
     User getByLogin(String login) throws SQLException;
+    boolean withdrawMoney(int id, double money) throws SQLException;
 
     boolean deleteByLogin(String login) throws SQLException;
 
