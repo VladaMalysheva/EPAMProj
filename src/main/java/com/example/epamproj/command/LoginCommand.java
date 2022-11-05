@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 public class LoginCommand implements Command{
@@ -28,13 +26,13 @@ public class LoginCommand implements Command{
             throw new DBException(e.getMessage(), e.getCause());
         }
         request.getSession().setAttribute("user", user);
-        if(password.equals(user.getPassword()) && "admin".equals(user.getRole())){
+        if (password.equals(user.getPassword()) && "admin".equals(user.getRole())) {
             log.info("execute(): user with login " + login + " logged in successfully and his role is admin");
             return "/index.jsp";
         } else if (password.equals(user.getPassword()) && "client".equals(user.getRole())) {
             log.info("execute(): user with login " + login + " logged in successfully and his role is client");
             return "/index.jsp";
-        }else{
+        } else {
             log.error("execute(): invalid password");
             return "/error.jsp";
         }

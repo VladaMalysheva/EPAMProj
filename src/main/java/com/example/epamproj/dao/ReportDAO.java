@@ -1,6 +1,5 @@
 package com.example.epamproj.dao;
 
-import com.example.epamproj.dao.entities.Invoice;
 import com.example.epamproj.dao.entities.Report;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,22 +11,21 @@ import java.util.List;
 public class ReportDAO implements AbstractReportDAO{
 
     private static ReportDAO instance;
+    private static Logger log = LogManager.getLogger(ReportDAO.class.getName());
+    final String GET_ALL_REPORTS = "SELECT * FROM report";
+    final String GET_REPORT_BY_ID = "SELECT * FROM report WHERE reportId = ?";
+    final String ADD_REPORT = "INSERT INTO report(invoiceId, dateOfPaying) VALUES (?, ?)";
+    final String UPDATE = "UPDATE report SET invoiceId=?, dateOfPaying=? WHERE reportId=?";
+    final String DELETE_BY_ID = "DELETE FROM report WHERE reportId = ?";
+    private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
+
+    private ReportDAO(){}
 
     public static synchronized ReportDAO getInstance() {
         if (instance == null) instance = new ReportDAO();
         return instance;
     }
 
-    private ReportDAO(){
-
-    }
-    private static Logger log = LogManager.getLogger(ReportDAO.class.getName());
-    private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
-    final String GET_ALL_REPORTS = "SELECT * FROM report";
-    final String GET_REPORT_BY_ID = "SELECT * FROM report WHERE reportId = ?";
-    final String ADD_REPORT = "INSERT INTO report(invoiceId, dateOfPaying) VALUES (?, ?)";
-    final String UPDATE = "UPDATE report SET invoiceId=?, dateOfPaying=? WHERE reportId=?";
-    final String DELETE_BY_ID = "DELETE FROM report WHERE reportId = ?";
     @Override
     public List<Report> getAll() throws SQLException {
         List<Report> res = new ArrayList<>();
@@ -76,39 +74,30 @@ public class ReportDAO implements AbstractReportDAO{
 
     @Override
     public boolean add(Report entity) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(ADD_REPORT);
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement st = connection.prepareStatement(ADD_REPORT)) {
             st.setInt(1, entity.getInvoiceId());
             st.setDate(2, entity.getDateOfPaying());
             st.executeUpdate();
-        }finally {
-            st.close();
-            connection.close();
         }
         return true;
     }
 
     @Override
     public boolean update(Report entity) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(UPDATE);
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement st = connection.prepareStatement(UPDATE)) {
             st.setInt(1, entity.getInvoiceId());
             st.setDate(2, entity.getDateOfPaying());
             st.executeUpdate();
-        }finally {
-            st.close();
-            connection.close();
         }
         return true;
     }
 
     @Override
     public boolean deleteById(int id) throws SQLException {
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(DELETE_BY_ID)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(DELETE_BY_ID)) {
             ps.setInt(1, id);
             ps.executeUpdate();
 

@@ -1,12 +1,8 @@
 package com.example.epamproj.controller;
 
 import com.example.epamproj.dao.UserDAO;
-import com.example.epamproj.dao.entities.Direction;
-import com.example.epamproj.unused.Main;
-import com.example.epamproj.unused.Repo;
 import com.example.epamproj.command.Command;
 import com.example.epamproj.command.CommandContainer;
-import com.example.epamproj.dao.entities.User;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -16,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
@@ -32,9 +27,9 @@ public class Controller extends HttpServlet {
         String address = "error_page.jsp";
         String commandName = request.getParameter("command");
         Command command = CommandContainer.getCommand(commandName);
-        try{
+        try {
             address = command.execute(request, response);
-        }catch (Exception e){
+        } catch (Exception e) {
             request.setAttribute("e", e);
         }
         request.getRequestDispatcher(address).forward(request, response);
@@ -58,16 +53,14 @@ public class Controller extends HttpServlet {
         log.info("doPost(): commandName => " + commandName);
         Command command = CommandContainer.getCommand(commandName);
 
-        try{
+        try {
             address = command.execute(request, response);
             log.info("doPost(): address => " + address);
-        }catch (Exception e){
+        } catch (Exception e) {
             request.getSession().setAttribute("e", e);
             log.error("doPost(): Failed to execute command \"" + commandName + "\"");
         }
-//        response.sendRedirect(address);
         log.info("doPost(): forwarded to " + address);
         response.sendRedirect(address);
-//        request.getRequestDispatcher(address).forward(request, response);
     }
 }

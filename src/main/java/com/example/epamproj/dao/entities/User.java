@@ -6,14 +6,12 @@ public class User implements Serializable {
     private int userId;
     private String role;
     private double cash;
-
-    public double getCash() {
-        return cash;
-    }
-
-    public void setCash(double cash) {
-        this.cash = cash;
-    }
+    private String name;
+    private String surname;
+    private String patronymic;
+    private String phone;
+    private String password;
+    private String login;
 
     public User() {
     }
@@ -30,13 +28,6 @@ public class User implements Serializable {
         this.cash = cash;
     }
 
-    private String name;
-    private String surname;
-    private String patronymic;
-    private String phone;
-    private String password;
-    private String login;
-
     public User(String role, String name, String surname, String patronymic, String phone, String login, String password) {
         this.role = role;
         this.name = name;
@@ -46,6 +37,14 @@ public class User implements Serializable {
         this.password = password;
         this.login = login;
 
+    }
+
+    public double getCash() {
+        return cash;
+    }
+
+    public void setCash(double cash) {
+        this.cash = cash;
     }
 
     public void setUserId(int userId) {

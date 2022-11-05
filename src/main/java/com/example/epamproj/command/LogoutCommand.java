@@ -6,9 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 public class LogoutCommand implements Command {
 
     private static Logger log = LogManager.getLogger(LogoutCommand.class.getName());

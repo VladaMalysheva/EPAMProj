@@ -1,6 +1,5 @@
 package com.example.epamproj.dao;
 
-import com.example.epamproj.dao.AbstractEntityDAO;
 import com.example.epamproj.dao.entities.Tariff;
 
 import java.sql.SQLException;

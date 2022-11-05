@@ -1,6 +1,5 @@
 package com.example.epamproj.dao;
 
-import com.example.epamproj.command.CreateInvoiceCommand;
 import com.example.epamproj.dao.entities.Invoice;
 import com.example.epamproj.dao.entities.Report;
 import org.apache.logging.log4j.LogManager;
@@ -13,20 +12,7 @@ import java.util.List;
 public class InvoiceDAO implements AbstractInvoiceDAO{
 
     private static Logger log = LogManager.getLogger(InvoiceDAO.class.getName());
-
     private static InvoiceDAO instance;
-
-    public static synchronized InvoiceDAO getInstance() {
-        if (instance == null) instance = new InvoiceDAO();
-        return instance;
-    }
-
-    private InvoiceDAO(){
-
-    }
-
-    private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
-
     final String GET_ALL = "SELECT * FROM invoice";
     final String GET_ALL_BY_USER = "select invoiceId, orderId, date, details, status\n" +
             "from\n" +
@@ -40,7 +26,14 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
     final String ADD = "INSERT INTO invoice(orderId, date, details) VALUES (?, ?, ?)";
     final String UPDATE = "UPDATE invoice SET orderId=?, date=?, details=? WHERE invoiceId=?";
     final String UPDATE_STATUS = "UPDATE invoice SET status=? WHERE invoiceId=?";
+    private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
 
+    private InvoiceDAO(){}
+
+    public static synchronized InvoiceDAO getInstance() {
+        if (instance == null) instance = new InvoiceDAO();
+        return instance;
+    }
 
     @Override
     public List<Invoice> getAll() throws SQLException {
@@ -49,19 +42,29 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
         try (Connection connection = connectionPool.getConnection();
              Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery(GET_ALL)) {
-            while (rs.next()) {
-                Invoice invoice = new Invoice();
-                invoice.setId(rs.getInt(1));
-                invoice.setOrderId(rs.getInt(2));
-                invoice.setDate(rs.getDate(3));
-                invoice.setDetails(rs.getString(4));
-                invoice.setStatus(rs.getString(5));
-                invoice.setOrder(OrderDAO.getInstance().getById(rs.getInt(2)));
-                res.add(invoice);
-            }
+            addToList(res, rs);
         }
 
         return res;
+    }
+
+    private void addToList(List<Invoice> res, ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            Invoice invoice = new Invoice();
+            createVariable(rs, invoice);
+            res.add(invoice);
+        }
+    }
+
+    private boolean addToStatement(Invoice entity, String add) throws SQLException {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement st = connection.prepareStatement(add)) {
+            st.setInt(1, entity.getOrderId());
+            st.setDate(2, entity.getDate());
+            st.setString(3, entity.getDetails());
+            st.executeUpdate();
+        }
+        return true;
     }
 
     @Override
@@ -70,18 +73,14 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
         PreparedStatement ps = null;
         ResultSet rs = null;
         Invoice invoice = null;
+
         try {
             ps = connection.prepareStatement(GET_BY_ID);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
                 invoice = new Invoice();
-                invoice.setId(rs.getInt(1));
-                invoice.setOrderId(rs.getInt(2));
-                invoice.setDate(rs.getDate(3));
-                invoice.setDetails(rs.getString(4));
-                invoice.setStatus(rs.getString(5));
-                invoice.setOrder(OrderDAO.getInstance().getById(rs.getInt(2)));
+                createVariable(rs, invoice);
             }
         } finally {
             rs.close();
@@ -92,46 +91,51 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
         return invoice;
     }
 
-    @Override
-    public boolean add(Invoice entity) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(ADD);
-            st.setInt(1, entity.getOrderId());
-            st.setDate(2, entity.getDate());
-            st.setString(3, entity.getDetails());
-            st.executeUpdate();
-        }finally {
-            st.close();
-            connection.close();
-        }
-        return true;
+    private void createVariable(ResultSet rs, Invoice invoice) throws SQLException {
+        invoice.setId(rs.getInt(1));
+        invoice.setOrderId(rs.getInt(2));
+        invoice.setDate(rs.getDate(3));
+        invoice.setDetails(rs.getString(4));
+        invoice.setStatus(rs.getString(5));
+        invoice.setOrder(OrderDAO.getInstance().getById(rs.getInt(2)));
     }
 
     @Override
-    public boolean add(Invoice entity, int orderId) throws SQLException {
+    public boolean add(Invoice entity) throws SQLException {
+
+        return addToStatement(entity, ADD);
+    }
+
+
+
+    @Override
+    public boolean add(Invoice entity, int orderId) throws SQLException {                  //FIXME
         Connection connection = connectionPool.getConnection();
         PreparedStatement st = null;
+
         try {
+
 //            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 //            connection.setAutoCommit(false);
+
             st = connection.prepareStatement(ADD);
             st.setInt(1, entity.getOrderId());
             st.setDate(2, entity.getDate());
             st.setString(3, entity.getDetails());
             st.executeUpdate();
             OrderDAO.getInstance().updateStatus("unpaid", orderId);
+
 //            connection.commit();
+
         } catch (SQLException e) {
             log.error("failed to add invoice or update order status");
-            try{
+            try {
                 connection.rollback();
-            }catch (SQLException ex){
+            } catch (SQLException ex) {
                 log.error("failed to rollback");
             }
             throw new SQLException(e);
-        }finally {
+        } finally {
             st.close();
             connection.close();
         }
@@ -141,26 +145,31 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
     @Override
     public boolean pay(int invId) throws SQLException {
         Connection connection = connectionPool.getConnection();
+
         try {
             connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             connection.setAutoCommit(false);
-            changeStatus(invId, "inactive");           //deactivate invoice
+
+            changeStatus(invId, "inactive");                                        //deactivate invoice
             Invoice invoice = getById(invId);
-            UserDAO.getInstance().withdrawMoney(invoice.getOrder().getUserId(), invoice.getOrder().getTotalPrice());  //withdraw money
-              long millis=System.currentTimeMillis();
-              Date date=new Date(millis);
-              ReportDAO.getInstance().add(new Report(invId, date));     //create report
-            OrderDAO.getInstance().updateStatus("paid", invoice.getOrderId());         //change order status
-              connection.commit();
+            UserDAO.getInstance().withdrawMoney(invoice.getOrder().getUserId(),
+                    invoice.getOrder().getTotalPrice());                                  //withdraw money
+            long millis=System.currentTimeMillis();
+            Date date=new Date(millis);
+            ReportDAO.getInstance().add(new Report(invId, date));                       //create report
+            OrderDAO.getInstance().updateStatus("paid", invoice.getOrderId());      //change order status
+
+            connection.commit();
         } catch (SQLException e) {
             log.error("failed to pay invoice");
+
             try{
                 connection.rollback();
-            }catch (SQLException ex){
+            } catch (SQLException ex){
                 log.error("failed to rollback");
             }
             throw new SQLException(e);
-        }finally {
+        } finally {
             connection.close();
         }
         return true;
@@ -168,40 +177,24 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
 
     @Override
     public boolean changeStatus(int id, String status) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(UPDATE_STATUS);
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement st = connection.prepareStatement(UPDATE_STATUS)) {
             st.setString(1, status);
             st.setInt(2, id);
             st.executeUpdate();
-        }finally {
-            st.close();
-            connection.close();
         }
         return true;
     }
 
     @Override
     public boolean update(Invoice entity) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(UPDATE);
-            st.setInt(1, entity.getOrderId());
-            st.setDate(2, entity.getDate());
-            st.setString(3, entity.getDetails());
-            st.executeUpdate();
-        }finally {
-            st.close();
-            connection.close();
-        }
-        return true;
+        return addToStatement(entity, UPDATE);
     }
 
     @Override
     public boolean deleteById(int id) throws SQLException {
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(DELETE_BY_ID)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(DELETE_BY_ID)) {
             ps.setInt(1, id);
             ps.executeUpdate();
 
@@ -220,16 +213,7 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
             ps = connection.prepareStatement(GET_ALL_BY_USER);
             ps.setInt(1, userId);
             rs = ps.executeQuery();
-            while (rs.next()) {
-                Invoice invoice = new Invoice();
-                invoice.setId(rs.getInt(1));
-                invoice.setOrderId(rs.getInt(2));
-                invoice.setDate(rs.getDate(3));
-                invoice.setDetails(rs.getString(4));
-                invoice.setStatus(rs.getString(5));
-                invoice.setOrder(OrderDAO.getInstance().getById(rs.getInt(2)));
-                res.add(invoice);
-            }
+            addToList(res, rs);
         } finally {
             rs.close();
             ps.close();

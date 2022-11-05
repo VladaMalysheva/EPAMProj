@@ -12,12 +12,12 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class ConnectionPool extends MysqlDataSource {
+    private static Logger logger = LogManager.getLogger(ConnectionPool.class);
     private final int POOL_SIZE = 20;
     private Queue<Connection> connectionPool;
-    private static Logger logger = LogManager.getLogger(ConnectionPool.class);
+
 
     public ConnectionPool(String url, String username, String password){
-        //super();
         setUrl(url);
         setUser(username);
         setPassword(password);

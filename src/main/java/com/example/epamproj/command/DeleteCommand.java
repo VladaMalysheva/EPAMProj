@@ -15,7 +15,6 @@ public class DeleteCommand implements Command{
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         String login = request.getParameter("login");
         log.info("execute(): delete login => " + login);
-
         try {
             UserDAO.getInstance().deleteByLogin(login);
             log.info("execute(): User \"" + login + "\" was deleted successfully");

@@ -1,18 +1,14 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.controller.Controller;
 import com.example.epamproj.dao.DBException;
 import com.example.epamproj.dao.DirectionDAO;
-import com.example.epamproj.dao.TariffDAO;
 import com.example.epamproj.dao.entities.Direction;
-import com.example.epamproj.dao.entities.Tariff;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class GoCalculateCommand implements Command {
 

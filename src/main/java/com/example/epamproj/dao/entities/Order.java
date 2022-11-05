@@ -7,6 +7,63 @@ public class Order implements Serializable {
 
     private Direction direction;
     private String status;
+    private User user;
+    private int id;
+    private Date date;
+    private int directionId;
+    private int userId;
+    private float weight;
+    private float dimensions;
+    private double totalPrice;
+    private String typeOfCargo;
+    private String address;
+    private String pointOfDeparture;
+    private String destination;
+    private String currency;
+
+    public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status, String currency) {
+        this.date = date;
+        this.directionId = directionId;
+        this.userId = userId;
+        this.weight = weight;
+        this.dimensions = dimensions;
+        this.totalPrice = totalPrice;
+        this.typeOfCargo = typeOfCargo;
+        this.address = address;
+        this.pointOfDeparture = pointOfDeparture;
+        this.destination = destination;
+        this.status = status;
+        this.currency = currency;
+    }
+
+    public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination) {
+        this.date = date;
+        this.directionId = directionId;
+        this.userId = userId;
+        this.weight = weight;
+        this.dimensions = dimensions;
+        this.totalPrice = totalPrice;
+        this.typeOfCargo = typeOfCargo;
+        this.address = address;
+        this.pointOfDeparture = pointOfDeparture;
+        this.destination = destination;
+    }
+
+    public Order(int id, Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status, String currency) {
+        this.id = id;
+        this.date = date;
+        this.directionId = directionId;
+        this.userId = userId;
+        this.weight = weight;
+        this.dimensions = dimensions;
+        this.totalPrice = totalPrice;
+        this.typeOfCargo = typeOfCargo;
+        this.address = address;
+        this.pointOfDeparture = pointOfDeparture;
+        this.destination = destination;
+        this.status = status;
+        this.currency = currency;
+    }
 
     public String getStatus() {
         return status;
@@ -31,21 +88,6 @@ public class Order implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-
-    private User user;
-    private int id;
-    private Date date;
-    private int directionId;
-    private int userId;
-    private float weight;
-    private float dimensions;
-    private double totalPrice;
-    private String typeOfCargo;
-    private String address;
-    private String pointOfDeparture;
-    private String destination;
-
-    private String currency;
 
     public String getCurrency() {
         return currency;
@@ -146,48 +188,5 @@ public class Order implements Serializable {
         this.destination = destination;
     }
 
-    public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status, String currency) {
-        this.date = date;
-        this.directionId = directionId;
-        this.userId = userId;
-        this.weight = weight;
-        this.dimensions = dimensions;
-        this.totalPrice = totalPrice;
-        this.typeOfCargo = typeOfCargo;
-        this.address = address;
-        this.pointOfDeparture = pointOfDeparture;
-        this.destination = destination;
-        this.status = status;
-        this.currency = currency;
-    }
-
-    public Order(Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination) {
-        this.date = date;
-        this.directionId = directionId;
-        this.userId = userId;
-        this.weight = weight;
-        this.dimensions = dimensions;
-        this.totalPrice = totalPrice;
-        this.typeOfCargo = typeOfCargo;
-        this.address = address;
-        this.pointOfDeparture = pointOfDeparture;
-        this.destination = destination;
-    }
-
-    public Order(int id, Date date, int directionId, int userId, float weight, float dimensions, double totalPrice, String typeOfCargo, String address, String pointOfDeparture, String destination, String status, String currency) {
-        this.id = id;
-        this.date = date;
-        this.directionId = directionId;
-        this.userId = userId;
-        this.weight = weight;
-        this.dimensions = dimensions;
-        this.totalPrice = totalPrice;
-        this.typeOfCargo = typeOfCargo;
-        this.address = address;
-        this.pointOfDeparture = pointOfDeparture;
-        this.destination = destination;
-        this.status = status;
-        this.currency = currency;
-    }
 
 }

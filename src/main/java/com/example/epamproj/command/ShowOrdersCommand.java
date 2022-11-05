@@ -26,20 +26,20 @@ public class ShowOrdersCommand implements Command {
         } catch (SQLException e) {
             throw new DBException(e.getMessage(), e.getCause());
         }
-        if(((User)request.getSession().getAttribute("user")).getRole().equals("admin")){
+        if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
             try {
                 orders.removeIf(o -> Objects.equals(o.getStatus(), "paid"));
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error("cannot filter orders");
             }
             request.setAttribute("orders", orders);
             return "/orders.jsp";
         }
-        if(((User)request.getSession().getAttribute("user")).getRole().equals("client")){
+        if (((User) request.getSession().getAttribute("user")).getRole().equals("client")) {
             final int userId = ((User) request.getSession().getAttribute("user")).getUserId();
             try {
                 orders.removeIf(o ->  o.getUserId() != userId);
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error("cannot filter orders");
             }
             List<Invoice> invoices = null;

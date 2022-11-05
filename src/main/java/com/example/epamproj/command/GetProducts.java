@@ -19,16 +19,16 @@ public class GetProducts implements Command {
         List<Direction> directions = null;
         log.info("Parameter \"Sort\" => " + request.getParameter("Sort"));
         log.info("Parameter \"Filter\" => " + request.getParameter("Filter"));
-        if(request.getParameter("Sort")!=null) {
+        if (request.getParameter("Sort")!=null) {
             request.getSession().setAttribute("Sort", request.getParameter("Sort"));
         }
-        if(request.getParameter("Filter")!=null) {
+        if (request.getParameter("Filter")!=null) {
             request.getSession().setAttribute("Filter", request.getParameter("Filter"));
         }
         String filter = (String)request.getSession().getAttribute("Filter");
         String sort = (String)request.getSession().getAttribute("Sort");
         try {
-            if(sort == null || sort.equals("NoneSort")){
+            if (sort == null || sort.equals("NoneSort")) {
                 directions = DirectionDAO.getInstance().getAll();
             }else {
                 directions = DirectionDAO.getInstance().getAllOrderBy(sort);
@@ -38,7 +38,7 @@ public class GetProducts implements Command {
             throw new DBException(e.getMessage(), e.getCause());
         }
 
-        if(filter!= null && !filter.equals("None")){
+        if (filter!= null && !filter.equals("None")) {
             directions.removeIf(d -> !d.getPlace1().equals(filter) && !d.getPlace2().equals(filter));
         }
 

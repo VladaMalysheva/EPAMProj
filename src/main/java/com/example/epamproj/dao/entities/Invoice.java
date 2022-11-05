@@ -9,16 +9,7 @@ public class Invoice implements Serializable {
     private int orderId;
     private Date date;
     private String details;
-
     private String status;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public Invoice(int orderId, Date date, String details) {
         this.orderId = orderId;
@@ -36,6 +27,14 @@ public class Invoice implements Serializable {
     }
 
     public Invoice() {
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getId() {

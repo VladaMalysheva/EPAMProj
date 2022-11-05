@@ -7,6 +7,35 @@ public class Direction implements Serializable {
     private String nameOfReceiver;
     private String surnameOfReceiver;
     private String patronymicOfReceiver;
+    private String image;
+    private int id;
+    private String name;
+    private String place1;
+    private String place2;
+    private double distance;
+
+    public Direction(String name, String place1, String place2, double distance, String image) {
+        this.name = name;
+        this.place1 = place1;
+        this.place2 = place2;
+        this.distance = distance;
+        this.image = image;
+    }
+
+    public Direction() {
+    }
+
+    public Direction(int id, String name, String place1, String place2, double distance, String image, String nameOfReceiver, String surnameOfReceiver, String patronymicOfReceiver) {
+        this.id = id;
+        this.name = name;
+        this.place1 = place1;
+        this.place2 = place2;
+        this.distance = distance;
+        this.image = image;
+        this.nameOfReceiver = nameOfReceiver;
+        this.surnameOfReceiver = surnameOfReceiver;
+        this.patronymicOfReceiver = patronymicOfReceiver;
+    }
 
     public String getNameOfReceiver() {
         return nameOfReceiver;
@@ -31,12 +60,6 @@ public class Direction implements Serializable {
     public void setPatronymicOfReceiver(String patronymicOfReceiver) {
         this.patronymicOfReceiver = patronymicOfReceiver;
     }
-
-    private int id;
-    private String name;
-    private String place1;
-    private String place2;
-    private double distance;
 
     public int getId() {
         return id;
@@ -86,28 +109,4 @@ public class Direction implements Serializable {
         this.image = image;
     }
 
-    private String image;
-
-    public Direction(String name, String place1, String place2, double distance, String image) {
-        this.name = name;
-        this.place1 = place1;
-        this.place2 = place2;
-        this.distance = distance;
-        this.image = image;
-    }
-
-    public Direction() {
-    }
-
-    public Direction(int id, String name, String place1, String place2, double distance, String image, String nameOfReceiver, String surnameOfReceiver, String patronymicOfReceiver) {
-        this.id = id;
-        this.name = name;
-        this.place1 = place1;
-        this.place2 = place2;
-        this.distance = distance;
-        this.image = image;
-        this.nameOfReceiver = nameOfReceiver;
-        this.surnameOfReceiver = surnameOfReceiver;
-        this.patronymicOfReceiver = patronymicOfReceiver;
-    }
 }

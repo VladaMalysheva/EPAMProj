@@ -25,9 +25,9 @@ public class ShowReportsCommand implements Command {
         }
         log.info("parameter date => " + request.getParameter("date"));
         log.info("order date => " + reports.get(0).getInvoice().getOrder().getDate());
-        if(request.getParameter("reportsFilter")!=null && !Objects.equals(request.getParameter("reportsFilter"), "None")){
+        if (request.getParameter("reportsFilter")!=null && !Objects.equals(request.getParameter("reportsFilter"), "None")) {
             reports.removeIf(r -> !Objects.equals(r.getInvoice().getOrder().getDestination(), request.getParameter("reportsFilter")));
-        }else if(request.getParameter("date")!=null){
+        } else if (request.getParameter("date")!=null) {
             reports.removeIf(r -> !Objects.equals(String.valueOf(r.getInvoice().getOrder().getDate()), request.getParameter("date")));
         }
         request.setAttribute("reports", reports);

@@ -13,12 +13,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 
-public class goToInvoiceCommand implements Command {
+public class GoToInvoiceCommand implements Command {
 
-    private static Logger log = LogManager.getLogger(goToInvoiceCommand.class.getName());
+    private static Logger log = LogManager.getLogger(GoToInvoiceCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
-        if(((User)request.getSession().getAttribute("user")).getRole().equals("admin")) {
+        if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
             log.info("parameter => " + (request.getParameter("orderId")));
             int orderId = Integer.parseInt(request.getParameter("orderId"));
             log.info("order id => " + orderId);
@@ -30,9 +30,8 @@ public class goToInvoiceCommand implements Command {
                 throw new DBException(e.getMessage(), e.getCause());
             }
             request.setAttribute("orderInv", order);
-//        log.info("request.getAttribute(\"order\") => " + request.getAttribute("order"));
             return "/invoice.jsp";
-        }else if(((User)request.getSession().getAttribute("user")).getRole().equals("client")){
+        }else if (((User) request.getSession().getAttribute("user")).getRole().equals("client")) {
             int id = Integer.parseInt(request.getParameter("invoice"));
             Invoice invoice = null;
             try {

@@ -1,8 +1,6 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.controller.Controller;
 import com.example.epamproj.dao.DBException;
-import com.example.epamproj.dao.DirectionDAO;
 import com.example.epamproj.dao.TariffDAO;
 import com.example.epamproj.dao.entities.Direction;
 import com.example.epamproj.dao.entities.Tariff;
@@ -12,27 +10,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
-import java.text.Format;
 
 public class CalculateCommand implements Command {
     private static Logger log = LogManager.getLogger(CalculateCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
-//        int id = Integer.parseInt(request.getParameter("productId"));
-//        log.info("id =>" + id);
-//        Direction direction = null;
-//
-//        try {
-//            direction = DirectionDAO.getInstance().getById(id);
-//            log.info("direction => " + direction);
-//
-//        } catch (SQLException e) {
-//            log.error("failed to get direction from DB");
-//            throw new DBException(e.getMessage(), e.getCause());
-//        }
-
         Direction direction = (Direction) request.getSession().getAttribute("productCalc");
-
         float weight = Float.parseFloat(request.getParameter("Weight"));
         log.info("Weight => " + weight);
         float dimension = Float.parseFloat(request.getParameter("Dimension"));
@@ -48,7 +31,8 @@ public class CalculateCommand implements Command {
             log.error("failed to get tariffs from DAO");
             throw new DBException(e.getMessage(), e.getCause());
         }
-        float totalPrice = (float) (tariffDimension.getValue()*dimension+tariffWeight.getValue()*weight+ tariffDistance.getValue()*direction.getDistance());
+        float totalPrice = (float) ((tariffDimension.getValue()*dimension)
+                +(tariffWeight.getValue()*weight)+(tariffDistance.getValue()*direction.getDistance()));
         request.getSession().setAttribute("weight", weight);
         request.getSession().setAttribute("dimension", dimension);
         request.getSession().setAttribute("totalPrice", totalPrice);

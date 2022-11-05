@@ -9,6 +9,20 @@ public class Report implements Serializable {
     private Invoice invoice;
     private Date dateOfPaying;
 
+    public Report() {}
+
+    public Report(int reportId, int invoiceId, Invoice invoice, Date dateOfPaying) {
+        this.reportId = reportId;
+        this.invoiceId = invoiceId;
+        this.invoice = invoice;
+        this.dateOfPaying = dateOfPaying;
+    }
+
+    public Report(int invoiceId, Date dateOfPaying) {
+        this.invoiceId = invoiceId;
+        this.dateOfPaying = dateOfPaying;
+    }
+
     public int getReportId() {
         return reportId;
     }
@@ -41,18 +55,5 @@ public class Report implements Serializable {
         this.dateOfPaying = dateOfPaying;
     }
 
-    public Report() {
-    }
 
-    public Report(int reportId, int invoiceId, Invoice invoice, Date dateOfPaying) {
-        this.reportId = reportId;
-        this.invoiceId = invoiceId;
-        this.invoice = invoice;
-        this.dateOfPaying = dateOfPaying;
-    }
-
-    public Report(int invoiceId, Date dateOfPaying) {
-        this.invoiceId = invoiceId;
-        this.dateOfPaying = dateOfPaying;
-    }
 }

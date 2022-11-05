@@ -1,6 +1,8 @@
 package com.example.epamproj.dao;
 
 import com.example.epamproj.dao.entities.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,16 +11,7 @@ import java.util.List;
 public class UserDAO implements AbstractUserDAO{
 
     private static UserDAO instance;
-
-    public static synchronized UserDAO getInstance() {
-        if (instance == null) instance = new UserDAO();
-        return instance;
-    }
-
-    private UserDAO(){
-
-    }
-    private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
+    private static Logger log = LogManager.getLogger(UserDAO.class.getName());
     final String GET_ALL_USERS = "SELECT * FROM user";
     final String GET_USER_BY_ID = "SELECT * FROM user WHERE userId = ?";
     final String ADD_USER = "INSERT INTO user(role, name, surname, patronymic, phone, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -28,13 +21,20 @@ public class UserDAO implements AbstractUserDAO{
     final String DELETE_BY_LOGIN = "DELETE FROM user WHERE login = ?";
     final String WITHDRAW_MONEY = "UPDATE user SET cash = cash-? WHERE userId=?";
     final String TOP_UP_MONEY = "UPDATE user SET cash = cash+? WHERE userId=?";
+    private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
 
+    private UserDAO(){}
 
+    public static synchronized UserDAO getInstance() {
+        if (instance == null) instance = new UserDAO();
+        return instance;
+    }
 
     @Override
     public List<User> getAll() throws SQLException {
         List<User> res = new ArrayList<>();
         Connection connection = null;
+
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
@@ -42,6 +42,7 @@ public class UserDAO implements AbstractUserDAO{
         }
         Statement st = null;
         ResultSet rs = null;
+
         try {
             st = connection.createStatement();
             rs = st.executeQuery(GET_ALL_USERS);
@@ -58,7 +59,7 @@ public class UserDAO implements AbstractUserDAO{
                 user.setCash(rs.getDouble(9));
                 res.add(user);
             }
-        }finally {
+        } finally {
                 rs.close();
                 st.close();
                 connection.close();
@@ -74,6 +75,7 @@ public class UserDAO implements AbstractUserDAO{
         PreparedStatement ps = null;
         ResultSet rs = null;
         User user = null;
+
         try {
             ps = connection.prepareStatement(GET_USER_BY_ID);
             ps.setInt(1, id);
@@ -102,60 +104,42 @@ public class UserDAO implements AbstractUserDAO{
 
     @Override
     public boolean add(User entity) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(ADD_USER);
-            st.setString(1, entity.getRole());
-            st.setString(2, entity.getName());
-            st.setString(3, entity.getSurname());
-            st.setString(4, entity.getPatronymic());
-            st.setString(5, entity.getPhone());
-            st.setString(6, entity.getLogin());
-            st.setString(7, entity.getPassword());
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement st = connection.prepareStatement(ADD_USER)) {
+            addToStatement(entity, st);
             st.executeUpdate();
-        }finally {
-            st.close();
-            connection.close();
         }
         return true;
     }
 
+    private void addToStatement(User entity, PreparedStatement st) throws SQLException {
+        st.setString(1, entity.getRole());
+        st.setString(2, entity.getName());
+        st.setString(3, entity.getSurname());
+        st.setString(4, entity.getPatronymic());
+        st.setString(5, entity.getPhone());
+        st.setString(6, entity.getLogin());
+        st.setString(7, entity.getPassword());
+    }
+
     @Override
     public boolean update(User entity) throws SQLException {
-
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(UPDATE);
-            st.setString(1, entity.getRole());
-            st.setString(2, entity.getName());
-            st.setString(3, entity.getSurname());
-            st.setString(4, entity.getPatronymic());
-            st.setString(5, entity.getPhone());
-            st.setString(6, entity.getLogin());
-            st.setString(7, entity.getPassword());
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement st = connection.prepareStatement(UPDATE)) {
+            addToStatement(entity, st);
             st.setInt(8, entity.getUserId());
             st.executeUpdate();
-        }finally {
-            st.close();
-            connection.close();
         }
         return true;
     }
 
     @Override
     public boolean deleteById(int id) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement ps = null;
-        try {
-            ps = connection.prepareStatement(DELETE_BY_ID);
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(DELETE_BY_ID)) {
             ps.setInt(1, id);
             ps.executeUpdate();
 
-        } finally {
-            ps.close();
-            connection.close();
         }
 
         return true;
@@ -167,6 +151,7 @@ public class UserDAO implements AbstractUserDAO{
         PreparedStatement ps = null;
         ResultSet rs = null;
         User user = null;
+
         try {
             ps = connection.prepareStatement(GET_BY_LOGIN);
             ps.setString(1, login);
@@ -194,48 +179,33 @@ public class UserDAO implements AbstractUserDAO{
 
     @Override
     public void withdrawMoney(int id, double money) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(WITHDRAW_MONEY);
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement st = connection.prepareStatement(WITHDRAW_MONEY)) {
             st.setDouble(1, money);
             st.setInt(2, id);
             st.executeUpdate();
-        }finally {
-            st.close();
-            connection.close();
         }
     }
 
     @Override
     public boolean topUp(int id, double money) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = connection.prepareStatement(TOP_UP_MONEY);
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement st = connection.prepareStatement(TOP_UP_MONEY)) {
             st.setDouble(1, money);
             st.setInt(2, id);
             st.executeUpdate();
-        }finally {
-            st.close();
-            connection.close();
         }
         return true;
     }
 
     @Override
     public void deleteByLogin(String login) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement ps = null;
         User user = null;
-        try {
-            ps = connection.prepareStatement(DELETE_BY_LOGIN);
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(DELETE_BY_LOGIN)) {
             ps.setString(1, login);
             ps.executeUpdate();
 
-        } finally {
-            ps.close();
-            connection.close();
         }
 
     }

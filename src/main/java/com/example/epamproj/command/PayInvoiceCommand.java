@@ -2,7 +2,6 @@ package com.example.epamproj.command;
 
 import com.example.epamproj.dao.DBException;
 import com.example.epamproj.dao.InvoiceDAO;
-import com.example.epamproj.dao.entities.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
@@ -16,9 +15,9 @@ public class PayInvoiceCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         int invId = Integer.parseInt(request.getParameter("invoice"));
         log.info("invoice => " + invId);
-        try{
+        try {
             InvoiceDAO.getInstance().pay(invId);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("failed to pay invoice");
             throw new DBException(e.getMessage(), e.getCause());
         }
