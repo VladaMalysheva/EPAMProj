@@ -16,10 +16,9 @@ public class CalculateCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         Direction direction = (Direction) request.getSession().getAttribute("productCalc");
+        log.info("Direction => " + direction.getName());
         float weight = Float.parseFloat(request.getParameter("Weight"));
-        log.info("Weight => " + weight);
         float dimension = Float.parseFloat(request.getParameter("Dimension"));
-        log.info("Dimension => " + dimension);
         Tariff tariffWeight = null;
         Tariff tariffDistance = null;
         Tariff tariffDimension = null;
@@ -33,9 +32,14 @@ public class CalculateCommand implements Command {
         }
         float totalPrice = (float) ((tariffDimension.getValue()*dimension)
                 +(tariffWeight.getValue()*weight)+(tariffDistance.getValue()*direction.getDistance()));
+
         request.getSession().setAttribute("weight", weight);
         request.getSession().setAttribute("dimension", dimension);
         request.getSession().setAttribute("totalPrice", totalPrice);
+
+        log.info("Attribute \"weight\" set to session => " + weight);
+        log.info("Attribute \"dimension\" set to session => " + dimension);
+        log.info("Attribute \"totalPrice\" set to session => " + totalPrice);
 
 
         return "/calculate.jsp";

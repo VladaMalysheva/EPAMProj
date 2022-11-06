@@ -32,12 +32,18 @@ public class OrderCommand implements Command {
         try{
             OrderDAO.getInstance().add(order);
         } catch (SQLException e) {
+            log.error("Failed to add order to db");
             throw new DBException(e.getMessage(), e.getCause());
         }
-        request.getSession().setAttribute("productOrd", null);
-        request.getSession().setAttribute("weight", null);
-        request.getSession().setAttribute("dimension", null);
-        request.getSession().setAttribute("totalPrice", null);
+        request.getSession().removeAttribute("productOrd");
+        request.getSession().removeAttribute("weight");
+        request.getSession().removeAttribute("dimension");
+        request.getSession().removeAttribute("totalPrice");
+
+        log.info("Attribute \"productOrd\" removed from session");
+        log.info("Attribute \"weight\" removed from session");
+        log.info("Attribute \"dimension\" removed from session");
+        log.info("Attribute \"totalPrice\" removed from session");
         return "/index.jsp";
 
     }

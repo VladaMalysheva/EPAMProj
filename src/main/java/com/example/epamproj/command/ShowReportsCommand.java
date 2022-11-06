@@ -20,17 +20,21 @@ public class ShowReportsCommand implements Command {
         try {
             reports = ReportDAO.getInstance().getAll();
         } catch (SQLException e) {
-            log.error("cannot get reports");
+            log.error("Failed to get reports from db");
             throw new DBException(e.getMessage(), e.getCause());
         }
-        log.info("parameter date => " + request.getParameter("date"));
-        log.info("order date => " + reports.get(0).getInvoice().getOrder().getDate());
-        if (request.getParameter("reportsFilter")!=null && !Objects.equals(request.getParameter("reportsFilter"), "None")) {
-            reports.removeIf(r -> !Objects.equals(r.getInvoice().getOrder().getDestination(), request.getParameter("reportsFilter")));
-        } else if (request.getParameter("date")!=null) {
-            reports.removeIf(r -> !Objects.equals(String.valueOf(r.getInvoice().getOrder().getDate()), request.getParameter("date")));
+        try {
+            if (request.getParameter("reportsFilter") != null && !Objects.equals(request.getParameter("reportsFilter"), "None")) {
+                reports.removeIf(r -> !Objects.equals(r.getInvoice().getOrder().getDestination(), request.getParameter("reportsFilter")));
+            } else if (request.getParameter("date") != null) {
+                reports.removeIf(r -> !Objects.equals(String.valueOf(r.getInvoice().getOrder().getDate()), request.getParameter("date")));
+            }
+            request.setAttribute("reports", reports);
+            log.info("Attribute \"reports\" set");
+        } catch (Exception e) {
+            log.error("Failed to filter reports");
+            throw new DBException(e.getMessage(), e.getCause());
         }
-        request.setAttribute("reports", reports);
 
         return "/reports.jsp";
     }

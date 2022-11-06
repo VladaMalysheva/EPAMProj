@@ -12,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
@@ -19,9 +22,9 @@ public class Controller extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
-        PrintWriter out = response.getWriter();
-        log.info("Parameters: " + request.getParameterNames());
+        log.info("Parameters: " + request.getParameterMap().keySet().stream()
+                .map(key -> key + "=" + Arrays.toString(request.getParameterMap().get(key)))
+                .collect(Collectors.joining(", ", "{", "}")));
 
 
         String address = "error_page.jsp";
@@ -30,9 +33,11 @@ public class Controller extends HttpServlet {
         try {
             address = command.execute(request, response);
         } catch (Exception e) {
+            log.error("Failed to execute command \"" + commandName + "\"");
             request.setAttribute("e", e);
         }
         request.getRequestDispatcher(address).forward(request, response);
+        log.info("forwarded to " + address);
     }
 
 
@@ -40,27 +45,33 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        Predicate<Object> isQualified = item -> !(item.equals("name") || item.equals("surname")
+                || item.equals("patronymic") || item.equals("password"));
 
-        try {
-            request.setAttribute("users", UserDAO.getInstance().getAll());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        log.info("Parameters: " + request.getParameterMap().keySet().stream()
+                .filter(isQualified)
+                .map(key -> key + "=" + Arrays.toString(request.getParameterMap().get(key)))
+                .collect(Collectors.joining(", ", "{", "}")));
 
+
+//        try {
+//            request.setAttribute("users", UserDAO.getInstance().getAll());
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
         String address = "error_page.jsp";
         String commandName = request.getParameter("command");
-        log.info("doPost(): commandName => " + commandName);
         Command command = CommandContainer.getCommand(commandName);
 
         try {
             address = command.execute(request, response);
-            log.info("doPost(): address => " + address);
+//            log.info("address => " + address);
         } catch (Exception e) {
             request.getSession().setAttribute("e", e);
-            log.error("doPost(): Failed to execute command \"" + commandName + "\"");
+            log.error("Failed to execute command \"" + commandName + "\"");
         }
-        log.info("doPost(): forwarded to " + address);
         response.sendRedirect(address);
+        log.info("redirected to " + address);
     }
 }

@@ -19,6 +19,7 @@ public class TopUpCommand implements Command {
         try {
             UserDAO.getInstance().topUp(id, money);
         } catch (SQLException e) {
+            log.error("Failed to top up cash");
             throw new DBException(e.getMessage(), e.getCause());
         }
         return "/controller?command=showOrders";

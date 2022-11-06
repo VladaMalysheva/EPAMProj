@@ -14,11 +14,10 @@ public class PayInvoiceCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         int invId = Integer.parseInt(request.getParameter("invoice"));
-        log.info("invoice => " + invId);
         try {
             InvoiceDAO.getInstance().pay(invId);
         } catch (SQLException e) {
-            log.error("failed to pay invoice");
+            log.error("Failed to pay invoice");
             throw new DBException(e.getMessage(), e.getCause());
         }
         return "/controller?command=showOrders";

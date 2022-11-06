@@ -20,20 +20,20 @@ public class LoginCommand implements Command{
         User user = null;
         try {
             user = UserDAO.getInstance().getByLogin(login);
-            log.info("execute(): user with login " + login + " was found successfully");
+            log.info("user with login " + login + " was found successfully");
         } catch (SQLException e) {
-            log.error("execute(): user with login " + login + " wasn't found");
+            log.error("user with login " + login + " wasn't found");
             throw new DBException(e.getMessage(), e.getCause());
         }
         request.getSession().setAttribute("user", user);
         if (password.equals(user.getPassword()) && "admin".equals(user.getRole())) {
-            log.info("execute(): user with login " + login + " logged in successfully and his role is admin");
+            log.info("user with login " + login + " logged in successfully and his role is admin");
             return "/index.jsp";
         } else if (password.equals(user.getPassword()) && "client".equals(user.getRole())) {
-            log.info("execute(): user with login " + login + " logged in successfully and his role is client");
+            log.info("user with login " + login + " logged in successfully and his role is client");
             return "/index.jsp";
         } else {
-            log.error("execute(): invalid password");
+            log.error("invalid password");
             return "/error.jsp";
         }
     }

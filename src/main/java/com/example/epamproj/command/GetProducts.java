@@ -21,9 +21,11 @@ public class GetProducts implements Command {
         log.info("Parameter \"Filter\" => " + request.getParameter("Filter"));
         if (request.getParameter("Sort")!=null) {
             request.getSession().setAttribute("Sort", request.getParameter("Sort"));
+            log.info("Attribute \"Sort\" set to session => " + request.getParameter("Sort"));
         }
         if (request.getParameter("Filter")!=null) {
             request.getSession().setAttribute("Filter", request.getParameter("Filter"));
+            log.info("Attribute \"Filter\" set to session => " + request.getParameter("Filter"));
         }
         String filter = (String)request.getSession().getAttribute("Filter");
         String sort = (String)request.getSession().getAttribute("Sort");
@@ -35,6 +37,7 @@ public class GetProducts implements Command {
             }
 
         } catch (SQLException e) {
+            log.error("Failed to get all directions");
             throw new DBException(e.getMessage(), e.getCause());
         }
 
@@ -43,6 +46,7 @@ public class GetProducts implements Command {
         }
 
         request.setAttribute("products", directions);
+        log.info("Attribute \"products\" set");
         return "main.jsp";
     }
 }

@@ -1,5 +1,6 @@
-package com.example.epamproj.command;
+package com.example.epamproj.unused;
 
+import com.example.epamproj.command.Command;
 import com.example.epamproj.dao.DBException;
 import com.example.epamproj.dao.UserDAO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,17 +10,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 
-public class DeleteCommand implements Command{
+public class DeleteCommand implements Command {
     private static Logger log = LogManager.getLogger(DeleteCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         String login = request.getParameter("login");
-        log.info("execute(): delete login => " + login);
         try {
             UserDAO.getInstance().deleteByLogin(login);
-            log.info("execute(): User \"" + login + "\" was deleted successfully");
+            log.info("User \"" + login + "\" was deleted successfully");
         } catch (SQLException e) {
-            log.error("execute(): Cannot delete user \"" + login + "\"");
+            log.error("Cannot delete user \"" + login + "\"");
             throw new DBException(e.getMessage(), e.getCause());
         }
         try {

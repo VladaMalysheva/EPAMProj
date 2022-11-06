@@ -104,12 +104,7 @@ public class DirectionDAO implements AbstractDirectionDAO{
     @Override
     public List<Direction> getAll() throws SQLException {
         List<Direction> res = new ArrayList<>();
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Connection connection = connectionPool.getConnection();
         Statement st = null;
         ResultSet rs = null;
         try {
@@ -119,13 +114,9 @@ public class DirectionDAO implements AbstractDirectionDAO{
                 prepareDirection(res, rs);
             }
         } finally {
-            try {
                 rs.close();
                 st.close();
                 connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
         return res;
     }

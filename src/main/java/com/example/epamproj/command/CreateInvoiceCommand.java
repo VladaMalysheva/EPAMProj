@@ -16,8 +16,6 @@ public class CreateInvoiceCommand implements Command {
     private static Logger log = LogManager.getLogger(CreateInvoiceCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
-        log.info("parameter date => " + request.getParameter("date"));
-        log.info("parameter details => " + request.getParameter("details"));
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         Date date = null;
         try {

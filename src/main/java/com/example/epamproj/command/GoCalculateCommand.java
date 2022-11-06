@@ -16,9 +16,7 @@ public class GoCalculateCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException{
         int id = Integer.parseInt(request.getParameter("productId"));
-        log.info("id =>" + id);
         Direction direction = null;
-
         try {
             direction = DirectionDAO.getInstance().getById(id);
             log.info("direction => " + direction);
@@ -27,8 +25,9 @@ public class GoCalculateCommand implements Command {
             throw new DBException(e.getMessage(), e.getCause());
         }
         request.getSession().setAttribute("productCalc", direction);
-        log.info("request.getAttribute() => "+ (Direction)request.getAttribute("productCalc"));
-        request.getSession().setAttribute("totalPrice", null);
+        log.info("Attribute \"productCalc\" set");
+        request.getSession().removeAttribute("totalPrice");
+        log.info("Attribute \"totalPrice\" removed");
 
         return "/calculate.jsp";
     }

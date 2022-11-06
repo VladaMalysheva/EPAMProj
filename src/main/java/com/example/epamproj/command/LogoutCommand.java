@@ -13,11 +13,12 @@ public class LogoutCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         {
-            log.info("logout");
             if (request.getSession().getAttribute("user") != null) {
                 request.getSession().removeAttribute("user");
+                log.info("Attribute \"user\" removed from session");
                 return "/login.jsp";
             } else {
+                log.warn("user isn't logged in");
                 return "/index.jsp";
             }
         }

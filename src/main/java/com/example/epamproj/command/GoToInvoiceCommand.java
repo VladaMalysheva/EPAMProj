@@ -19,17 +19,16 @@ public class GoToInvoiceCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
-            log.info("parameter => " + (request.getParameter("orderId")));
             int orderId = Integer.parseInt(request.getParameter("orderId"));
-            log.info("order id => " + orderId);
             Order order = null;
             try {
                 order = OrderDAO.getInstance().getById(orderId);
-                log.info("order => " + order);
             } catch (SQLException e) {
+                log.error("Failed to get order from db");
                 throw new DBException(e.getMessage(), e.getCause());
             }
             request.setAttribute("orderInv", order);
+            log.info("Attribute \"orderInv\" set");
             return "/invoice.jsp";
         }else if (((User) request.getSession().getAttribute("user")).getRole().equals("client")) {
             int id = Integer.parseInt(request.getParameter("invoice"));
@@ -37,13 +36,14 @@ public class GoToInvoiceCommand implements Command {
             try {
                 invoice = InvoiceDAO.getInstance().getById(id);
             } catch (SQLException e) {
-                log.error("failed to get invoice from db");
+                log.error("Failed to get invoice from db");
                 throw new DBException(e.getMessage(), e.getCause());
             }
             request.setAttribute("invoice", invoice);
-            log.info("invoice id => " + invoice.getId());
+            log.info("Attribute \"invoice\" set");
             return "/invoice-user.jsp";
         }
+        log.warn("User is unregistered");
         return "/index.jsp";
     }
 }

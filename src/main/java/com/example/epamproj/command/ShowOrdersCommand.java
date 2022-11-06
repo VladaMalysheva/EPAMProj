@@ -24,15 +24,17 @@ public class ShowOrdersCommand implements Command {
         try {
             orders = OrderDAO.getInstance().getAll();
         } catch (SQLException e) {
+            log.error("Failed to get all orders from db");
             throw new DBException(e.getMessage(), e.getCause());
         }
         if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
             try {
                 orders.removeIf(o -> Objects.equals(o.getStatus(), "paid"));
             } catch (Exception e) {
-                log.error("cannot filter orders");
+                log.error("Cannot filter orders by \"paid\" status");
             }
             request.setAttribute("orders", orders);
+            log.info("Attribute \"orders\" set");
             return "/orders.jsp";
         }
         if (((User) request.getSession().getAttribute("user")).getRole().equals("client")) {
@@ -40,21 +42,26 @@ public class ShowOrdersCommand implements Command {
             try {
                 orders.removeIf(o ->  o.getUserId() != userId);
             } catch (Exception e) {
-                log.error("cannot filter orders");
+                log.error("Cannot filter orders by user Id");
             }
             List<Invoice> invoices = null;
             try {
                 invoices = InvoiceDAO.getInstance().getInvoicesByUser(userId);
                 request.getSession().setAttribute("user", UserDAO.getInstance().getById(userId));
+                log.info("Attribute \"user\" set to session => " + request.getSession().getAttribute("user"));
             } catch (SQLException e) {
+                log.error("Failed to get invoices by user from db");
                 throw new DBException(e.getMessage(), e.getCause());
             }
             request.setAttribute("orders", orders);
             request.setAttribute("invoices", invoices);
+
+            log.info("Attribute \"orders\" set");
+            log.info("Attribute \"invoices\" set");
             return "/user-cabinet.jsp";
         }
-
-        return null;
+        log.warn("User isn't registered");
+        return "/index.jsp";
 
     }
 }

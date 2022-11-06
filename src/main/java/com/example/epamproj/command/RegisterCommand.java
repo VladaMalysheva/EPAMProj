@@ -22,11 +22,12 @@ public class RegisterCommand implements Command{
         String password = request.getParameter("password");
         User user = new User("client", name, surname, patronymic, phone, login, password);
         request.getSession().setAttribute("user", user);
+        log.info("Attribute \"user\" set to session");
         try {
             UserDAO.getInstance().add(user);
-            log.info("execute(): user \"" + login + "\" added successfully");
+            log.info("User \"" + login + "\" added successfully");
         } catch (SQLException e) {
-            log.error("execute(): failed to add user \"" + login + "\"");
+            log.error("Failed to add user \"" + login + "\" to db");
             throw new DBException(e.getMessage(), e.getCause());
         }
 

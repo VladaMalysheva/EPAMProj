@@ -14,16 +14,24 @@ public class GoOrderCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
         if (request.getSession().getAttribute("user")==null){
+            log.warn("User is not registered");
+            log.warn("Access to the order page denied");
             return "/login.jsp";
         }else if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
+            log.warn("Admin cannot make order");
+            log.warn("Access to the order page denied");
             return "/index.jsp";
         }else {
             if (request.getSession().getAttribute("totalPrice")== null) {
+                log.warn("Total price isn't calculated");
+                log.warn("Access to the order page denied");
                 return "/calculate.jsp";
             }
             request.getSession().setAttribute("productOrd", (Direction) request.getSession().getAttribute("productCalc"));
-            request.getSession().setAttribute("productCalc",null);
+            request.getSession().removeAttribute("productCalc");
 
+            log.info("Attribute \"productOrd\" set to session");
+            log.info("Attribute \"productCalc\" removed from session");
 
             return "/order.jsp";
         }

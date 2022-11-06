@@ -1,5 +1,6 @@
 package com.example.epamproj.command;
 
+import com.example.epamproj.unused.DeleteCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,7 +36,7 @@ public class CommandContainer {
 
     public static Command getCommand(String commandName){
         Command res = commands.get(commandName);
-        log.info("getCommand(): name of the found command => " + res.getClass());
+        log.info("command => " + res.getClass().getSimpleName());
         return res;
     }
 }
