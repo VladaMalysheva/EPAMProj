@@ -109,31 +109,32 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
 
 
     @Override
-    public boolean add(Invoice entity, int orderId) throws SQLException {                  //FIXME
+    public boolean add(Invoice entity, int orderId) throws SQLException {
         Connection connection = connectionPool.getConnection();
         PreparedStatement st = null;
 
         try {
 
-//            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-//            connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setAutoCommit(false);
 
             st = connection.prepareStatement(ADD);
             st.setInt(1, entity.getOrderId());
             st.setDate(2, entity.getDate());
             st.setString(3, entity.getDetails());
             st.executeUpdate();
-            OrderDAO.getInstance().updateStatus("unpaid", orderId);
+            OrderDAO.getInstance().updateStatus("unpaid", orderId, connection);
 
-//            connection.commit();
+            connection.commit();
 
         } catch (SQLException e) {
             log.error("failed to add invoice or update order status");
-//            try {
-//                connection.rollback();
-//            } catch (SQLException ex) {
-//                log.error("failed to rollback");
-//            }
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                log.error("failed to rollback");
+                throw new SQLException();
+            }
             throw new SQLException(e);
         } finally {
             st.close();
@@ -168,6 +169,7 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
                 log.info("rolled back");
             } catch (SQLException ex){
                 log.error("failed to rollback");
+                throw new SQLException();
             }
             throw new SQLException(e);
         } finally {
