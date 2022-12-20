@@ -141,12 +141,28 @@ public class OrderDAO implements AbstractOrderDAO{
 
     @Override
     public boolean updateStatus(String status, int id) throws SQLException {
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement st = connection.prepareStatement(UPDATE_STATUS)) {
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement st = connection.prepareStatement(UPDATE_STATUS)) {
+//            connection.setAutoCommit(false);
+            st.setString(1, status);
+            st.setInt(2, id);
+            st.executeUpdate();
+//            connection.commit();
+        }
+//        catch (SQLException e){
+//            connection.rollback();
+//        }
+        return true;
+    }
+
+
+    public boolean updateStatus(String status, int id, Connection con) throws SQLException {
+        try (PreparedStatement st = con.prepareStatement(UPDATE_STATUS)) {
             st.setString(1, status);
             st.setInt(2, id);
             st.executeUpdate();
         }
+
         return true;
     }
 }

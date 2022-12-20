@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.DirectionDAO;
 import com.example.epamproj.dao.entities.Direction;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +15,7 @@ public class GoCalculateCommand implements Command {
 
     private static Logger log = LogManager.getLogger(GoCalculateCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException{
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
         int id = Integer.parseInt(request.getParameter("productId"));
         Direction direction = null;
         try {
@@ -22,7 +23,7 @@ public class GoCalculateCommand implements Command {
             log.info("direction => " + direction);
 
         } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
         request.getSession().setAttribute("productCalc", direction);
         log.info("Attribute \"productCalc\" set");

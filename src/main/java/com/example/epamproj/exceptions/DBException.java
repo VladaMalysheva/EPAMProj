@@ -1,4 +1,4 @@
-package com.example.epamproj.dao;
+package com.example.epamproj.exceptions;
 
 
 public class DBException extends Exception {
@@ -10,7 +10,7 @@ public class DBException extends Exception {
         super(message);
     }
 
-    public DBException(String message, Throwable cause) {
-        super(message, cause);
+    public DBException(String message, Exception ex) {
+        super(message, ex);
     }
 }

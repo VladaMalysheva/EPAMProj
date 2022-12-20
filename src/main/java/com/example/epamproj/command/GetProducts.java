@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.DirectionDAO;
 import com.example.epamproj.dao.entities.Direction;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ public class GetProducts implements Command {
 
     private static Logger log = LogManager.getLogger(GetProducts.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
         List<Direction> directions = null;
         log.info("Parameter \"Sort\" => " + request.getParameter("Sort"));
         log.info("Parameter \"Filter\" => " + request.getParameter("Filter"));
@@ -38,7 +39,7 @@ public class GetProducts implements Command {
 
         } catch (SQLException e) {
             log.error("Failed to get all directions");
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
 
         if (filter!= null && !filter.equals("None")) {

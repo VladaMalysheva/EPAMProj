@@ -17,6 +17,8 @@
 </head>
 <body>
 <%@include file="includes/navbar.jsp"%>
+<%@include file="includes/alert.jsp"%>
+
 
 <c:if test="${productCalc == null}">
 <div class="container py-5 ">

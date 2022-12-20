@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.OrderDAO;
 import com.example.epamproj.dao.entities.Direction;
 import com.example.epamproj.dao.entities.Order;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 public class OrderCommand implements Command {
     private static Logger log = LogManager.getLogger(OrderCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
         int userId = ((User) request.getSession().getAttribute("user")).getUserId();
         int directionId = ((Direction) request.getSession().getAttribute("productOrd")).getId();
         float weight = (float) request.getSession().getAttribute("weight");
@@ -33,7 +34,7 @@ public class OrderCommand implements Command {
             OrderDAO.getInstance().add(order);
         } catch (SQLException e) {
             log.error("Failed to add order to db");
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
         request.getSession().removeAttribute("productOrd");
         request.getSession().removeAttribute("weight");

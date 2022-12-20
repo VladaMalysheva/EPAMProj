@@ -1,7 +1,7 @@
 package com.example.epamproj.unused;
 
 import com.example.epamproj.command.Command;
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.UserDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,13 +20,13 @@ public class DeleteCommand implements Command {
             log.info("User \"" + login + "\" was deleted successfully");
         } catch (SQLException e) {
             log.error("Cannot delete user \"" + login + "\"");
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
         try {
             request.setAttribute("users", UserDAO.getInstance().getAll());
         } catch (SQLException e) {
             log.error("failed to get users from dao");
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
 
         return "/admin_page.jsp";

@@ -134,7 +134,7 @@
                 <form action="controller" method="post" name="form1">
                     <input name="command" value="topUp" type="hidden">
                     <label for="recipient-name" class="col-form-label">Enter summ:</label>
-                    <input type="text" class="form-control" id="recipient-name" name="money">
+                    <input type="text" class="form-control" id="recipient-name" name="money" pattern="([0-9]+[.])?[0-9]+" required>
                 </form>
             </div>
             <div class="modal-footer">

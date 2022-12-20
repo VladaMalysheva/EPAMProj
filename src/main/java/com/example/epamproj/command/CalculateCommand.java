@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.TariffDAO;
 import com.example.epamproj.dao.entities.Direction;
 import com.example.epamproj.dao.entities.Tariff;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 public class CalculateCommand implements Command {
     private static Logger log = LogManager.getLogger(CalculateCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
         Direction direction = (Direction) request.getSession().getAttribute("productCalc");
         log.info("Direction => " + direction.getName());
         float weight = Float.parseFloat(request.getParameter("Weight"));
@@ -28,7 +29,7 @@ public class CalculateCommand implements Command {
             tariffDistance = TariffDAO.getInstance().getByName("distance");
         } catch (SQLException e) {
             log.error("failed to get tariffs from DAO");
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
         float totalPrice = (float) ((tariffDimension.getValue()*dimension)
                 +(tariffWeight.getValue()*weight)+(tariffDistance.getValue()*direction.getDistance()));

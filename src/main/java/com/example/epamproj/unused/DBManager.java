@@ -1,6 +1,6 @@
 package com.example.epamproj.unused;
 
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.DBException;
 
 import java.sql.*;
 
@@ -57,14 +57,14 @@ public class DBManager {
             st.executeUpdate();
         } catch (SQLException e) {
             // log exception
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }finally {
             assert st != null;
             try {
                 st.close();
                 con.close();
             } catch (SQLException e) {
-                throw new DBException(e.getMessage(), e.getCause());
+                throw new DBException(e.getMessage(), e);
             }
 
         }
@@ -89,14 +89,14 @@ public class DBManager {
 
         } catch (SQLException e) {
             //log exception
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }finally {
             assert st != null;
             try {
                 st.close();
                 con.close();
             } catch (SQLException e) {
-                throw new DBException(e.getMessage(), e.getCause());
+                throw new DBException(e.getMessage(), e);
             }
 
         }
@@ -116,14 +116,14 @@ public class DBManager {
             st.close();
             con.close();
         } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }finally {
             try {
                 assert st != null;
                 st.close();
                 con.close();
             } catch (SQLException e) {
-                throw new DBException(e.getMessage(), e.getCause());
+                throw new DBException(e.getMessage(), e);
             }
         }
 

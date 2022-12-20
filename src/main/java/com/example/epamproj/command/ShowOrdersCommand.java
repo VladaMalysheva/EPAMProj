@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.InvoiceDAO;
 import com.example.epamproj.dao.OrderDAO;
 import com.example.epamproj.dao.UserDAO;
@@ -19,13 +20,13 @@ import java.util.Objects;
 public class ShowOrdersCommand implements Command {
     private static Logger log = LogManager.getLogger(ShowOrdersCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
         List<Order> orders = null;
         try {
             orders = OrderDAO.getInstance().getAll();
         } catch (SQLException e) {
             log.error("Failed to get all orders from db");
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
         if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
             try {
@@ -51,7 +52,7 @@ public class ShowOrdersCommand implements Command {
                 log.info("Attribute \"user\" set to session => " + request.getSession().getAttribute("user"));
             } catch (SQLException e) {
                 log.error("Failed to get invoices by user from db");
-                throw new DBException(e.getMessage(), e.getCause());
+                throw new DBException(e.getMessage(), e);
             }
             request.setAttribute("orders", orders);
             request.setAttribute("invoices", invoices);

@@ -21,8 +21,10 @@
 <body>
 <%@include file="includes/navbar.jsp"%>
 
-<div class="container">
-    <div class="card w-50 mx-auto my-5">
+
+<div class="container my-2">
+    <%@include file="includes/alert.jsp"%>
+    <div class="card w-50 mx-auto my-4">
         <div class="card-header text-center">User Register</div>
         <div class="card-body">
             <form method="post" action="controller">
@@ -44,8 +46,8 @@
                     <input type="tel" name="phone" class="form-control" pattern="[+]380\d{9}$" placeholder="+380*********">
                 </div>
                 <div class="form-group">
-                    <label>Login <b style="color: red">*</b></label>
-                    <input type="text" name="login" class="form-control" required placeholder="Enter login">
+                    <label>Login <b style="color: red">*</b><b style="font-size: small; font-weight: lighter ">Must begin with letter and end with number or letter(. and - allowed)</b> </label>
+                    <input type="text" name="login" class="form-control" pattern="^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$" required placeholder="Enter login">
                 </div>
                 <div class="form-group">
                     <label>Password <b style="color: red">*</b></label>

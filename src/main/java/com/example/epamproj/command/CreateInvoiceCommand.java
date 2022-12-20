@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.InvoiceDAO;
 import com.example.epamproj.dao.entities.Invoice;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ public class CreateInvoiceCommand implements Command {
 
     private static Logger log = LogManager.getLogger(CreateInvoiceCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         Date date = null;
         try {
@@ -30,7 +31,7 @@ public class CreateInvoiceCommand implements Command {
 
         } catch (SQLException e) {
             log.error("failed to add invoice to dao or to update status");
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
         return "/controller?command=showOrders";
     }

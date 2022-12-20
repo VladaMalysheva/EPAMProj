@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.entities.Direction;
 import com.example.epamproj.dao.entities.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,20 +13,23 @@ public class GoOrderCommand implements Command {
 
     private static Logger log = LogManager.getLogger(GoOrderCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
         if (request.getSession().getAttribute("user")==null){
             log.warn("User is not registered");
             log.warn("Access to the order page denied");
-            return "/login.jsp";
+            throw new AlertException("You're not signed in", "/login.jsp");
+//            return "/login.jsp";
         }else if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
             log.warn("Admin cannot make order");
             log.warn("Access to the order page denied");
-            return "/index.jsp";
+            throw new AlertException("You should be client to make an order", "/calculate.jsp");
+//            return "/index.jsp";
         }else {
             if (request.getSession().getAttribute("totalPrice")== null) {
                 log.warn("Total price isn't calculated");
                 log.warn("Access to the order page denied");
-                return "/calculate.jsp";
+                throw new AlertException("You should calculate the price first", "/calculate.jsp");
+//                return "/calculate.jsp";
             }
             request.getSession().setAttribute("productOrd", (Direction) request.getSession().getAttribute("productCalc"));
             request.getSession().removeAttribute("productCalc");

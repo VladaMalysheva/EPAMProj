@@ -1,6 +1,7 @@
 package com.example.epamproj.controller;
 
-import com.example.epamproj.dao.UserDAO;
+import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.command.Command;
 import com.example.epamproj.command.CommandContainer;
 import jakarta.servlet.*;
@@ -10,8 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -32,9 +31,18 @@ public class Controller extends HttpServlet {
         Command command = CommandContainer.getCommand(commandName);
         try {
             address = command.execute(request, response);
-        } catch (Exception e) {
+        } catch (AlertException e) {
+            request.getSession().setAttribute("Alert", e);
             log.error("Failed to execute command \"" + commandName + "\"");
-            request.setAttribute("e", e);
+            log.info("Created an alert");
+            String addressAlert = e.getAddress();
+            request.getRequestDispatcher(addressAlert).forward(request, response);
+            log.info("forwarded to " + addressAlert);
+        } catch (DBException ex){
+            log.error("Failed to execute command \"" + commandName + "\"");
+            log.info("Redirected to the error page");
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
+            log.info("forwarded to \"/error.jsp\"");
         }
         request.getRequestDispatcher(address).forward(request, response);
         log.info("forwarded to " + address);
@@ -67,9 +75,15 @@ public class Controller extends HttpServlet {
         try {
             address = command.execute(request, response);
 //            log.info("address => " + address);
-        } catch (Exception e) {
-            request.getSession().setAttribute("e", e);
+        } catch (AlertException e) {
+            request.getSession().setAttribute("Alert", e);
             log.error("Failed to execute command \"" + commandName + "\"");
+            log.info("Created an alert");
+            address = e.getAddress();
+        } catch (DBException ex){
+            log.error("Failed to execute command \"" + commandName + "\"");
+            log.info("Redirected to the error page");
+            address = "/error.jsp";
         }
         response.sendRedirect(address);
         log.info("redirected to " + address);

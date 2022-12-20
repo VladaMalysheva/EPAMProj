@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
-import com.example.epamproj.dao.DBException;
+import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.ReportDAO;
 import com.example.epamproj.dao.entities.Report;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,13 +16,13 @@ import java.util.Objects;
 public class ShowReportsCommand implements Command {
     private static Logger log = LogManager.getLogger(ShowReportsCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
         List<Report> reports = null;
         try {
             reports = ReportDAO.getInstance().getAll();
         } catch (SQLException e) {
             log.error("Failed to get reports from db");
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
         try {
             if (request.getParameter("reportsFilter") != null && !Objects.equals(request.getParameter("reportsFilter"), "None")) {
@@ -33,7 +34,7 @@ public class ShowReportsCommand implements Command {
             log.info("Attribute \"reports\" set");
         } catch (Exception e) {
             log.error("Failed to filter reports");
-            throw new DBException(e.getMessage(), e.getCause());
+            throw new DBException(e.getMessage(), e);
         }
 
         return "/reports.jsp";

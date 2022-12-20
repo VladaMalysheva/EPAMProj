@@ -16,6 +16,8 @@
 <body>
 
 <%@include file="includes/navbar.jsp"%>
+<%@include file="includes/alert.jsp"%>
+
 
 <div class="jumbotron jumbotron-fluid" style="background-image: url(images/banner4.jpg);">
     <div class="container">

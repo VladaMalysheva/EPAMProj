@@ -1,6 +1,7 @@
 package com.example.epamproj.dao;
 
 import com.example.epamproj.dao.entities.User;
+import com.example.epamproj.exceptions.AlertException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -168,6 +169,7 @@ public class UserDAO implements AbstractUserDAO{
                 user.setPassword(rs.getString(8));
                 user.setCash(rs.getDouble(9));
             }
+            if(user == null)throw new SQLException();
         } finally {
             rs.close();
             ps.close();
@@ -179,8 +181,23 @@ public class UserDAO implements AbstractUserDAO{
 
     @Override
     public void withdrawMoney(int id, double money) throws SQLException {
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement st = connection.prepareStatement(WITHDRAW_MONEY)) {
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement st = connection.prepareStatement(WITHDRAW_MONEY)) {
+//            connection.setAutoCommit(false);
+            if(getById(id).getCash()<money)throw new SQLException();
+            st.setDouble(1, money);
+            st.setInt(2, id);
+            st.executeUpdate();
+//            connection.commit();
+        }
+//        catch (SQLException e) {
+//            connection.rollback();
+//        }
+    }
+
+    public void withdrawMoney(int id, double money, Connection con) throws SQLException {
+        try (PreparedStatement st = con.prepareStatement(WITHDRAW_MONEY)) {
+            if(getById(id).getCash()<money)throw new SQLException();
             st.setDouble(1, money);
             st.setInt(2, id);
             st.executeUpdate();

@@ -20,7 +20,7 @@
 </head>
 <body>
 <%@include file="includes/navbar.jsp"%>
-
+<%@include file="includes/alert.jsp"%>
 <div class="container">
     <div class="card w-50 mx-auto my-5">
         <div class="card-header text-center">User Log in</div>
@@ -29,7 +29,7 @@
                 <input name="command" value="login" type="hidden">
                 <div class="form-group">
                     <label>Login</label>
-                    <input type="text" name="login" class="form-control" required placeholder="Enter login">
+                    <input type="text" name="login" class="form-control" pattern="^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$" required placeholder="Enter login">
                 </div>
                 <div class="form-group">
                     <label>Password</label>

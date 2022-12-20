@@ -19,6 +19,7 @@
 </head>
 <body>
 <jsp:include page="includes/navbar.jsp"/>
+<%@include file="includes/alert.jsp"%>
 
 <c:if test="${productOrd == null}">
 <div class="container py-5 ">

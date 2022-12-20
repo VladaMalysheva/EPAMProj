@@ -129,11 +129,11 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
 
         } catch (SQLException e) {
             log.error("failed to add invoice or update order status");
-            try {
-                connection.rollback();
-            } catch (SQLException ex) {
-                log.error("failed to rollback");
-            }
+//            try {
+//                connection.rollback();
+//            } catch (SQLException ex) {
+//                log.error("failed to rollback");
+//            }
             throw new SQLException(e);
         } finally {
             st.close();
@@ -150,14 +150,14 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
             connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             connection.setAutoCommit(false);
 
-            changeStatus(invId, "inactive");                                        //deactivate invoice
+            changeStatus(invId, "inactive", connection);                                        //deactivate invoice
             Invoice invoice = getById(invId);
             UserDAO.getInstance().withdrawMoney(invoice.getOrder().getUserId(),
-                    invoice.getOrder().getTotalPrice());                                  //withdraw money
+                    invoice.getOrder().getTotalPrice(), connection);                                  //withdraw money
             long millis=System.currentTimeMillis();
             Date date=new Date(millis);
-            ReportDAO.getInstance().add(new Report(invId, date));                       //create report
-            OrderDAO.getInstance().updateStatus("paid", invoice.getOrderId());      //change order status
+            ReportDAO.getInstance().add(new Report(invId, date), connection);                       //create report
+            OrderDAO.getInstance().updateStatus("paid", invoice.getOrderId(), connection);      //change order status
 
             connection.commit();
         } catch (SQLException e) {
@@ -165,6 +165,7 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
 
             try{
                 connection.rollback();
+                log.info("rolled back");
             } catch (SQLException ex){
                 log.error("failed to rollback");
             }
@@ -177,8 +178,19 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
 
     @Override
     public boolean changeStatus(int id, String status) throws SQLException {
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement st = connection.prepareStatement(UPDATE_STATUS)) {
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement st = connection.prepareStatement(UPDATE_STATUS)) {
+//            connection.setAutoCommit(false);
+            st.setString(1, status);
+            st.setInt(2, id);
+            st.executeUpdate();
+//            connection.commit();
+        }
+        return true;
+    }
+
+    public boolean changeStatus(int id, String status, Connection con) throws SQLException {
+        try (PreparedStatement st = con.prepareStatement(UPDATE_STATUS)) {
             st.setString(1, status);
             st.setInt(2, id);
             st.executeUpdate();

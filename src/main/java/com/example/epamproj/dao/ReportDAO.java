@@ -74,8 +74,22 @@ public class ReportDAO implements AbstractReportDAO{
 
     @Override
     public boolean add(Report entity) throws SQLException {
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement st = connection.prepareStatement(ADD_REPORT)) {
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement st = connection.prepareStatement(ADD_REPORT)) {
+//            connection.setAutoCommit(false);
+            st.setInt(1, entity.getInvoiceId());
+            st.setDate(2, entity.getDateOfPaying());
+            st.executeUpdate();
+//            connection.commit();
+        }
+//        catch (SQLException e) {
+//            connection.rollback();
+//        }
+        return true;
+    }
+
+    public boolean add(Report entity, Connection con) throws SQLException {
+        try (PreparedStatement st = con.prepareStatement(ADD_REPORT)) {
             st.setInt(1, entity.getInvoiceId());
             st.setDate(2, entity.getDateOfPaying());
             st.executeUpdate();
