@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
 import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.AppException;
 import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.InvoiceDAO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,8 +14,8 @@ import java.sql.SQLException;
 public class PayInvoiceCommand implements Command {
     private static final Logger log = LogManager.getLogger(PayInvoiceCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        int invId = Integer.parseInt(request.getParameter("invoice"));
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
+        int invId = Integer.parseInt(request.getParameter("invoice"));    //TODO Add parameters check
         try {
             InvoiceDAO.getInstance().pay(invId);
         } catch (SQLException e) {

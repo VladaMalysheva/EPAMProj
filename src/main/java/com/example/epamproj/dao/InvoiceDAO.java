@@ -82,6 +82,10 @@ public class InvoiceDAO implements AbstractInvoiceDAO{
                 invoice = new Invoice();
                 createVariable(rs, invoice);
             }
+            if(invoice == null){
+                log.error("Invoice wasn't found in db");
+                throw new SQLException("Invoice wasn't found in db");
+            }
         } finally {
             rs.close();
             ps.close();

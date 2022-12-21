@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
 import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.AppException;
 import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.DirectionDAO;
 import com.example.epamproj.dao.entities.Direction;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.appender.AppenderLoggingException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,7 +18,7 @@ public class GetProducts implements Command {
 
     private static Logger log = LogManager.getLogger(GetProducts.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
         List<Direction> directions = null;
         log.info("Parameter \"Sort\" => " + request.getParameter("Sort"));
         log.info("Parameter \"Filter\" => " + request.getParameter("Filter"));
@@ -39,7 +41,7 @@ public class GetProducts implements Command {
 
         } catch (SQLException e) {
             log.error("Failed to get all directions");
-            throw new DBException(e.getMessage(), e);
+            throw new DBException("Failed to get all directions", e);
         }
 
         if (filter!= null && !filter.equals("None")) {

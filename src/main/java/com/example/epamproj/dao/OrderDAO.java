@@ -90,6 +90,10 @@ public class OrderDAO implements AbstractOrderDAO{
                 order = new Order();
                 prepareOrder(rs, order);
             }
+            if(order == null){
+                log.error("Can't find order in database");
+                throw new SQLException("Can't find order in database");
+            }
         } finally {
             rs.close();
             ps.close();

@@ -16,9 +16,9 @@ public class CalculateCommand implements Command {
     private static Logger log = LogManager.getLogger(CalculateCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        Direction direction = (Direction) request.getSession().getAttribute("productCalc");
+        Direction direction = (Direction) request.getSession().getAttribute("productCalc");    //TODO Add parameters check
         log.info("Direction => " + direction.getName());
-        float weight = Float.parseFloat(request.getParameter("Weight"));
+        float weight = Float.parseFloat(request.getParameter("Weight"));     //TODO Add parameters check
         float dimension = Float.parseFloat(request.getParameter("Dimension"));
         Tariff tariffWeight = null;
         Tariff tariffDistance = null;
@@ -29,7 +29,7 @@ public class CalculateCommand implements Command {
             tariffDistance = TariffDAO.getInstance().getByName("distance");
         } catch (SQLException e) {
             log.error("failed to get tariffs from DAO");
-            throw new DBException(e.getMessage(), e);
+            throw new DBException("Failed to get tariffs from DAO", e);
         }
         float totalPrice = (float) ((tariffDimension.getValue()*dimension)
                 +(tariffWeight.getValue()*weight)+(tariffDistance.getValue()*direction.getDistance()));

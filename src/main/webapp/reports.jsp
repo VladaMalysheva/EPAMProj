@@ -8,6 +8,8 @@
 </head>
 <body>
 <%@include file="includes/navbar.jsp"%>
+<%@include file="includes/alert.jsp"%>
+
 <div class="container-fluid w-75">
     <div class="h3 py-3">Reports:</div>
     <form class="form-inline" action="controller" method="get">

@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
 import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.AppException;
 import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.UserDAO;
 import com.example.epamproj.dao.entities.User;
@@ -15,8 +16,8 @@ public class LoginCommand implements Command{
 
     private static final Logger log = LogManager.getLogger(LoginCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        String login = request.getParameter("login");
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
+        String login = request.getParameter("login");          //TODO Add parameters check
         String password = request.getParameter("password");
         User user = null;
         try {

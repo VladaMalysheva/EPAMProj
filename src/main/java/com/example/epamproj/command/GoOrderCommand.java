@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
 import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.AppException;
 import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.entities.Direction;
 import com.example.epamproj.dao.entities.User;
@@ -13,7 +14,7 @@ public class GoOrderCommand implements Command {
 
     private static Logger log = LogManager.getLogger(GoOrderCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
         if (request.getSession().getAttribute("user")==null){
             log.warn("User is not registered");
             log.warn("Access to the order page denied");
