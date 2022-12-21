@@ -1,5 +1,6 @@
 package com.example.epamproj.command;
 import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.AppException;
 import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.UserDAO;
 import com.example.epamproj.dao.entities.User;
@@ -16,7 +17,7 @@ public class RegisterCommand implements Command{
 
     private static final Logger log = LogManager.getLogger(RegisterCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
         String name = request.getParameter("name");                  //TODO Add parameters check
         String surname = request.getParameter("surname");
         String patronymic = request.getParameter("patronymic");
@@ -30,7 +31,7 @@ public class RegisterCommand implements Command{
             }
         } catch (SQLException e) {
             log.error("Failed to get user by login from db");
-            throw new DBException(e.getMessage(), e);
+            throw new DBException("Failed to get user by login from db", e);
         }
         User user = new User("client", name, surname, patronymic, phone, login, password);
         request.getSession().setAttribute("user", user);
@@ -40,7 +41,7 @@ public class RegisterCommand implements Command{
             log.info("User \"" + login + "\" added successfully");
         } catch (SQLException e) {
             log.error("Failed to add user \"" + login + "\" to db");
-            throw new DBException(e.getMessage(), e);
+            throw new DBException("Failed to add user to db", e);
         }
 
         return "/index.jsp";

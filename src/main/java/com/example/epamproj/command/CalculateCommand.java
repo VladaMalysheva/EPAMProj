@@ -29,7 +29,7 @@ public class CalculateCommand implements Command {
             tariffDistance = TariffDAO.getInstance().getByName("distance");
         } catch (SQLException e) {
             log.error("failed to get tariffs from DAO");
-            throw new DBException(e.getMessage(), e);
+            throw new DBException("Failed to get tariffs from DAO", e);
         }
         float totalPrice = (float) ((tariffDimension.getValue()*dimension)
                 +(tariffWeight.getValue()*weight)+(tariffDistance.getValue()*direction.getDistance()));

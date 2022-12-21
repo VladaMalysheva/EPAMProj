@@ -1,6 +1,7 @@
 package com.example.epamproj.controller;
 
 import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.AppException;
 import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.command.Command;
 import com.example.epamproj.command.CommandContainer;
@@ -38,7 +39,7 @@ public class Controller extends HttpServlet {
             String addressAlert = e.getAddress();
             request.getRequestDispatcher(addressAlert).forward(request, response);
             log.info("forwarded to " + addressAlert);
-        } catch (DBException ex){
+        } catch (AppException ex){
             log.error("Failed to execute command \"" + commandName + "\"");
             log.info("Redirected to the error page");
             request.getRequestDispatcher("/error.jsp").forward(request, response);
@@ -80,7 +81,7 @@ public class Controller extends HttpServlet {
             log.error("Failed to execute command \"" + commandName + "\"");
             log.info("Created an alert");
             address = e.getAddress();
-        } catch (DBException ex){
+        } catch (AppException ex){
             log.error("Failed to execute command \"" + commandName + "\"");
             log.info("Redirected to the error page");
             address = "/error.jsp";

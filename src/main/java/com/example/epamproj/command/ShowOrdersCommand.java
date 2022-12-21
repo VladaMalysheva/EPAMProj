@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
 import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.AppException;
 import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.InvoiceDAO;
 import com.example.epamproj.dao.OrderDAO;
@@ -20,20 +21,20 @@ import java.util.Objects;
 public class ShowOrdersCommand implements Command {
     private static Logger log = LogManager.getLogger(ShowOrdersCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
         List<Order> orders = null;
         try {
             orders = OrderDAO.getInstance().getAll();
         } catch (SQLException e) {
             log.error("Failed to get all orders from db");
-            throw new DBException(e.getMessage(), e);
+            throw new DBException("Failed to get all orders from db", e);
         }
         if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
             try {
                 orders.removeIf(o -> Objects.equals(o.getStatus(), "paid"));
-            } catch (Exception e) {                         //TODO make new type of exception here
+            } catch (Exception e) {
                 log.error("Cannot filter orders by \"paid\" status");
-                throw new AlertException("Cannot filter orders by \"paid\" status", "/orders.jsp");
+                throw new AppException("Cannot filter orders by \"paid\" status", e);
             }
             request.setAttribute("orders", orders);
             log.info("Attribute \"orders\" set");
@@ -45,7 +46,7 @@ public class ShowOrdersCommand implements Command {
                 orders.removeIf(o ->  o.getUserId() != userId);
             } catch (Exception e) {                       //TODO make new type of exception here
                 log.error("Cannot filter orders by user Id");
-                throw new AlertException("Cannot filter orders by user Id", "/user-cabinet.jsp");
+                throw new AppException("Cannot filter orders by user Id", e);
             }
             List<Invoice> invoices = null;
             try {
@@ -54,7 +55,7 @@ public class ShowOrdersCommand implements Command {
                 log.info("Attribute \"user\" set to session => " + request.getSession().getAttribute("user"));
             } catch (SQLException e) {
                 log.error("Failed to get invoices by user from db");
-                throw new DBException(e.getMessage(), e);
+                throw new DBException("Failed to get invoices by user from db", e);
             }
             request.setAttribute("orders", orders);
             request.setAttribute("invoices", invoices);

@@ -1,6 +1,7 @@
 package com.example.epamproj.command;
 
 import com.example.epamproj.exceptions.AlertException;
+import com.example.epamproj.exceptions.AppException;
 import com.example.epamproj.exceptions.DBException;
 import com.example.epamproj.dao.InvoiceDAO;
 import com.example.epamproj.dao.OrderDAO;
@@ -18,7 +19,7 @@ public class GoToInvoiceCommand implements Command {
 
     private static Logger log = LogManager.getLogger(GoToInvoiceCommand.class.getName());
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
         if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
             int orderId = Integer.parseInt(request.getParameter("orderId"));   //TODO Add parameters check
             Order order = null;
@@ -26,7 +27,7 @@ public class GoToInvoiceCommand implements Command {
                 order = OrderDAO.getInstance().getById(orderId);
             } catch (SQLException e) {
                 log.error("Failed to get order from db");
-                throw new DBException(e.getMessage(), e);
+                throw new DBException("Failed to get order from db", e);
             }
             request.setAttribute("orderInv", order);
             log.info("Attribute \"orderInv\" set");
@@ -38,7 +39,7 @@ public class GoToInvoiceCommand implements Command {
                 invoice = InvoiceDAO.getInstance().getById(id);
             } catch (SQLException e) {
                 log.error("Failed to get invoice from db");
-                throw new DBException(e.getMessage(), e);
+                throw new DBException("Failed to get invoice from db", e);
             }
             request.setAttribute("invoice", invoice);
             log.info("Attribute \"invoice\" set");
