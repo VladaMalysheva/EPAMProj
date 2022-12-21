@@ -16,7 +16,7 @@ public class LoginCommand implements Command{
     private static final Logger log = LogManager.getLogger(LoginCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        String login = request.getParameter("login");
+        String login = request.getParameter("login");          //TODO Add parameters check
         String password = request.getParameter("password");
         User user = null;
         try {

@@ -14,7 +14,7 @@ public class PayInvoiceCommand implements Command {
     private static final Logger log = LogManager.getLogger(PayInvoiceCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        int invId = Integer.parseInt(request.getParameter("invoice"));
+        int invId = Integer.parseInt(request.getParameter("invoice"));    //TODO Add parameters check
         try {
             InvoiceDAO.getInstance().pay(invId);
         } catch (SQLException e) {

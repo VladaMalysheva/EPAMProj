@@ -16,9 +16,9 @@ public class CalculateCommand implements Command {
     private static Logger log = LogManager.getLogger(CalculateCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        Direction direction = (Direction) request.getSession().getAttribute("productCalc");
+        Direction direction = (Direction) request.getSession().getAttribute("productCalc");    //TODO Add parameters check
         log.info("Direction => " + direction.getName());
-        float weight = Float.parseFloat(request.getParameter("Weight"));
+        float weight = Float.parseFloat(request.getParameter("Weight"));     //TODO Add parameters check
         float dimension = Float.parseFloat(request.getParameter("Dimension"));
         Tariff tariffWeight = null;
         Tariff tariffDistance = null;

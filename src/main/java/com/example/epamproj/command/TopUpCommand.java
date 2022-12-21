@@ -15,7 +15,7 @@ public class TopUpCommand implements Command {
     private static Logger log = LogManager.getLogger(TopUpCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        int id = ((User) request.getSession().getAttribute("user")).getUserId();
+        int id = ((User) request.getSession().getAttribute("user")).getUserId();   //TODO Add parameters check
         double money = Double.parseDouble(request.getParameter("money"));
         try {
             UserDAO.getInstance().topUp(id, money);

@@ -17,18 +17,19 @@ public class RegisterCommand implements Command{
     private static final Logger log = LogManager.getLogger(RegisterCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        String name = request.getParameter("name");
+        String name = request.getParameter("name");                  //TODO Add parameters check
         String surname = request.getParameter("surname");
         String patronymic = request.getParameter("patronymic");
         String phone = request.getParameter("phone");
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         try {
-            if(UserDAO.getInstance().getByLogin(login) != null){
+            if(UserDAO.getInstance().getByLogin(login) != null){        //TODO add more validation
                 log.error("login already exists");
                 throw new AlertException("login already exists", "/register.jsp");
             }
         } catch (SQLException e) {
+            log.error("Failed to get user by login from db");
             throw new DBException(e.getMessage(), e);
         }
         User user = new User("client", name, surname, patronymic, phone, login, password);

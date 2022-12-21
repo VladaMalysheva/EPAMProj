@@ -17,11 +17,11 @@ public class CreateInvoiceCommand implements Command {
     private static Logger log = LogManager.getLogger(CreateInvoiceCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        int orderId = Integer.parseInt(request.getParameter("orderId"));   //TODO Add parameters check
         Date date = null;
         try {
-            date = Date.valueOf(request.getParameter("date"));
-        }catch (Exception e){
+            date = Date.valueOf(request.getParameter("date"));  //TODO Add parameters check
+        }catch (Exception e){                         //TODO add new type of exception here
             log.error("Failed to convert date");
         }
         String details = request.getParameter("details");

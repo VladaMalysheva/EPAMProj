@@ -31,8 +31,9 @@ public class ShowOrdersCommand implements Command {
         if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
             try {
                 orders.removeIf(o -> Objects.equals(o.getStatus(), "paid"));
-            } catch (Exception e) {
+            } catch (Exception e) {                         //TODO make new type of exception here
                 log.error("Cannot filter orders by \"paid\" status");
+                throw new AlertException("Cannot filter orders by \"paid\" status", "/orders.jsp");
             }
             request.setAttribute("orders", orders);
             log.info("Attribute \"orders\" set");
@@ -42,8 +43,9 @@ public class ShowOrdersCommand implements Command {
             final int userId = ((User) request.getSession().getAttribute("user")).getUserId();
             try {
                 orders.removeIf(o ->  o.getUserId() != userId);
-            } catch (Exception e) {
+            } catch (Exception e) {                       //TODO make new type of exception here
                 log.error("Cannot filter orders by user Id");
+                throw new AlertException("Cannot filter orders by user Id", "/user-cabinet.jsp");
             }
             List<Invoice> invoices = null;
             try {
@@ -60,9 +62,10 @@ public class ShowOrdersCommand implements Command {
             log.info("Attribute \"orders\" set");
             log.info("Attribute \"invoices\" set");
             return "/user-cabinet.jsp";
+        }else{
+            log.warn("User isn't signed in");
+            throw new AlertException("You should be signed in to view your orders", "/index.jsp");
         }
-        log.warn("User isn't registered");
-        return "/index.jsp";
 
     }
 }

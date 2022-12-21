@@ -20,7 +20,7 @@ public class GoToInvoiceCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
         if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            int orderId = Integer.parseInt(request.getParameter("orderId"));   //TODO Add parameters check
             Order order = null;
             try {
                 order = OrderDAO.getInstance().getById(orderId);
@@ -32,7 +32,7 @@ public class GoToInvoiceCommand implements Command {
             log.info("Attribute \"orderInv\" set");
             return "/invoice.jsp";
         }else if (((User) request.getSession().getAttribute("user")).getRole().equals("client")) {
-            int id = Integer.parseInt(request.getParameter("invoice"));
+            int id = Integer.parseInt(request.getParameter("invoice"));    //TODO Add parameters check
             Invoice invoice = null;
             try {
                 invoice = InvoiceDAO.getInstance().getById(id);
@@ -43,8 +43,10 @@ public class GoToInvoiceCommand implements Command {
             request.setAttribute("invoice", invoice);
             log.info("Attribute \"invoice\" set");
             return "/invoice-user.jsp";
+        }else{
+            log.warn("User isn't signed in");
+            throw new AlertException("You should be signed in to view your invoice", "/index.jsp");
         }
-        log.warn("User is unregistered");
-        return "/index.jsp";
+
     }
 }

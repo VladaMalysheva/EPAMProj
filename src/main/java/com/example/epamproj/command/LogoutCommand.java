@@ -20,7 +20,7 @@ public class LogoutCommand implements Command {
                 return "/login.jsp";
             } else {
                 log.warn("user isn't logged in");
-                return "/index.jsp";
+                throw new AlertException("You can't exit your account if you're not signed in", "/index.jsp");
             }
         }
 

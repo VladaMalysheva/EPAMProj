@@ -17,7 +17,8 @@ public class ShowReportsCommand implements Command {
     private static Logger log = LogManager.getLogger(ShowReportsCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        List<Report> reports = null;
+        List<Report> reports = null;              //TODO check how jsp reacts on null instead of list
+        //TODO create date validation
         try {
             reports = ReportDAO.getInstance().getAll();
         } catch (SQLException e) {
@@ -32,7 +33,7 @@ public class ShowReportsCommand implements Command {
             }
             request.setAttribute("reports", reports);
             log.info("Attribute \"reports\" set");
-        } catch (Exception e) {
+        } catch (Exception e) {                  //TODO add new type of exception here
             log.error("Failed to filter reports");
             throw new DBException(e.getMessage(), e);
         }

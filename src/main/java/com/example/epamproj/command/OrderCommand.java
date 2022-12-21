@@ -18,7 +18,7 @@ public class OrderCommand implements Command {
     private static Logger log = LogManager.getLogger(OrderCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws DBException, AlertException {
-        int userId = ((User) request.getSession().getAttribute("user")).getUserId();
+        int userId = ((User) request.getSession().getAttribute("user")).getUserId();        //TODO Add parameters check
         int directionId = ((Direction) request.getSession().getAttribute("productOrd")).getId();
         float weight = (float) request.getSession().getAttribute("weight");
         float dimensions = (float) request.getSession().getAttribute("dimension");
