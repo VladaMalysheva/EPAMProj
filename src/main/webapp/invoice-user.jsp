@@ -11,9 +11,12 @@
 <head>
   <%@include file="includes/head.jsp"%>
 
+
   <title>Invoice user</title>
 </head>
 <body>
+<%@include file="includes/alert.jsp"%>
+
 <div class="d-flex justify-content-center align-items-center">
   <div class="card w-25 mt-4">
     <div class="card-header" style="background-color: antiquewhite;">

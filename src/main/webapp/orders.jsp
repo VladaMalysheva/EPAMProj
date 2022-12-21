@@ -11,6 +11,7 @@
 </head>
 <body>
 <%@include file="includes/navbar.jsp"%>
+<%@include file="includes/alert.jsp"%>
 
 <div class="container">
     <div class="h3 py-3">Orders:</div>

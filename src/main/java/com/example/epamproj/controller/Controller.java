@@ -40,6 +40,7 @@ public class Controller extends HttpServlet {
             request.getRequestDispatcher(addressAlert).forward(request, response);
             log.info("forwarded to " + addressAlert);
         } catch (AppException ex){
+            request.getSession().setAttribute("Exception", ex);
             log.error("Failed to execute command \"" + commandName + "\"");
             log.info("Redirected to the error page");
             request.getRequestDispatcher("/error.jsp").forward(request, response);
@@ -82,6 +83,7 @@ public class Controller extends HttpServlet {
             log.info("Created an alert");
             address = e.getAddress();
         } catch (AppException ex){
+            request.getSession().setAttribute("Exception", ex);
             log.error("Failed to execute command \"" + commandName + "\"");
             log.info("Redirected to the error page");
             address = "/error.jsp";

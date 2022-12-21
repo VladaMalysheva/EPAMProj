@@ -11,6 +11,7 @@
 <body>
 
 <%@include file="includes/navbar.jsp"%>
+<%@include file="includes/alert.jsp"%>
 
 <div class="container mt-5">
     <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
