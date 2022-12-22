@@ -80,7 +80,7 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="cargoType">Type of cargo</label>
-            <input type="text" class="form-control" id="cargoType" name="typeOfCargo" placeholder="" required>
+            <input type="text" class="form-control" id="cargoType" name="typeOfCargo" placeholder="" pattern="^[a-zA-Z]{1,50}$" required>
             <div class="invalid-feedback">
               Type of cargo is required
             </div>

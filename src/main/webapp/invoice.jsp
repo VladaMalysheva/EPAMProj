@@ -60,7 +60,7 @@
         <form action="controller" method="post">
           <div class="form-group">
             <label for="message-text" class="col-form-label">Details:</label>
-            <textarea class="form-control" id="message-text" name="details"></textarea>
+            <textarea class="form-control" id="message-text"  name="details"></textarea>
           <input name="command" value="createInvoice" type="hidden">
           <input name="date" value="${date}" type="hidden">
             <input name="orderId" value="${order.getId()}" type="hidden">

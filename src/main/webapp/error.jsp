@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <%@include file="includes/head.jsp"%>
+
     <title>Error</title>
 </head>
 <body>
@@ -17,7 +19,7 @@
 
             <h2 class="display-4">Opps! Something went wrong.</h2>
             <p class="lead pt-2">
-                Error message: ${Exception.getMessage}
+                Error message: ${Exception.getMessage()}
             </p>
             <div class="d-flex justify-content-center align-items-center pt-3">
                 <a href="index.jsp" class="btn btn-primary">Go Home</a>
@@ -26,5 +28,7 @@
     </div>
 </div>
 ${Exception = null}
+<%@include file="includes/footer.jsp"%>
+
 </body>
 </html>

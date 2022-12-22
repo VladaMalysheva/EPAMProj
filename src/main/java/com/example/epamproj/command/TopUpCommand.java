@@ -16,8 +16,17 @@ public class TopUpCommand implements Command {
     private static Logger log = LogManager.getLogger(TopUpCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
-        int id = ((User) request.getSession().getAttribute("user")).getUserId();   //TODO Add parameters check
-        double money = Double.parseDouble(request.getParameter("money"));
+        int id = ((User) request.getSession().getAttribute("user")).getUserId();
+        double money;
+        try {
+            money = Double.parseDouble(request.getParameter("money"));
+            if(money>Double.MAX_VALUE || money<Double.MIN_VALUE){
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            log.error("Cannot convert parameter \"money\" to double");
+            throw new AppException("Invalid value");
+        }
         try {
             UserDAO.getInstance().topUp(id, money);
         } catch (SQLException e) {
