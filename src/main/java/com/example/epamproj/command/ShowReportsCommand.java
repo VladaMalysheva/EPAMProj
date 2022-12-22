@@ -18,7 +18,7 @@ public class ShowReportsCommand implements Command {
     private static Logger log = LogManager.getLogger(ShowReportsCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
-        List<Report> reports = null;              //TODO check how jsp reacts on null instead of list
+        List<Report> reports = null;
         //TODO create date validation
         try {
             reports = ReportDAO.getInstance().getAll();

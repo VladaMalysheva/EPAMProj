@@ -79,15 +79,15 @@
         <input name="command" value="order" type="hidden">
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label for="cargoType">Type of cargo</label>
-            <input type="text" class="form-control" id="cargoType" name="typeOfCargo" placeholder="" pattern="^[a-zA-Z]{1,50}$" required>
+            <label for="cargoType">Type of cargo <small>max 50 characters</small></label>
+            <input type="text" class="form-control" id="cargoType" name="typeOfCargo" placeholder="" pattern="^(\w|\h){1,50}$" required>
             <div class="invalid-feedback">
               Type of cargo is required
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label for="exactAddress">Exact address</label>
-            <input type="text" class="form-control" id="exactAddress" name="exactAddress" placeholder="" required>
+            <label for="exactAddress">Exact address <small>max 50 characters</small></label>
+            <input type="text" class="form-control" id="exactAddress" name="exactAddress" placeholder="" pattern="^(\w|\h|\W){1,50}$" required>
             <div class="invalid-feedback">
               Exact address is required
             </div>
@@ -95,17 +95,17 @@
         </div>
 
         <label for="cc-number">Date of delivery</label>
-        <input type="date" class="form-control" id="cc-number" name="dateOfDelivery" placeholder="" required>
+        <input type="date" class="form-control" id="cc-number" name="dateOfDelivery" placeholder="" min='1899-01-01' required>
         <div class="invalid-feedback">
           Exact address is required
         </div>
 
         <div class="input-group mb-3 mt-4 ">
           <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+            <label class="input-group-text" for="inputGroupSelect01">Point of departure</label>
           </div>
           <select class="custom-select" id="inputGroupSelect01" name="pointOfDeparture">
-            <option selected>Point of departure</option>
+<%--            <option selected>Point of departure</option>--%>
             <option value="${productOrd.getPlace1()}">${productOrd.getPlace1()}</option>
             <option value="${productOrd.getPlace2()}">${productOrd.getPlace2()}</option>
           </select>
@@ -113,12 +113,12 @@
 
         <div class="input-group mb-3 mt-3">
           <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect02">Options</label>
+            <label class="input-group-text" for="inputGroupSelect02">Destination</label>
           </div>
           <select class="custom-select" id="inputGroupSelect02" name="destination">
-            <option selected>Destination</option>
-            <option value="${productOrd.getPlace1()}">${productOrd.getPlace1()}</option>
-            <option value="${productOrd.getPlace2()}">${productOrd.getPlace2()}</option>
+<%--            <option selected>Destination</option>--%>
+  <option value="${productOrd.getPlace2()}">${productOrd.getPlace2()}</option>
+  <option value="${productOrd.getPlace1()}">${productOrd.getPlace1()}</option>
           </select>
         </div>
 
@@ -136,3 +136,21 @@
 <%@include file="includes/footer.jsp"%>
 </body>
 </html>
+
+<script>
+  var today = new Date();
+  var dd = today.getDate()+1;
+  var mm = today.getMonth() + 1;
+  var yyyy = today.getFullYear();
+
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+
+  today = yyyy + '-' + mm + '-' + dd;
+  document.getElementById("cc-number").setAttribute("min", today);
+</script>

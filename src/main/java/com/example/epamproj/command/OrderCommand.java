@@ -25,10 +25,13 @@ public class OrderCommand implements Command {
         float dimensions = (float) request.getSession().getAttribute("dimension");
         double totalPrice = (float) request.getSession().getAttribute("totalPrice");
         String typeOfCargo = request.getParameter("typeOfCargo");
-        Date date = Date.valueOf(request.getParameter("dateOfDelivery"));
         String address = request.getParameter("exactAddress");
+        Date date = Date.valueOf(request.getParameter("dateOfDelivery"));
         String pointOfDeparture = request.getParameter("pointOfDeparture");
         String destination = request.getParameter("destination");
+        if(pointOfDeparture.equals(destination)){
+            throw new AlertException("Destination and point of departure should be different", "/order.jsp");
+        }
         Order order = new Order(date, directionId, userId, weight, dimensions,
                 totalPrice, typeOfCargo, address, pointOfDeparture, destination);
         try{
