@@ -21,7 +21,7 @@ public class GoToInvoiceCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
         if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
-            int orderId = Integer.parseInt(request.getParameter("orderId"));   //TODO Add parameters check
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
             Order order = null;
             try {
                 order = OrderDAO.getInstance().getById(orderId);

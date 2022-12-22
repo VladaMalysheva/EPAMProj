@@ -22,7 +22,7 @@ public class CalculateCommand implements Command {
         request.getSession().removeAttribute("totalPrice");
         Direction direction = (Direction) request.getSession().getAttribute("productCalc");
         log.info("Direction => " + direction.getName());
-        float weight = Float.parseFloat(request.getParameter("Weight"));     //TODO Add parameters check
+        float weight = Float.parseFloat(request.getParameter("Weight"));
         float dimension = Float.parseFloat(request.getParameter("Dimension"));
         if(!((weight>Float.MIN_VALUE&&weight<Float.MAX_VALUE) && (dimension>Float.MIN_VALUE&&dimension<Float.MAX_VALUE))){
             log.error("Numbers are too big or too small");

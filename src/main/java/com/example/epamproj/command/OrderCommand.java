@@ -19,7 +19,7 @@ public class OrderCommand implements Command {
     private static Logger log = LogManager.getLogger(OrderCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
-        int userId = ((User) request.getSession().getAttribute("user")).getUserId();        //TODO Add parameters check
+        int userId = ((User) request.getSession().getAttribute("user")).getUserId();
         int directionId = ((Direction) request.getSession().getAttribute("productOrd")).getId();
         float weight = (float) request.getSession().getAttribute("weight");
         float dimensions = (float) request.getSession().getAttribute("dimension");
@@ -30,6 +30,7 @@ public class OrderCommand implements Command {
         String pointOfDeparture = request.getParameter("pointOfDeparture");
         String destination = request.getParameter("destination");
         if(pointOfDeparture.equals(destination)){
+            log.error("Destination and point of departure should be different");
             throw new AlertException("Destination and point of departure should be different", "/order.jsp");
         }
         Order order = new Order(date, directionId, userId, weight, dimensions,

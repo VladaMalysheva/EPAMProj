@@ -17,7 +17,7 @@ public class GoCalculateCommand implements Command {
     private static Logger log = LogManager.getLogger(GoCalculateCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
-        int id = Integer.parseInt(request.getParameter("productId"));    //TODO Add parameters check
+        int id = Integer.parseInt(request.getParameter("productId"));
         Direction direction = null;
         try {
             direction = DirectionDAO.getInstance().getById(id);

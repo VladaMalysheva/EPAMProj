@@ -15,13 +15,13 @@
     <form class="form-inline" action="controller" method="get">
         <div class="form-group mb-2">
             <label for="inputDate" class="sr-only">Date</label>
-            <input type="date" class="form-control" id="inputDate" name="date" placeholder="date">
+            <input type="date" class="form-control" id="inputDate" required name="date" placeholder="date">
             <input type="hidden" name="command" value="showReports">
         </div>
-        <button type="submit" class="btn btn-primary mb-2 mx-3">Confirm date</button>
+        <button type="submit" class="btn btn-primary mb-2 mx-3">Confirm delivery date</button>
         <div class="dropdown mb-2">
             <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
+                Destination or point of departure
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" onclick="parentNode.submit();" href="${pageContext.request.contextPath}/controller?command=showReports&reportsFilter=Kyiv">Kyiv</a>
@@ -47,7 +47,7 @@
         <th scope="col">Surname</th>
         <th scope="col">Patronymic</th>
         <th scope="col">Type of cargo</th>
-        <th scope="col">Date creating invoice</th>
+        <th scope="col">Date of invoice creation</th>
         <th scope="col">Date of paying</th>
         <th scope="col">Date of delivery</th>
         <th scope="col">Point of departure</th>

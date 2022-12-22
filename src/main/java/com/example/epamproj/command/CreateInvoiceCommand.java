@@ -18,10 +18,10 @@ public class CreateInvoiceCommand implements Command {
     private static Logger log = LogManager.getLogger(CreateInvoiceCommand.class.getName());
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
-        int orderId = Integer.parseInt(request.getParameter("orderId"));   //TODO Add parameters check
+        int orderId = Integer.parseInt(request.getParameter("orderId"));
         Date date = null;
         try {
-            date = Date.valueOf(request.getParameter("date"));  //TODO Add parameters check
+            date = Date.valueOf(request.getParameter("date"));
         }catch (Exception e){
             log.error("Failed to convert date");
             throw new AppException("Failed to convert date", e);
