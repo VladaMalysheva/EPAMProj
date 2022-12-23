@@ -5,7 +5,7 @@
   Time: 18:26
   To change this template use File | Settings | File Templates.
 --%>
-<jsp:forward page="/controller?command=getProducts"/>
+<jsp:forward page="/controller?command=getProducts&pageId=1"/>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>

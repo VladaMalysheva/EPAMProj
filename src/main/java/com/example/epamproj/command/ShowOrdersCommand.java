@@ -44,7 +44,7 @@ public class ShowOrdersCommand implements Command {
             final int userId = ((User) request.getSession().getAttribute("user")).getUserId();
             try {
                 orders.removeIf(o ->  o.getUserId() != userId);
-            } catch (Exception e) {                       //TODO make new type of exception here
+            } catch (Exception e) {
                 log.error("Cannot filter orders by user Id");
                 throw new AppException("Cannot filter orders by user Id", e);
             }

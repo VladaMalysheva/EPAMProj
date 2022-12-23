@@ -115,15 +115,19 @@
 
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center pt-3">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                <c:if test="${pageId != 1}">
+                <li class="page-item" id="prev">
+                    <a class="page-link" href="${pageContext.request.contextPath}/controller?command=getProducts&pageId=${pageId - 1}" tabindex="-1">Previous</a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
+                </c:if>
+                <c:forEach begin="1" end="${noOfPages}" var="i">
+                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?command=getProducts&pageId=${i}">${i}</a></li>
+                </c:forEach>
+                <c:if test="${pageId lt noOfPages}">
+                    <li class="page-item" id="prev">
+                        <a class="page-link" href="${pageContext.request.contextPath}/controller?command=getProducts&pageId=${pageId + 1}" tabindex="-1">Next</a>
+                    </li>
+                </c:if>
             </ul>
         </nav>
     </div>
@@ -140,6 +144,7 @@
 
             document.forms.namedItem("foorm").submit();
         }
+
     </script>
 
     <style>

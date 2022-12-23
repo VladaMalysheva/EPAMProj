@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -25,7 +26,6 @@ public class Controller extends HttpServlet {
         log.info("Parameters: " + request.getParameterMap().keySet().stream()
                 .map(key -> key + "=" + Arrays.toString(request.getParameterMap().get(key)))
                 .collect(Collectors.joining(", ", "{", "}")));
-
 
         String address = "error_page.jsp";
         String commandName = request.getParameter("command");
