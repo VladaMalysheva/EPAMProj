@@ -115,6 +115,24 @@
 
                 </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center pt-3">
+                    <c:if test="${pageId != 1}">
+                        <li class="page-item" id="prev">
+                            <a class="page-link" href="${pageContext.request.contextPath}/controller?command=showOrders&pageId=${pageId - 1}" tabindex="-1">Previous</a>
+                        </li>
+                    </c:if>
+                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                        <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?command=showOrders&pageId=${i}">${i}</a></li>
+                    </c:forEach>
+                    <c:if test="${pageId lt noOfPages}">
+                        <li class="page-item" id="prev">
+                            <a class="page-link" href="${pageContext.request.contextPath}/controller?command=showOrders&pageId=${pageId + 1}" tabindex="-1">Next</a>
+                        </li>
+                    </c:if>
+                </ul>
+            </nav>
+            ${pageId=null}
 
         </div>
 

@@ -26,7 +26,7 @@
         </li>
         <c:if test="${(user != null) and (user.getRole() == 'admin')}">
         <li class="nav-item">
-          <a class="nav-link" href="controller?command=showOrders">Orders</a>
+          <a class="nav-link" href="controller?command=showOrders&pageId=1">Orders</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="controller?command=showReports">Reports</a>

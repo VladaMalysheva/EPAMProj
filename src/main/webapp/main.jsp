@@ -131,6 +131,7 @@
             </ul>
         </nav>
     </div>
+        ${pageId = null}
 </div>
 
     <script>

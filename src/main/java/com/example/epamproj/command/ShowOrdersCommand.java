@@ -23,32 +23,61 @@ public class ShowOrdersCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws AppException, AlertException {
         List<Order> orders = null;
+
         try {
             orders = OrderDAO.getInstance().getAll();
         } catch (SQLException e) {
             log.error("Failed to get all orders from db");
             throw new DBException("Failed to get all orders from db", e);
         }
+
+        if(request.getParameter("pageId")!=null){
+            request.getSession().setAttribute("pageId", request.getParameter("pageId"));
+            log.info("Attribute \"pageId\" set to session => " + request.getParameter("pageId"));
+        } else {
+            request.getSession().setAttribute("pageId", "1");
+        }
+
+        int pageId = Integer.parseInt((String)request.getSession().getAttribute("pageId"));
+        int recordsPerPage = 10;
+
         if (((User) request.getSession().getAttribute("user")).getRole().equals("admin")) {
+
             try {
                 orders.removeIf(o -> Objects.equals(o.getStatus(), "paid"));
             } catch (Exception e) {
                 log.error("Cannot filter orders by \"paid\" status");
                 throw new AppException("Cannot filter orders by \"paid\" status", e);
             }
+
+            int noOfPages = (int)Math.ceil(orders.size() * 1.0
+                    / recordsPerPage);
+            int start = (pageId-1)*recordsPerPage;
+            int end = recordsPerPage*pageId;
+            if (end> orders.size()){
+                end = orders.size();
+            }
+            orders = orders.subList(start, end);
+            request.setAttribute("noOfPages", noOfPages);
+
             request.setAttribute("orders", orders);
             log.info("Attribute \"orders\" set");
             return "/orders.jsp";
         }
+
         if (((User) request.getSession().getAttribute("user")).getRole().equals("client")) {
+
             final int userId = ((User) request.getSession().getAttribute("user")).getUserId();
+
             try {
                 orders.removeIf(o ->  o.getUserId() != userId);
             } catch (Exception e) {
                 log.error("Cannot filter orders by user Id");
                 throw new AppException("Cannot filter orders by user Id", e);
             }
+
             List<Invoice> invoices = null;
+
             try {
                 invoices = InvoiceDAO.getInstance().getInvoicesByUser(userId);
                 request.getSession().setAttribute("user", UserDAO.getInstance().getById(userId));
@@ -57,6 +86,17 @@ public class ShowOrdersCommand implements Command {
                 log.error("Failed to get invoices by user from db");
                 throw new DBException("Failed to get invoices by user from db", e);
             }
+
+            int noOfPages = (int)Math.ceil(orders.size() * 1.0
+                    / recordsPerPage);
+            int start = (pageId-1)*recordsPerPage;
+            int end = recordsPerPage*pageId;
+            if (end> orders.size()){
+                end = orders.size();
+            }
+            orders = orders.subList(start, end);
+            request.setAttribute("noOfPages", noOfPages);
+
             request.setAttribute("orders", orders);
             request.setAttribute("invoices", invoices);
 
