@@ -30,19 +30,20 @@ public class CalculateCommand implements Command {
         }
 
 
-        Tariff tariffWeight = null;
-        Tariff tariffDistance = null;
-        Tariff tariffDimension = null;
+        float tariffWeight;
+        float tariffDistance;
+        float tariffDimension;
         try {
-            tariffWeight = TariffDAO.getInstance().getByName("weight");
-            tariffDimension = TariffDAO.getInstance().getByName("dimension");
-            tariffDistance = TariffDAO.getInstance().getByName("distance");
+            Tariff tariff = TariffDAO.getInstance().getById(1);
+            tariffWeight = tariff.getWeight();
+            tariffDimension = tariff.getDimension();
+            tariffDistance = tariff.getDistance();
         } catch (SQLException e) {
             log.error("failed to get tariffs from DAO");
             throw new DBException("Failed to get tariffs from DAO", e);
         }
-        float totalPrice = (float) ((tariffDimension.getValue()*dimension)
-                +(tariffWeight.getValue()*weight)+(tariffDistance.getValue()*direction.getDistance()));
+        float totalPrice = (float) ((tariffDimension*dimension)
+                +(tariffWeight*weight)+(tariffDistance*direction.getDistance()));
 
         request.getSession().setAttribute("weight", weight);
         request.getSession().setAttribute("dimension", dimension);

@@ -14,9 +14,8 @@ public class TariffDAO implements AbstractTariffDAO{
     private static TariffDAO instance;
     final String GET_ALL_TARIFFS = "SELECT * FROM tariffs";
     final String GET_TARIFF_BY_ID = "SELECT * FROM tariffs WHERE id = ?";
-    final String GET_TARIFF_BY_NAME = "SELECT * FROM tariffs WHERE name = ?";
-    final String ADD_TARIFF = "INSERT INTO tariffs(name, value) VALUES (?, ?)";
-    final String UPDATE = "UPDATE tariffs SET name=?, value=? WHERE id=?";
+    final String ADD_TARIFF = "INSERT INTO tariffs(weight, distance, dimension) VALUES (?, ?, ?)";
+    final String UPDATE = "UPDATE tariffs SET weight=?, distance=?, dimension=? WHERE id=?";
     final String DELETE_BY_ID = "DELETE FROM tariffs WHERE id = ?";
     private final ConnectionPool connectionPool = new ConnectionPool("jdbc:mysql://localhost:3306/cargo_delivery", "root", "admin");
 
@@ -44,8 +43,9 @@ public class TariffDAO implements AbstractTariffDAO{
             while (rs.next()) {
                 Tariff tariff = new Tariff();
                 tariff.setId(rs.getInt(1));
-                tariff.setName(rs.getString(2));
-                tariff.setValue(rs.getFloat(3));
+                tariff.setWeight(rs.getFloat(2));
+                tariff.setDistance(rs.getFloat(3));
+                tariff.setDimension(rs.getFloat(4));
                 res.add(tariff);
             }
         } catch (SQLException e) {
@@ -75,8 +75,9 @@ public class TariffDAO implements AbstractTariffDAO{
             while (rs.next()) {
                 tariff = new Tariff();
                 tariff.setId(rs.getInt(1));
-                tariff.setName(rs.getString(2));
-                tariff.setValue(rs.getFloat(3));
+                tariff.setWeight(rs.getFloat(2));
+                tariff.setDistance(rs.getFloat(3));
+                tariff.setDimension(rs.getFloat(4));
             }
         } finally {
             rs.close();
@@ -91,8 +92,9 @@ public class TariffDAO implements AbstractTariffDAO{
     public boolean add(Tariff entity) throws SQLException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement st = connection.prepareStatement(ADD_TARIFF)) {
-            st.setString(1, entity.getName());
-            st.setFloat(2, entity.getValue());
+            st.setFloat(1, entity.getWeight());
+            st.setFloat(2, entity.getDistance());
+            st.setFloat(3, entity.getDimension());
             st.executeUpdate();
         }
         return true;
@@ -102,9 +104,10 @@ public class TariffDAO implements AbstractTariffDAO{
     public boolean update(Tariff entity) throws SQLException {
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement st = connection.prepareStatement(UPDATE)) {
-            st.setString(1, entity.getName());
-            st.setFloat(2, entity.getValue());
-            st.setInt(3, entity.getId());
+            st.setFloat(1, entity.getWeight());
+            st.setFloat(2, entity.getDistance());
+            st.setFloat(3, entity.getDimension());
+            st.setInt(4, entity.getId());
             st.executeUpdate();
         }
         return true;
@@ -122,28 +125,4 @@ public class TariffDAO implements AbstractTariffDAO{
         return true;
     }
 
-    @Override
-    public Tariff getByName(String name) throws SQLException {
-        Connection connection = connectionPool.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Tariff tariff = null;
-        try {
-            ps = connection.prepareStatement(GET_TARIFF_BY_NAME);
-            ps.setString(1, name);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                tariff = new Tariff();
-                tariff.setId(rs.getInt(1));
-                tariff.setName(rs.getString(2));
-                tariff.setValue(rs.getFloat(3));
-            }
-        } finally {
-            rs.close();
-            ps.close();
-            connection.close();
-        }
-
-        return tariff;
-    }
 }

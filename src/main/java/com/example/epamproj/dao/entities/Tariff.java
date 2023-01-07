@@ -4,21 +4,24 @@ import java.io.Serializable;
 
 public class Tariff implements Serializable {
     private int id;
-    private String name;
-    private float value;
+    private float weight;
+    private float distance;
+    private float dimension;
 
     public Tariff() {
     }
 
-    public Tariff(String name, float value) {
-        this.name = name;
-        this.value = value;
+    public Tariff(int id, float weight, float distance, float dimension) {
+        this.id = id;
+        this.weight = weight;
+        this.distance = distance;
+        this.dimension = dimension;
     }
 
-    public Tariff(int id, String name, float value) {
-        this.id = id;
-        this.name = name;
-        this.value = value;
+    public Tariff(float weight, float distance, float dimension) {
+        this.weight = weight;
+        this.distance = distance;
+        this.dimension = dimension;
     }
 
     public int getId() {
@@ -29,19 +32,27 @@ public class Tariff implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public float getWeight() {
+        return weight;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 
-    public float getValue() {
-        return value;
+    public float getDistance() {
+        return distance;
     }
 
-    public void setValue(float value) {
-        this.value = value;
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
+    public float getDimension() {
+        return dimension;
+    }
+
+    public void setDimension(float dimension) {
+        this.dimension = dimension;
     }
 }
